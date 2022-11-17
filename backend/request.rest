@@ -1,0 +1,57 @@
+
+// Get infoUser
+GET http://localhost:5000/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiam9rb0BnbWFpbC5jb20iLCJpYXQiOjE2Njg3MDE2MTgsImV4cCI6MTY2ODcwMTYzM30.Xfyiu21AfyWO9qbfYXLhzN7Rb1mL5I1jdnuC7pkcU9M
+
+
+// Trasnfer Saldo
+###
+POST http://localhost:5000/transfer
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsIm5hbWEiOiJqb2tvIiwiaWF0IjoxNjY4NzAxNTkzLCJleHAiOjE2Njg3MDE2MTN9.O4zlHmKawl2E4EC6W5QZorepO-pgHUzeyxMJju9eagI
+Content-Type: application/json
+
+{
+  "userId": 2,
+  "saldoTf": "40000",
+  "noTujuan": "8122316625"
+}
+
+
+
+// Register 
+###
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+  "nama": "joko2",
+  "email": "joko2@gmail.com",
+  "password": "654321",
+  "confPassword": "654321",
+  "pin": "654321",
+  "jenis_card": "blue",
+  "kode_akses": "joko2",
+  "ip_address": "103.247.21.192"
+}
+
+
+// Login 
+###
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "kode_akses": "joko1",
+  "ip_address": "103.247.21.192"
+}
+
+
+// Refrest token 
+###
+GET http://localhost:5000/token
+
+
+
+// Logout
+###
+DELETE http://localhost:5000/logout
