@@ -1,0 +1,149 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  text-decoration: none;
+}
+
+.container{
+  max-width: 360px;
+  max-height: 800px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.bg > img{
+  max-width: 360px;
+  max-height: 800px;
+  object-fit: cover;
+  position: fixed;
+  z-index: -1;
+  top: 0;
+}
+
+.card{
+  max-width: 289px;
+  max-height: 209px;
+  margin: 200px auto;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.button{
+  width: 281px;
+  height: 65px;
+  background: linear-gradient(180deg, rgba(22,152,232,1) 0%, rgba(10,98,176,1) 32%, rgba(1,54,130,1) 90%);
+  cursor: pointer;
+  transition: .3s;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: left;
+  padding: 5px 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  color: #fff;
+}
+
+.button:hover{
+  transform: scale(1.01);
+  box-shadow: 2px 2px 4px #00000045;
+  transition: .3s;
+}
+
+.button:nth-child(1){
+  border-radius: 8px 8px 0 0;
+}
+.button:nth-child(3){
+  border-radius: 0 0 8px 8px;
+}
+
+.op{
+  max-width: 277px;
+  height: 145px;
+  margin: 0 auto;
+  position: relative;
+  top: -150px;
+}
+
+.button-op{
+  display: block;
+  width: 100%;
+  height: 42px;
+  border-radius: 5px;
+  background: linear-gradient(180deg, rgba(22,152,232,1) 0%, rgba(10,98,176,1) 32%, rgba(1,54,130,1) 90%);
+  color: #fff;
+  font-weight: 500;
+  text-align: center;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 9px;
+  cursor: pointer;
+}
+
+.popup-error,
+.popup{
+  position: fixed;
+  z-index: 999;
+  width: 360px;
+  height: 800px;
+  background-color: #00000080;
+}
+
+.popup-error .card-popup > p{
+  display: block;
+  height: 180px;
+  text-align: left;
+}
+
+.card-popup{
+  width: 250px;
+  height: 120px;
+  background-color: #F8F8F8;
+  align-items: center;
+  padding: 10px;
+  border-radius: 2px;
+}
+
+.popup-error > .card-popup{
+  height: max-content;
+}
+
+.card-popup > p {
+  color: #085192;
+  font-weight: 400;
+  font-size: 14px;
+  text-align: center;
+}
+
+#kodeAkses{
+  width: 230px;
+  height: 30px;
+  padding: 10px;
+  margin: 10px 0;
+  outline: none;
+  border: 1px solid #B4B4B4;
+  border-radius: 2px;
+}
+#kodeAkses::placeholder{
+  opacity: 0.7;
+}
+
+
+.action{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.card-popup{
+  position: relative;
+  top: 200px;
+  margin: auto;
+}

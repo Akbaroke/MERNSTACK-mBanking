@@ -1,0 +1,25 @@
+.btn{
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(22,152,232,1) 0%, rgba(10,98,176,1) 32%, rgba(1,54,130,1) 90%);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  padding: 7px;
+  cursor: pointer;
+}
+
+.btn-big{
+  width: 222px;
+  height: 36px;
+  border-radius: 5px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(22,152,232,1) 0%, rgba(10,98,176,1) 32%, rgba(1,54,130,1) 90%);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  padding: 10px;
+  cursor: pointer;
+}

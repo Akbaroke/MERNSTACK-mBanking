@@ -142,17 +142,18 @@ export const Register = async (req, res) => {
 
 // LOGIN
 export const Login = async (req, res) => {
+  const { kode_akses, ip_address } = req.body;
   try {
     // mencari kode akses user pada db
     const user = await Users.findAll({
       where: {
-        kode_akses: req.body.kode_akses,
+        kode_akses: kode_akses,
       },
     });
     // setelah kode akses ditemukan lalu cocokan dengan user agentnya
-    const match = user[0].ip_address === req.body.ip_address 
-    if (!match) return res.status(400).json({ msg: 'Perangkat tidak sama...' });
-
+    const match = user[0].ip_address === ip_address
+    if (!match) return res.status(400).json({ msg: 'Perangkat tidak sesuai.' });
+    
     const userId = user[0].id;
     const nama = user[0].nama;
     const accessToken = jwt.sign({ userId, nama }, process.env.ACCES_TOKEN_SECRET, {
@@ -178,7 +179,7 @@ export const Login = async (req, res) => {
     // kirim res ke client (fenya)
     res.json({ accessToken });
   } catch (error) {
-    res.status(404).json({ msg: 'kode akses tidak ditemukan' });
+    res.status(404).json({ msg: 'Kode akses anda salah.' });
   }
 };
 

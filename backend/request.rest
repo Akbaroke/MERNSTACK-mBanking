@@ -1,19 +1,19 @@
 
 // Get infoUser
 GET http://localhost:5000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiam9rb0BnbWFpbC5jb20iLCJpYXQiOjE2Njg3MDE2MTgsImV4cCI6MTY2ODcwMTYzM30.Xfyiu21AfyWO9qbfYXLhzN7Rb1mL5I1jdnuC7pkcU9M
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsIm5hbWEiOiJqb2tvIiwiaWF0IjoxNjY4NzAzODc2LCJleHAiOjE2Njg3MDM4OTZ9.Poq2GjzXbfdXHhw4nvfDPeMnieevzzYleeEf15qqDCE
 
 
 // Trasnfer Saldo
 ###
 POST http://localhost:5000/transfer
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsIm5hbWEiOiJqb2tvIiwiaWF0IjoxNjY4NzAxNTkzLCJleHAiOjE2Njg3MDE2MTN9.O4zlHmKawl2E4EC6W5QZorepO-pgHUzeyxMJju9eagI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiam9rb0BnbWFpbC5jb20iLCJpYXQiOjE2Njg3MDM4MTIsImV4cCI6MTY2ODcwMzgyN30.3YQUcS6sQeqPREfsPFECw368aZl0lZgiKNktYp0kaeg
 Content-Type: application/json
 
 {
-  "userId": 2,
-  "saldoTf": "40000",
-  "noTujuan": "8122316625"
+  "userId": 3,
+  "saldoTf": "10000",
+  "noTujuan": "1122411727"
 }
 
 
@@ -41,8 +41,8 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-  "kode_akses": "joko1",
-  "ip_address": "103.247.21.192"
+  "kode_akses": "akbar1",
+  "ip_address": "101.255.118.193"
 }
 
 
