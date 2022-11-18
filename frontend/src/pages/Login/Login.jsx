@@ -29,6 +29,13 @@ const Login = () => {
   }, [])
 
   const authKodeAkses = async() =>{
+    if(codeAkses.length !== 6){
+      setMsg("107 - Kode Akses harus 6 karakter dengan kombinasi huruf dan angka.");
+      setCodeAkses('')
+      handlePopupInput()
+      handlePopupError()
+      return false
+    }
     try {
       await axios.post('http://localhost:5000/login', {
         kode_akses: codeAkses,
