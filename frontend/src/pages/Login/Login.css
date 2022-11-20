@@ -6,6 +6,10 @@
   text-decoration: none;
 }
 
+html,body{
+  overflow: hidden;
+}
+
 .container{
   max-width: 360px;
   max-height: 800px;

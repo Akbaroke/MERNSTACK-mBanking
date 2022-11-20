@@ -1,0 +1,39 @@
+.topbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 360px;
+  height: 59px;
+  align-items: center;
+  padding: 0 10px;
+  background-color: #F8F8F8;
+}
+
+.topbar > img{
+  width: 105px;
+}
+
+.topbar > div {
+  display: flex;
+  flex-direction: row;
+  gap: 13px;
+  align-items: center;
+}
+
+.topbar .offline, 
+.topbar .online {
+  width: 13px;
+  height: 13px;
+  border-radius: 2px;
+  border: 0.3px solid #B0B0B0;
+  box-shadow: inset 1px 1px 1px #00000045;
+  background-color: #0A62B0;
+}
+
+.topbar .offline{
+  background-color: #FD010E;
+}
+
+.topbar .online{
+  background-color: #93D72C;
+}

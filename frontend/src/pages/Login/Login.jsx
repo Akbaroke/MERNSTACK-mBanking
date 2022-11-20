@@ -26,7 +26,16 @@ const Login = () => {
   
   useEffect( () => {
     getDataIp()
-  }, [])
+    logout()
+  })
+
+  const logout = async() =>{
+    try {
+      await axios.delete('http://localhost:5000/logout')
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const authKodeAkses = async() =>{
     if(codeAkses.length !== 6){
@@ -59,6 +68,7 @@ const Login = () => {
     } else { 
       setPopupInput('block')
     }
+    console.log(ip);
   }
   const handlePopupError =()=>{
     if(popupError === 'block') {

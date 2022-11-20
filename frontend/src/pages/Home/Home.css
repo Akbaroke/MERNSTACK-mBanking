@@ -1,0 +1,54 @@
+.home{
+  background-color: #002245;
+  width: 100%;
+  height: 680px;
+  color: #fff;
+  padding: 40px 30px;
+}
+
+.welcome{
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.welcome > p {
+  font-weight: 300;
+  font-size: 13px;
+  letter-spacing: 0.01cm;
+}
+
+.welcome > h4{
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.01cm;
+}
+
+.con-menu{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-top: 36px;
+}
+
+.menu{
+  display: block;
+  width: max-content;
+  align-items: center;
+  text-align: center;
+}
+.menu img{
+  cursor: pointer;
+  transition: .3s;
+}
+.menu img:hover{
+  transform: scale(0.97);
+  transition: .3s;
+}
+
+.menu > p {
+  font-size: 12px;
+  letter-spacing: 0.01cm;
+}
