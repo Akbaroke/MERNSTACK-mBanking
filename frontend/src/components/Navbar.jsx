@@ -16,7 +16,7 @@ function Navbar(props) {
           <FontAwesomeIcon icon={faHouse} />
           <p>Home</p>
         </Link>
-        <Link to='/m-transaksi' className="btn-navbar" id={(active === "transaksi") ? "active" : ""}>
+        <Link to='/m-Transfer' className="btn-navbar" id={(active === "transaksi") ? "active" : ""}>
           <FontAwesomeIcon icon={faWallet} />
           <p>Transaksi</p>
         </Link>

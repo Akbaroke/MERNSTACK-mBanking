@@ -12,7 +12,7 @@
 }
 
 .btn-big{
-  width: 100%;
+  min-width: 222px;
   height: 36px;
   border-radius: 5px;
   text-align: center;
@@ -23,3 +23,9 @@
   padding: 10px;
   cursor: pointer;
 }
+
+  .btn-big:active,
+  .btn:active{
+    color: #015A9E;
+    background: #E6E6E6;
+  }
