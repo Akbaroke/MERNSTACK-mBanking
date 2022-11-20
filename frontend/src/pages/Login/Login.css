@@ -108,7 +108,7 @@ html,body{
 
 .card-popup{
   width: 250px;
-  height: 120px;
+  min-height: 120px;
   background-color: #F8F8F8;
   align-items: center;
   padding: 10px;

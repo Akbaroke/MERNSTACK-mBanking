@@ -3,6 +3,7 @@ import qris from '../assets/Svg/qris.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faWallet, faBell, faUser } from "@fortawesome/free-solid-svg-icons";
 import './Navbar.css'
+import { Link } from 'react-router-dom';
 
 function Navbar(props) {
 
@@ -11,14 +12,14 @@ function Navbar(props) {
   return (
     <div className='navbar'>
       <div>
-        <div className="btn-navbar" id={(active === "home") ? "active" : ""}>
+        <Link to='/home' className="btn-navbar" id={(active === "home") ? "active" : ""}>
           <FontAwesomeIcon icon={faHouse} />
           <p>Home</p>
-        </div>
-        <div className="btn-navbar" id={(active === "transaksi") ? "active" : ""}>
+        </Link>
+        <Link to='/m-transaksi' className="btn-navbar" id={(active === "transaksi") ? "active" : ""}>
           <FontAwesomeIcon icon={faWallet} />
           <p>Transaksi</p>
-        </div>
+        </Link>
       </div>
       <img className='qris' src={qris} alt="" />
       <div>

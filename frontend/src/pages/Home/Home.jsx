@@ -12,7 +12,7 @@ import Navbar from '../../components/Navbar';
 function Home() {
   const [nama, setNama] = useState('')
   const [expire, setExpire] = useState('')
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(()=>{
     refreshToken()
@@ -26,7 +26,7 @@ function Home() {
       setExpire(decoded.exp)
     } catch (error) {
       if(error.response){
-        history('/')
+        navigate('/')
       }
     }
   }
