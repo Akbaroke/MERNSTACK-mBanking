@@ -7,13 +7,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsIm5hb
 // Trasnfer Saldo
 ###
 POST http://localhost:5000/transfer
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImVtYWlsIjoiam9rb0BnbWFpbC5jb20iLCJpYXQiOjE2Njg3MDM4MTIsImV4cCI6MTY2ODcwMzgyN30.3YQUcS6sQeqPREfsPFECw368aZl0lZgiKNktYp0kaeg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsIm5hbWEiOiJ1ZGluIiwic2FsZG8iOjc1MDAwLCJpYXQiOjE2NjkwOTAyNzYsImV4cCI6MTY2OTA5MDI5MX0.YcBx84MYbB8cpHCXxgaUyib6RMme41raZBn6vAico44
 Content-Type: application/json
 
 {
-  "userId": 3,
-  "saldoTf": "10000",
-  "noTujuan": "1122411727"
+  "userId": 2,
+  "saldoTf": "25000",
+  "noTujuan": "112273622"
 }
 
 
@@ -24,14 +24,14 @@ POST http://localhost:5000/users
 Content-Type: application/json
 
 {
-  "nama": "joko2",
-  "email": "joko2@gmail.com",
-  "password": "654321",
-  "confPassword": "654321",
-  "pin": "654321",
+  "nama": "joko",
+  "email": "joko01@gmail.com",
+  "password": "123",
+  "confPassword": "123",
+  "pin": "123456",
   "jenis_card": "blue",
-  "kode_akses": "joko2",
-  "ip_address": "103.247.21.192"
+  "kode_akses": "joko01",
+  "ip_address": "182.2.133.21"
 }
 
 
@@ -41,8 +41,8 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-  "kode_akses": "akbar1",
-  "ip_address": "101.255.118.193"
+  "kode_akses": "udin01",
+  "ip_address": "182.2.133.21"
 }
 
 
