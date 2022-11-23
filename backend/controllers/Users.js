@@ -207,6 +207,38 @@ export const Logout = async (req, res) => {
 };
 
 
+// RESET KODE AKSES
+export const ResetKodeAkses = async (req, res) => {
+  const { kodeLama, kodeBaru, konfirmKodeBaru, pin, email, ip_address } = req.body
+  try {
+    const user = await Users.findAll({
+      where: {
+        pin: pin,
+        kode_akses: kodeLama,
+        email: email
+      },
+    });
+    if(!user[0]) return res.status(404).json({ msg: 'Kode Akses saat ini salah.'})
+    if(kodeBaru.length !== 6) return res.status(404).json({ msg: 'Kode Akses baru harus 6 alphanum.'})
+    if(kodeBaru !== konfirmKodeBaru) return res.status(404).json({ msg: 'Konfirmasi Password salah.'})
+    await Users.update(
+      { 
+        kode_akses: kodeBaru,
+        ip_address: ip_address
+      },
+      {
+        where: {
+          email: email
+        }
+      }
+    )
+    res.status(200).json({ msg: 'Kode Akses Berhasil diperbarui.'})
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 
 // TRANSFER SALDO
 export const Transfer = async (req, res) =>{
@@ -236,9 +268,8 @@ export const Transfer = async (req, res) =>{
         where: {
           id: getDataTujuan[0].id,
         },
-      }
-      )
-      
+      })
+    
     const saldoAsal = parseInt(getDataAsal[0].saldo) - parseInt(saldoTf)
     await Users.update(
       { saldo: saldoAsal },

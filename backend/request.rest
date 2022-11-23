@@ -55,3 +55,19 @@ GET http://localhost:5000/token
 // Logout
 ###
 DELETE http://localhost:5000/logout
+
+
+
+// Ganti kode akses
+###
+POST http://localhost:5000/gantikode
+Content-Type: application/json
+
+{
+  "kodeLama": "udin01",
+  "kodeBaru": "udin02",
+  "konfirmKodeBaru": "udin02",
+  "pin": "123456",
+  "email": "udin@gmail.com",
+  "ip_address": "103.217.216.234"
+}

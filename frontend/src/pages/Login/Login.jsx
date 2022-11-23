@@ -107,7 +107,7 @@ const Login = () => {
       </div>
       <div className="op">
         <Link to="/" className="button-op">Buka Rekening Baru</Link>
-        <Link to="/" className="button-op">Ganti Kode Akses</Link>
+        <Link to="/gantiKode" className="button-op">Ganti Kode Akses</Link>
         <Link to="/" className="button-op">Info Bca</Link>
       </div>
       <div className="bg"><img src={bg} alt="bg-bottom" /></div>
