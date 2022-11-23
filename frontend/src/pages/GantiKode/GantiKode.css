@@ -1,0 +1,13 @@
+.ganti-kode{
+  background-color: #bebebe;
+  width: 100%;
+  min-height: 82vh;
+  color: #fff;
+  padding: 40px 30px;
+}
+
+@media only screen and (min-height: 830px){
+  .ganti-kode{
+    min-height: 682px;
+  }
+}
