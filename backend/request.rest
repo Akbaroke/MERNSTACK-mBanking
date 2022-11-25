@@ -41,7 +41,7 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-  "kode_akses": "udin01",
+  "kode_akses": "joko01",
   "ip_address": "182.2.133.21"
 }
 
@@ -64,10 +64,10 @@ POST http://localhost:5000/gantikode
 Content-Type: application/json
 
 {
-  "kodeLama": "udin01",
-  "kodeBaru": "udin02",
-  "konfirmKodeBaru": "udin02",
+  "kodeLama": "joko01",
+  "kodeBaru": "joko01",
+  "konfirmKodeBaru": "joko01",
   "pin": "123456",
-  "email": "udin@gmail.com",
-  "ip_address": "103.217.216.234"
+  "email": "joko01@gmail.com",
+  "ip_address": "101.255.148.225"
 }
