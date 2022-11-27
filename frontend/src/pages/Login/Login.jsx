@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Btn from '../../components/Btn'
 import axios from 'axios';
 import BtnBig from '../../components/BtnBig'
+import Logout from '../Logout'
 
 
 const Login = () => {
@@ -26,16 +27,8 @@ const Login = () => {
   
   useEffect( () => {
     getDataIp()
-    logout()
+    Logout()
   })
-
-  const logout = async() =>{
-    try {
-      await axios.delete('http://localhost:5000/logout')
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   const authKodeAkses = async() =>{
     if(codeAkses.length !== 6){

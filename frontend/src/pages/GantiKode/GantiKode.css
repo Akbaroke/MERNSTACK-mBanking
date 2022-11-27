@@ -1,3 +1,34 @@
+.topbar-btn{
+  width: 100%;
+  height: 57px;
+  background: linear-gradient(180deg, rgba(72,72,72,1) 0%, rgba(0,0,0,1) 100%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+
+.topbar-btn > a,
+.topbar-btn > div{
+  width: 150px;
+  height: 30px;
+  border-radius: 5px;
+  background: linear-gradient(180deg, rgba(22,152,232,1) 0%, rgba(10,98,176,1) 32%, rgba(1,54,130,1) 90%);
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.topbar-btn > a:active,
+.topbar-btn > div:active{
+  color: #015A9E;
+  background: #E6E6E6;
+}
+
+
 .ganti-kode{
   background-color: #bebebe;
   width: 100%;
@@ -10,4 +41,53 @@
   .ganti-kode{
     min-height: 682px;
   }
+}
+
+.card-formKode{
+  max-width: 309px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #ADADAD;
+}
+
+.input-formKode{
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background-color: #F8F8F8;
+  border-bottom: 1px solid #ADADAD;
+  padding: 5px 10px 6px 20px;
+  align-items: center;
+}
+
+.input-formKode > p {
+  max-width: 110px;
+  color: #015A9E;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.input-formKode > div {
+  width: 140px;
+  height: 100%;
+}
+
+.input-formKode > div > input{
+  width: 90%;
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.input-formKode > div > input::placeholder{
+  opacity: 0.7;
+}
+
+.icon-formKode{
+  position: relative;
+  color: #0284C1;
+  font-size: 10px;
 }

@@ -65,8 +65,8 @@ Content-Type: application/json
 
 {
   "kodeLama": "joko01",
-  "kodeBaru": "joko01",
-  "konfirmKodeBaru": "joko01",
+  "kodeBaru": "joko02",
+  "konfirmKodeBaru": "joko02",
   "pin": "123456",
   "email": "joko01@gmail.com",
   "ip_address": "101.255.148.225"
