@@ -21,9 +21,14 @@ function Info() {
 
   useEffect(()=>{
     refreshToken()
+    getDataUser();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[100]);
+
+  const getDataUser = () =>{
+    refreshToken()
     getUsers()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }
 
   const refreshToken = async() => {
     try {
@@ -66,6 +71,7 @@ function Info() {
   }, 500);
 
   const handlePopupSaldo =()=>{
+    getUsers()
     if(popupSaldo === 'block') {
       setPopupSaldo('none')
     } else { 
