@@ -99,8 +99,8 @@ const Login = () => {
         <div className="button"><img src={infobca} alt="bg-bottom" /><p>Info BCA</p></div>
       </div>
       <div className="op">
-        <Link to="/" className="button-op">Buka Rekening Baru</Link>
-        <Link to="/gantiKode" className="button-op">Ganti Kode Akses</Link>
+        <Link to="/buka-rekening" className="button-op">Buka Rekening Baru</Link>
+        <Link to="/ganti-kode" className="button-op">Ganti Kode Akses</Link>
         <Link to="/" className="button-op">Info Bca</Link>
       </div>
       <div className="bg"><img src={bg} alt="bg-bottom" /></div>

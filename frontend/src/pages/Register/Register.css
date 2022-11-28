@@ -1,0 +1,67 @@
+.register{
+  background-color: #bebebe;
+  width: 100%;
+  min-height: 82vh;
+  color: #fff;
+  padding: 40px 30px;
+}
+
+@media only screen and (min-height: 830px){
+  .register{
+    min-height: 682px;
+  }
+}
+
+.card-register{
+  max-width: 309px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #ADADAD;
+}
+
+.input-register{
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background-color: #F8F8F8;
+  border-bottom: 1px solid #ADADAD;
+  padding: 5px 10px 6px 20px;
+  align-items: center;
+}
+
+.input-register > p {
+  max-width: 110px;
+  color: #015A9E;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.input-register > div {
+  width: 140px;
+  height: 100%;
+}
+
+.input-register > div > select,
+.input-register > div > input{
+  width: 90%;
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+
+#select-card::after{
+  visibility: hidden !important;
+}
+
+.input-register > div > input::placeholder{
+  opacity: 0.7;
+}
+
+.icon-formKode{
+  color: #0284C1;
+  font-size: 10px;
+}
