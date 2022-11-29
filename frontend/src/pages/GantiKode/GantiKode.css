@@ -20,6 +20,7 @@
   text-align: center;
   padding: 8px;
   cursor: pointer;
+  border: none;
 }
 
 .topbar-btn > a:active,

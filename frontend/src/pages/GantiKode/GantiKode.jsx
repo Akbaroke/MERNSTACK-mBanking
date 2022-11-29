@@ -111,7 +111,7 @@ function GantiKode() {
       <TopbarPolos />
       <div className='topbar-btn'>
         <Link to='/' >Cancel</Link>
-        <div onClick={handlePopupInput} >OK</div>
+        <div type='submit' onClick={handlePopupInput} >OK</div>
       </div>
       <div className="ganti-kode">
         <div className="card-formKode">
