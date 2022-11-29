@@ -32,8 +32,8 @@ function GantiKode() {
     Logout()
   })
 
-  const gantiKodeAkses = async() => {
-    if(pin.length !== 6){
+  const gantiKodeAkses = async () => {
+    if (pin.length !== 6) {
       setMsg("107 - PIN harus 6 berisi huruf.");
       setPin('')
       handlePopupInput()
@@ -63,7 +63,7 @@ function GantiKode() {
     }
   }
 
-  const clearInput = ()=>{
+  const clearInput = () => {
     setPin('')
     setKodeAksesLama('')
     setKodeAksesBaru('')
@@ -71,40 +71,40 @@ function GantiKode() {
     setEmail('')
   }
 
-  const handlePopupInput =()=>{
-    if(popupInput === 'block') {
-      setPopupInput('none') 
-    } else { 
+  const handlePopupInput = () => {
+    if (popupInput === 'block') {
+      setPopupInput('none')
+    } else {
       setPopupInput('block')
     }
   }
-  const handlePopupError =()=>{
-    if(popupError === 'block') {
-      setPopupError('none') 
+  const handlePopupError = () => {
+    if (popupError === 'block') {
+      setPopupError('none')
       setMsg('')
-    } else { 
+    } else {
       setPopupError('block')
     }
   }
 
   return (
     <div className='container'>
-      <div className="popup-error" style={{display: popupError}}>
+      <div className="popup-error" style={{ display: popupError }}>
         <div className="card-popup">
           <p>{msg}</p>
           <div className="action">
-            <div onClick={handlePopupError}><BtnBig label="Back"/></div>
+            <div onClick={handlePopupError}><BtnBig label="Back" /></div>
           </div>
         </div>
       </div>
-      <div className="popup" style={{display: popupInput}}>
+      <div className="popup" style={{ display: popupInput }}>
         <div className="card-popup">
           <p>PIN</p>
-          <input type="text" id='kodeAkses' placeholder='Input PIN anda'
-          value={pin} onChange={e => setPin(e.target.value)}/>
+          <input type="text" maxLength={6} id='kodeAkses' placeholder='Input PIN anda'
+            value={pin} onChange={e => setPin(e.target.value)} />
           <div className="action">
-            <div onClick={handlePopupInput}><Btn label="Cancel"/></div>
-            <div onClick={gantiKodeAkses}><Btn label="OK"/></div>
+            <div onClick={handlePopupInput}><Btn label="Cancel" /></div>
+            <div onClick={gantiKodeAkses}><Btn label="OK" /></div>
           </div>
         </div>
       </div>
@@ -118,21 +118,21 @@ function GantiKode() {
           <div className="input-formKode">
             <p>Kode Akses Saat ini</p>
             <div>
-              <input type="text" placeholder='Input 6 alphanum' value={kodeAksesLama} onChange={e => setKodeAksesLama(e.target.value)}/>
+              <input type="text" maxLength={6} placeholder='Input 6 alphanum' value={kodeAksesLama} onChange={e => setKodeAksesLama(e.target.value)} />
               <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
             </div>
           </div>
           <div className="input-formKode">
             <p>Kode Akses yang Baru</p>
             <div>
-              <input type="text" placeholder='Input 6 alphanum' value={kodeAksesBaru} onChange={e => setKodeAksesBaru(e.target.value)} />
+              <input type="text" maxLength={6} placeholder='Input 6 alphanum' value={kodeAksesBaru} onChange={e => setKodeAksesBaru(e.target.value)} />
               <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
             </div>
           </div>
           <div className="input-formKode">
             <p>Konfirmasi Kode Akses yang Baru</p>
             <div>
-              <input type="text" placeholder='Input 6 alphanum' value={konfKodeAksesBaru} onChange={e => setKonfKodeAksesBaru(e.target.value)} />
+              <input type="text" maxLength={6} placeholder='Input 6 alphanum' value={konfKodeAksesBaru} onChange={e => setKonfKodeAksesBaru(e.target.value)} />
               <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
             </div>
           </div>

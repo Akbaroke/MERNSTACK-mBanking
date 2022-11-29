@@ -50,11 +50,11 @@
   background-color: transparent;
   border: none;
   outline: none;
+  appearance: none;
 }
 
-
-#select-card::after{
-  visibility: hidden !important;
+.input-register > div > select > option{
+  color: #000;
 }
 
 .input-register > div > input::placeholder{
