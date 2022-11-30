@@ -5,17 +5,16 @@ import jwt from 'jsonwebtoken';
 export const getInfoUser = async (req, res) => {
   try {
     const users = await Users.findOne({
-      where:{
-        id: req.userId
+      where: {
+        id: req.userId,
       },
-      attributes: ['id', 'nama', 'saldo', 'jenis_card', 'no_rek','no_card'],
+      attributes: ['id', 'nama', 'saldo', 'jenis_card', 'no_rek', 'no_card'],
     });
     res.json(users);
   } catch (error) {
     console.log(error);
   }
 };
-
 
 // REGISTER
 export const Register = async (req, res) => {
@@ -31,8 +30,7 @@ export const Register = async (req, res) => {
       email: email,
     },
   });
-  if(cekEmail[0] != null) return res.status(400).json({ msg: 'Email Sudah digunakan ...' });
-
+  if (cekEmail[0] != null) return res.status(400).json({ msg: 'Email Sudah digunakan ...' });
 
   // cek kode akses dan ip address
   const cekDevice = await Users.findAll({
@@ -41,26 +39,18 @@ export const Register = async (req, res) => {
       ip_address: ip_address,
     },
   });
-  if(cekDevice[0] != null) return res.status(400).json({ msg: 'Kode Akses Tidak boleh sama dalam 1 perangkat...' });
+  if (cekDevice[0] != null) return res.status(400).json({ msg: 'Kode Akses Tidak boleh sama dalam 1 perangkat...' });
 
-  
   // encrypt password
   const salt = await bcrypt.genSalt();
   const hashPassword = await bcrypt.hash(password, salt);
 
   // create no rekening
   let loop1 = true;
-  while(loop1 == true){
+  while (loop1 == true) {
     let date = new Date();
-    let components = [
-      Math.floor(1 + Math.random() * 9),
-      date.getYear(),
-      Math.floor(1 + Math.random() * 9),
-      date.getMinutes(),
-      Math.floor(1 + Math.random() * 9),
-      date.getSeconds(),
-    ];
-    var no_rek = components.join("");
+    let components = [Math.floor(1 + Math.random() * 9), date.getYear(), Math.floor(1 + Math.random() * 9), date.getMinutes(), Math.floor(1 + Math.random() * 9), date.getSeconds()];
+    var no_rek = components.join('');
 
     // cek no rek
     const cek1 = await Users.findAll({
@@ -77,36 +67,33 @@ export const Register = async (req, res) => {
 
   // create no card
   let loop2 = true;
-  while(loop2 == true){
+  while (loop2 == true) {
     let arr_noCard = [];
-    for(let i = 0; i < no_rek.length; i++){
+    for (let i = 0; i < no_rek.length; i++) {
       arr_noCard.push(no_rek.charAt(i));
     }
-    arr_noCard.sort(() => .5 - Math.random())
-    let joinNumber = arr_noCard.join("");
-    let components = [
-      Math.floor(100000 + Math.random() * 900000).toString(),
-      joinNumber
-    ];
-    var no_card = components.join("");
+    arr_noCard.sort(() => 0.5 - Math.random());
+    let joinNumber = arr_noCard.join('');
+    let components = [Math.floor(100000 + Math.random() * 900000).toString(), joinNumber];
+    var no_card = components.join('');
 
     // cek no card
     let loop3 = true;
-    while(loop3){
+    while (loop3) {
       const cek2 = await Users.findAll({
         where: {
           no_card: no_card,
         },
       });
       if (cek2[0] == null) {
-        if(no_card.length == 16){
+        if (no_card.length == 16) {
           loop2 = false;
           loop3 = false;
-        }else if(no_card.length == 15){
-          no_card += "0"
+        } else if (no_card.length == 15) {
+          no_card += '0';
           loop3 = true;
           loop2 = false;
-        }else{
+        } else {
           loop3 = false;
           loop2 = true;
         }
@@ -118,7 +105,7 @@ export const Register = async (req, res) => {
 
   // set default saldo
   const saldo = 100000;
-  
+
   try {
     await Users.create({
       nama: nama,
@@ -138,8 +125,6 @@ export const Register = async (req, res) => {
   }
 };
 
-
-
 // LOGIN
 export const Login = async (req, res) => {
   const { kode_akses, ip_address } = req.body;
@@ -151,9 +136,12 @@ export const Login = async (req, res) => {
       },
     });
     // setelah kode akses ditemukan lalu cocokan dengan user agentnya
-    const match = user[0].ip_address === ip_address
-    if (!match) return res.status(400).json({ msg: 'Perangkat tidak sesuai.' });
-    
+    const match = user[0].ip_address === ip_address;
+    if (!match)
+      return res
+        .status(400)
+        .json({ msg: '101 - Perangkat yang digunakan tidak sesuai. Silahkan gunakan Perangkat yang digunakan saat aktivasi atau lakukan verifikasi ulang melalui fitur Verifikasi Ulang BCA mmobile pada menu Ganti Kode Akses.' });
+
     const userId = user[0].id;
     const nama = user[0].nama;
     const accessToken = jwt.sign({ userId, nama }, process.env.ACCES_TOKEN_SECRET, {
@@ -202,95 +190,37 @@ export const Logout = async (req, res) => {
       },
     }
   );
-  res.clearCookie('refreshToken')
-  return res.sendStatus(200)
+  res.clearCookie('refreshToken');
+  return res.sendStatus(200);
 };
-
 
 // RESET KODE AKSES
 export const ResetKodeAkses = async (req, res) => {
-  const { kodeLama, kodeBaru, konfirmKodeBaru, pin, email, ip_address } = req.body
+  const { kodeLama, kodeBaru, konfirmKodeBaru, pin, email, ip_address } = req.body;
   try {
     const user = await Users.findAll({
       where: {
         pin: pin,
         kode_akses: kodeLama,
-        email: email
+        email: email,
       },
     });
-    if(!user[0]) return res.status(404).json({ msg: 'Kode Akses saat ini salah.'})
-    if(kodeBaru.length !== 6) return res.status(404).json({ msg: 'Kode Akses baru harus 6 alphanum.'})
-    if(kodeBaru !== konfirmKodeBaru) return res.status(404).json({ msg: 'Konfirmasi Password salah.'})
+    if (!user[0]) return res.status(404).json({ msg: 'Kode Akses saat ini salah.' });
+    if (kodeBaru.length !== 6) return res.status(404).json({ msg: 'Kode Akses baru harus 6 alphanum.' });
+    if (kodeBaru !== konfirmKodeBaru) return res.status(404).json({ msg: 'Konfirmasi Password salah.' });
     await Users.update(
-      { 
+      {
         kode_akses: kodeBaru,
-        ip_address: ip_address
+        ip_address: ip_address,
       },
       {
         where: {
-          email: email
-        }
-      }
-    )
-    res.status(200).json({ msg: 'Kode Akses Berhasil diperbarui.'})
-
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-
-// TRANSFER SALDO
-export const Transfer = async (req, res) =>{
-  const { userId, saldoTf, noTujuan } = req.body;
-  try {
-    // tujuan
-    const getDataTujuan = await Users.findAll({
-      where: {
-        no_rek: noTujuan
-      }
-    })
-    if(!getDataTujuan) return res.status(404).json({msg: "No Rekening Tujuan tidak ditemukan..."})
-    
-    // asal
-    const getDataAsal = await Users.findAll({
-      where: {
-        id: userId
-      }
-    })
-    if(getDataAsal[0].saldo < parseInt(saldoTf)) return res.status(404).json({msg: "Saldo tidak cukup..."})
-
-    // transfer
-    const saldoTujuan = parseInt(getDataTujuan[0].saldo) + parseInt(saldoTf)
-    await Users.update(
-      { saldo: saldoTujuan },
-      {
-        where: {
-          id: getDataTujuan[0].id,
+          email: email,
         },
-      })
-    
-    const saldoAsal = parseInt(getDataAsal[0].saldo) - parseInt(saldoTf)
-    await Users.update(
-      { saldo: saldoAsal },
-      {
-        where: {
-          id: userId,
-        }
       }
-    )
-
-    res.json(
-      {
-        msg: "Transfer Berhasil ...",
-        nominal: saldoTf,
-        namaPenerima: getDataTujuan[0].nama,
-        no_rek: getDataTujuan[0].no_rek
-      }
-    )
+    );
+    res.status(200).json({ msg: 'Kode Akses Berhasil diperbarui.' });
   } catch (error) {
     console.log(error);
   }
-}
-
-
+};

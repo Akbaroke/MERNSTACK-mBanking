@@ -73,9 +73,9 @@
   font-size: 10px;
 }
 
-.card-popup > div:nth-child(2) {
+/* .card-popup > div:nth-child(2) {
   padding: 5px;
-}
+} */
 
 .card-popup > div > .time-saldo{
   display: flex;

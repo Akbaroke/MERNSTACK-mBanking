@@ -1,21 +1,7 @@
 
 // Get infoUser
 GET http://localhost:5000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsIm5hbWEiOiJqb2tvIiwiaWF0IjoxNjY4NzAzODc2LCJleHAiOjE2Njg3MDM4OTZ9.Poq2GjzXbfdXHhw4nvfDPeMnieevzzYleeEf15qqDCE
-
-
-// Trasnfer Saldo
-###
-POST http://localhost:5000/transfer
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsIm5hbWEiOiJ1ZGluIiwic2FsZG8iOjc1MDAwLCJpYXQiOjE2NjkwOTAyNzYsImV4cCI6MTY2OTA5MDI5MX0.YcBx84MYbB8cpHCXxgaUyib6RMme41raZBn6vAico44
-Content-Type: application/json
-
-{
-  "userId": 2,
-  "saldoTf": "25000",
-  "noTujuan": "112273622"
-}
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiI3NTAwMCIsImlhdCI6MTY2OTgxMjkxMSwiZXhwIjoxNjY5ODEyOTI2fQ.Ssw-FXwyMU2tY32zm5ZLg95BsXq2bI7e9azPDNI9ieQ
 
 
 // Register 
@@ -41,8 +27,8 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-  "kode_akses": "joko01",
-  "ip_address": "182.2.133.21"
+  "kode_akses": "joni01",
+  "ip_address": "101.255.148.225"
 }
 
 
@@ -70,4 +56,27 @@ Content-Type: application/json
   "pin": "123456",
   "email": "joko01@gmail.com",
   "ip_address": "101.255.148.225"
+}
+
+
+// Trasnfer Saldo
+###
+POST http://localhost:5000/transfer
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwiaWF0IjoxNjY5ODAyOTAwLCJleHAiOjE2Njk4MDI5MjB9.HBh43PTKgqmlDXS61CoDT-ymIoOJC7B8RzNIw0xIMLY
+Content-Type: application/json
+
+{
+  "userId": 6,
+  "saldoTf": "25000",
+  "noTujuan": "2122853427"
+}
+
+
+// cek nomer rekening
+###
+POST http://localhost:5000/ceknomor
+Content-Type: application/json
+
+{
+  "no_rek": "2122853427"
 }
