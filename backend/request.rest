@@ -1,7 +1,7 @@
 
 // Get infoUser
 GET http://localhost:5000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiI3NTAwMCIsImlhdCI6MTY2OTk3NTE1OCwiZXhwIjoxNjY5OTc1MTczfQ.9IOVu-fXdXQQSGwwjz-d7JkwrNmQExT__2UTF0nKMeQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiIzMDAwMCIsImlhdCI6MTY2OTk5NTg5NCwiZXhwIjoxNjY5OTk1OTA5fQ.P6wkviZeotfvXpJaH3AfqR2FJ2RDuDebl8l9j9_v5Ks
 
 
 // Register 
@@ -62,13 +62,12 @@ Content-Type: application/json
 // Trasnfer Saldo
 ###
 POST http://localhost:5000/transfer
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwiaWF0IjoxNjY5ODAyOTAwLCJleHAiOjE2Njk4MDI5MjB9.HBh43PTKgqmlDXS61CoDT-ymIoOJC7B8RzNIw0xIMLY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiIzNTAwMCIsImlhdCI6MTY2OTk5MjQyNiwiZXhwIjoxNjY5OTkyNDQxfQ.IFr6fXiy9_vyj2V6yLICVP_4qCZe0dipJ8kcTvENdhM
 Content-Type: application/json
 
 {
-  "userId": 6,
-  "saldoTf": "25000",
-  "noTujuan": "2122853427"
+  "saldoTf": "5000",
+  "noTujuan": "8122316625"
 }
 
 
@@ -89,8 +88,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hb
 Content-Type: application/json
 
 {
-  "no_rek": "2122853427",
-  "bank": "BRI"
+  "no_rek": "1122411727",
+  "bank": "BNI"
 }
 
 
@@ -102,4 +101,15 @@ Content-Type: application/json
 
 {
   "no_rek": "8122316625"
+}
+
+
+// ambil list bank lain
+###
+GET http://localhost:5000/list_banklain
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiIzMDAwMCIsImlhdCI6MTY2OTk5NjE4OCwiZXhwIjoxNjY5OTk2MjAzfQ.4RhRbY1HcQBU0KObCqP_44oxRWEHsfif7ZI-3j_ov7U
+Content-Type: application/json
+
+{
+  "bank": "BNI"
 }

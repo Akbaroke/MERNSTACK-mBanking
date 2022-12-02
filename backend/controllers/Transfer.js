@@ -3,20 +3,27 @@ import DaftarTransfer from '../models/DaftarTransferModel.js';
 
 // TRANSFER SALDO
 export const Transfer = async (req, res) => {
-  const { userId, saldoTf, noTujuan } = req.body;
+  const { saldoTf, noTujuan } = req.body;
   try {
-    // tujuan
+    // cek norek sudah didaftarkan atau belum
+    const cekDataTujuan = await DaftarTransfer.findAll({
+      where: {
+        no_rek: noTujuan,
+      },
+    });
+    if (!cekDataTujuan) return res.status(404).json({ msg: 'No Rekening Tujuan tidak belum terdaftar...' });
+
+    // ambil data tujuan
     const getDataTujuan = await Users.findAll({
       where: {
         no_rek: noTujuan,
       },
     });
-    if (!getDataTujuan) return res.status(404).json({ msg: 'No Rekening Tujuan tidak ditemukan...' });
 
-    // asal
+    // cek norek sudah didaftarkan atau belum
     const getDataAsal = await Users.findAll({
       where: {
-        id: userId,
+        id: req.userId,
       },
     });
     if (getDataAsal[0].saldo < parseInt(saldoTf)) return res.status(404).json({ msg: 'Saldo tidak cukup...' });
@@ -37,7 +44,7 @@ export const Transfer = async (req, res) => {
       { saldo: saldoAsal },
       {
         where: {
-          id: userId,
+          id: req.userId,
         },
       }
     );
@@ -48,7 +55,9 @@ export const Transfer = async (req, res) => {
       namaPenerima: getDataTujuan[0].nama,
       no_rek: getDataTujuan[0].no_rek,
     });
+    console.log(getDataTujuan[0].nama);
   } catch (error) {
+    res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
     console.log(error);
   }
 };
@@ -121,6 +130,25 @@ export const TambahNorekAntarRekening = async (req, res) => {
     } else {
       res.json({ msg: '202 - sukses.' });
     }
+  } catch (error) {
+    res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
+    console.log(error);
+  }
+};
+
+// ambil list bank lain
+export const getListBankLain = async (req, res) => {
+  const { bank } = req.body;
+  try {
+    const getDataBank = await DaftarTransfer.findAll({
+      where: {
+        id_user: req.userId,
+        bank: bank,
+      },
+      attributes: ['id', 'bank'],
+    });
+    if (!getDataBank) return res.status(404).json({ msg: null });
+    res.json(getDataBank);
   } catch (error) {
     res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
     console.log(error);
