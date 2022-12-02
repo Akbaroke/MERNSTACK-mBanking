@@ -1,4 +1,5 @@
 import Users from '../models/UserModel.js';
+import DaftarTransfer from '../models/DaftarTransferModel.js';
 
 // TRANSFER SALDO
 export const Transfer = async (req, res) => {
@@ -65,6 +66,32 @@ export const cekNomerRekening = async (req, res) => {
     });
     if (!getDataTujuan) return res.status(404).json({ msg: '107 - Nomor rekening bank lain tidak tidak dapat diketahui.' });
     res.json(getDataTujuan);
+  } catch (error) {
+    res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
+    console.log(error);
+  }
+};
+
+// tambah norek bank lain
+export const NorekBanklain = async (req, res) => {
+  const { bank, no_rek } = req.body;
+  try {
+    const cekBank = await DaftarTransfer.findOne({
+      where: {
+        id_user: req.userId,
+        no_rek: no_rek,
+        bank: bank,
+      },
+    });
+    if (!cekBank) {
+      await DaftarTransfer.create({
+        id_user: req.userId,
+        no_rek: no_rek,
+        bank: bank,
+      });
+      res.json({ msg: 'sukses data ditambahkan.' });
+    }
+    res.json({ msg: 'sukses data sudah ada.' });
   } catch (error) {
     res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
     console.log(error);

@@ -80,3 +80,15 @@ Content-Type: application/json
 {
   "no_rek": "2122853427"
 }
+
+
+// tambah norek bank lain
+###
+POST http://localhost:5000/daftarbanklain
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiI3NTAwMCIsImlhdCI6MTY2OTk3NDk2MywiZXhwIjoxNjY5OTc0OTc4fQ.Gn9_O9fR2NuKHSy9ehL_WqGT3uP2-JGtQpwJI1BjycE
+Content-Type: application/json
+
+{
+  "no_rek": "2122853427",
+  "bank": "BRI"
+}
