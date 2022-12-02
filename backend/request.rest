@@ -1,7 +1,7 @@
 
 // Get infoUser
 GET http://localhost:5000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiI3NTAwMCIsImlhdCI6MTY2OTgxMjkxMSwiZXhwIjoxNjY5ODEyOTI2fQ.Ssw-FXwyMU2tY32zm5ZLg95BsXq2bI7e9azPDNI9ieQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiI3NTAwMCIsImlhdCI6MTY2OTk3NTE1OCwiZXhwIjoxNjY5OTc1MTczfQ.9IOVu-fXdXQQSGwwjz-d7JkwrNmQExT__2UTF0nKMeQ
 
 
 // Register 
@@ -82,13 +82,24 @@ Content-Type: application/json
 }
 
 
-// tambah norek bank lain
+// tambah norek antar bank
 ###
-POST http://localhost:5000/daftarbanklain
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiI3NTAwMCIsImlhdCI6MTY2OTk3NDk2MywiZXhwIjoxNjY5OTc0OTc4fQ.Gn9_O9fR2NuKHSy9ehL_WqGT3uP2-JGtQpwJI1BjycE
+POST http://localhost:5000/daftar_antarbank
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiI3NTAwMCIsImlhdCI6MTY2OTk3NjU2MiwiZXhwIjoxNjY5OTc2NTc3fQ.GPqplodAAgRhKmVL19aKC5yvBCrLokDWZySRqjNNGfs
 Content-Type: application/json
 
 {
   "no_rek": "2122853427",
   "bank": "BRI"
+}
+
+
+// tambah norek antar rekening
+###
+POST http://localhost:5000/daftar_antarrekening
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiI3NTAwMCIsImlhdCI6MTY2OTk3NzI1NywiZXhwIjoxNjY5OTc3MjcyfQ.2PCLuPgSz0hph-KkgNmkqT67dwwq4Sful8nmSNFtnPw
+Content-Type: application/json
+
+{
+  "no_rek": "8122316625"
 }

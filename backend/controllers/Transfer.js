@@ -72,8 +72,8 @@ export const cekNomerRekening = async (req, res) => {
   }
 };
 
-// tambah norek bank lain
-export const NorekBanklain = async (req, res) => {
+// tambah norek antar bank
+export const TambahNorekAntarBank = async (req, res) => {
   const { bank, no_rek } = req.body;
   try {
     const cekBank = await DaftarTransfer.findOne({
@@ -89,9 +89,38 @@ export const NorekBanklain = async (req, res) => {
         no_rek: no_rek,
         bank: bank,
       });
-      res.json({ msg: 'sukses data ditambahkan.' });
+      res.json({ msg: '201 - sukses.' });
+    } else {
+      res.json({ msg: '202 - sukses.' });
     }
-    res.json({ msg: 'sukses data sudah ada.' });
+  } catch (error) {
+    res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
+    console.log(error);
+  }
+};
+
+// tambah norek sesama bank
+export const TambahNorekAntarRekening = async (req, res) => {
+  const { no_rek } = req.body;
+  const bank = 'BCA'; // default bank
+  try {
+    const cekBank = await DaftarTransfer.findOne({
+      where: {
+        id_user: req.userId,
+        no_rek: no_rek,
+        bank: bank,
+      },
+    });
+    if (!cekBank) {
+      await DaftarTransfer.create({
+        id_user: req.userId,
+        no_rek: no_rek,
+        bank: bank,
+      });
+      res.json({ msg: '201 - sukses.' });
+    } else {
+      res.json({ msg: '202 - sukses.' });
+    }
   } catch (error) {
     res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
     console.log(error);
