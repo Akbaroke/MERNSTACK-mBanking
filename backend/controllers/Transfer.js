@@ -147,7 +147,7 @@ export const getListBankLain = async (req, res) => {
       },
       attributes: ['id', 'bank'],
     });
-    if (!getDataBank) return res.status(404).json({ msg: null });
+    if (getDataBank == false) return res.status(404).json({ msg: null });
     res.json(getDataBank);
   } catch (error) {
     res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });

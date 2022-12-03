@@ -5,20 +5,20 @@ import logoutIcon from '../assets/Svg/logout.svg'
 import { Detector } from "react-detect-offline";
 import './Topbar.css'
 
-function Topbar() {
+function Topbar(props) {
   return (
     <div className="topbar">
-        <Detector
-          render={({ online }) => (
-            <>
-              <img src={bcaBlue} alt="bca blue" />
-              <div>
-                <div className={online ? "online" : "offline"} ></div>
-                <Link to="/" className="logout"><img src={logoutIcon} alt="logout icon" /></Link>
-              </div>
-            </>
-          )}
-        />
+      <Detector
+        render={({ online }) => (
+          <>
+            <img src={bcaBlue} alt="bca blue" />
+            <div>
+              <div className={online ? "online" : "offline"} ></div>
+              <Link to="/" className={(props.logout === 'disable') ? "logout-none" : "logout"}><img src={logoutIcon} alt="logout icon" /></Link>
+            </div>
+          </>
+        )}
+      />
     </div>
   )
 }

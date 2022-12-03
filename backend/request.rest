@@ -84,7 +84,7 @@ Content-Type: application/json
 // tambah norek antar bank
 ###
 POST http://localhost:5000/daftar_antarbank
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiI3NTAwMCIsImlhdCI6MTY2OTk3NjU2MiwiZXhwIjoxNjY5OTc2NTc3fQ.GPqplodAAgRhKmVL19aKC5yvBCrLokDWZySRqjNNGfs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiIzMDAwMCIsImlhdCI6MTY2OTk5NjI4NywiZXhwIjoxNjY5OTk2MzAyfQ.XMfWJD6iBljgHNpzejjh5A0UVaceYOggmMB4MlH4R7k
 Content-Type: application/json
 
 {
@@ -107,9 +107,9 @@ Content-Type: application/json
 // ambil list bank lain
 ###
 GET http://localhost:5000/list_banklain
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiIzMDAwMCIsImlhdCI6MTY2OTk5NjE4OCwiZXhwIjoxNjY5OTk2MjAzfQ.4RhRbY1HcQBU0KObCqP_44oxRWEHsfif7ZI-3j_ov7U
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiIzMDAwMCIsImlhdCI6MTY3MDA1OTQ4NCwiZXhwIjoxNjcwMDU5NDk5fQ.a4MLQSBUaTHj8vx4B6UKb_i8H8jG06v0uDwVPYadntI
 Content-Type: application/json
 
 {
-  "bank": "BNI"
+  "bank": "MANDIRI"
 }

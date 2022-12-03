@@ -37,3 +37,10 @@
 .topbar .online{
   background-color: #93D72C;
 }
+
+.logout-none{
+  visibility: hidden;
+}
+.logout{
+  visibility: visible;
+}

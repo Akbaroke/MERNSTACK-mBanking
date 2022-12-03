@@ -1,0 +1,75 @@
+.daftarAntarBank{
+  background-color: #bebebe;
+  width: 100%;
+  min-height: 82vh;
+  color: #fff;
+  padding: 40px 30px;
+}
+
+@media only screen and (min-height: 830px){
+  .daftarAntarBank{
+    min-height: 682px;
+  }
+}
+
+.topbar-send{
+  width: 100%;
+  height: 58px;
+  background-color: #F8F8F8;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+}
+
+.topbar-send > p {
+  font-size: 15px;
+  color: #015A9E;
+  font-weight: 500;
+}
+
+.topbar-send > div {
+  position: absolute;
+  right: 20px;
+  bottom: 12px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+}
+
+.topbar-send .pending,
+.topbar-send .offline,
+.topbar-send .online {
+  width: 13px;
+  height: 13px;
+  border-radius: 2px;
+  border: 0.3px solid #B0B0B0;
+  box-shadow: inset 1px 1px 1px #00000045;
+  background-color: #0A62B0;
+}
+
+.topbar-send .pending{
+  background-color: #0A62B0;
+}
+.topbar-send .offline{
+  background-color: #FD010E;
+}
+.topbar-send .online{
+  background-color: #93D72C;
+}
+.topbar-send .send{
+  cursor: pointer;
+  background: linear-gradient(160deg, rgba(127,152,184,1) 0%, rgba(62,94,139,1) 100%);
+  width: 51px;
+  height: 33px;
+  border-radius: 5px;
+  color: #F8F8F8;
+  font-size: 12px;
+  font-weight: 400;
+  padding: 9px;
+  box-shadow: 2px 2px 4px #00000045;
+}
+
+.topbar-send .send:active{
+  box-shadow: 1px 1px 2px #00000045;
+}
