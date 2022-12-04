@@ -83,7 +83,6 @@ function Register() {
 
     } catch (error) {
       clearInput()
-      console.log(error.response.data.msg);
       setMsg(error.response.data.msg);
       handlePopupError()
     }
@@ -144,42 +143,42 @@ function Register() {
           <div className="input-register">
             <p>Nama</p>
             <div>
-              <input type="text" placeholder='Input nama lengkap' value={nama} onChange={e => setNama(e.target.value)} required />
+              <input type="text" placeholder='Input nama lengkap' value={nama} onChange={e => setNama(e.target.value)} />
               <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
             </div>
           </div>
           <div className="input-register">
             <p>Email</p>
             <div>
-              <input type="text" onKeyDown={e => textOnly(e)} placeholder='Input email aktif' value={email} onChange={e => setEmail(e.target.value)} required />
+              <input type="text" onKeyDown={e => textOnly(e)} placeholder='Input email aktif' value={email} onChange={e => setEmail(e.target.value)} />
               <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
             </div>
           </div>
           <div className="input-register">
             <p>Password</p>
             <div>
-              <input type="password" onKeyDown={e => textOnly(e)} placeholder='Input password' value={password} onChange={e => setPassword(e.target.value)} required />
+              <input type="password" onKeyDown={e => textOnly(e)} placeholder='Input password' value={password} onChange={e => setPassword(e.target.value)} />
               <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
             </div>
           </div>
           <div className="input-register">
             <p>Konfirm Password</p>
             <div>
-              <input type="password" onKeyDown={e => textOnly(e)} placeholder='Input ulang password' value={konfPassword} onChange={e => setKonfPassword(e.target.value)} required />
+              <input type="password" onKeyDown={e => textOnly(e)} placeholder='Input ulang password' value={konfPassword} onChange={e => setKonfPassword(e.target.value)} />
               <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
             </div>
           </div>
           <div className="input-register">
             <p>PIN</p>
             <div>
-              <input type="text" maxLength={6} onKeyDown={e => numberOnly(e)} placeholder='Input 6 angka' value={pin} onChange={e => setPin(e.target.value)} required />
+              <input type="text" maxLength={6} onKeyDown={e => numberOnly(e)} placeholder='Input 6 angka' value={pin} onChange={e => setPin(e.target.value)} />
               <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
             </div>
           </div>
           <div className="input-register">
             <p>Jenis Card</p>
             <div>
-              <select style={{ color: jenisCard === "" ? "#ADADAD" : "#000" }} value={jenisCard} onChange={e => setJenisCard(e.target.value)} required >
+              <select style={{ color: jenisCard === "" ? "#ADADAD" : "#000" }} value={jenisCard} onChange={e => setJenisCard(e.target.value)} >
                 <option disabled={true} value="">
                   -- Pilih kartu --
                 </option>
@@ -193,7 +192,7 @@ function Register() {
           <div className="input-register">
             <p>Kode Akses</p>
             <div>
-              <input type="text" maxLength={6} onKeyDown={e => textOnly(e)} placeholder='Input 6 alphanum' value={kodeAkses} onChange={e => setKodeAkses(e.target.value)} required />
+              <input type="text" maxLength={6} onKeyDown={e => textOnly(e)} placeholder='Input 6 alphanum' value={kodeAkses} onChange={e => setKodeAkses(e.target.value)} />
               <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
             </div>
           </div>

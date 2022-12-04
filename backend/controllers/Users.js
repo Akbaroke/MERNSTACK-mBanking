@@ -8,7 +8,7 @@ export const getInfoUser = async (req, res) => {
       where: {
         id: req.userId,
       },
-      attributes: ['id', 'nama', 'saldo', 'jenis_card', 'no_rek', 'no_card'],
+      attributes: ['id', 'nama', 'saldo', 'jenis_card', 'no_rek', 'no_card', 'pin'],
     });
     res.json(users);
   } catch (error) {

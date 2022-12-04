@@ -1,7 +1,7 @@
 
 // Get infoUser
 GET http://localhost:5000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiIzMDAwMCIsImlhdCI6MTY2OTk5NTg5NCwiZXhwIjoxNjY5OTk1OTA5fQ.P6wkviZeotfvXpJaH3AfqR2FJ2RDuDebl8l9j9_v5Ks
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsIm5hbWEiOiJtdWhhbW1hZCBha2JhciIsImlhdCI6MTY3MDEzOTUxMywiZXhwIjoxNjcwMTM5NTMzfQ.YU-r5VnCNipdG-McjQUOzE4yKs3rJdaj8IlIw1qFSuk
 
 
 // Register 
@@ -27,7 +27,7 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-  "kode_akses": "joni01",
+  "kode_akses": "akbar1",
   "ip_address": "101.255.148.225"
 }
 
@@ -106,10 +106,15 @@ Content-Type: application/json
 
 // ambil list bank lain
 ###
-GET http://localhost:5000/list_banklain
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiIzMDAwMCIsImlhdCI6MTY3MDA1OTQ4NCwiZXhwIjoxNjcwMDU5NDk5fQ.a4MLQSBUaTHj8vx4B6UKb_i8H8jG06v0uDwVPYadntI
+POST http://localhost:5000/list_banklain
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiIzMDAwMCIsImlhdCI6MTY3MDA5MDE5MSwiZXhwIjoxNjcwMDkwMjA2fQ.MYLkAFBNu6-HyoEJciI-py3JSmDOSphC4aofSDqaUIU
 Content-Type: application/json
 
 {
-  "bank": "MANDIRI"
+  "bank": "BNI"
 }
+
+
+// ambil list bank
+###
+GET http://localhost:5000/listbank

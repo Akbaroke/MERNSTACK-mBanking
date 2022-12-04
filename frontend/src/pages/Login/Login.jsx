@@ -24,14 +24,14 @@ const Login = () => {
     const ipcode = await response.json();
     setIp(ipcode.ip)
   }
-  
-  useEffect( () => {
+
+  useEffect(() => {
     getDataIp()
     Logout()
   })
 
-  const authKodeAkses = async() =>{
-    if(codeAkses.length !== 6){
+  const authKodeAkses = async () => {
+    if (codeAkses.length !== 6) {
       setMsg("107 - Kode Akses harus 6 karakter dengan kombinasi huruf dan angka.");
       setCodeAkses('')
       handlePopupInput()
@@ -55,40 +55,40 @@ const Login = () => {
     }
   }
 
-  const handlePopupInput =()=>{
-    if(popupInput === 'block') {
-      setPopupInput('none') 
-    } else { 
+  const handlePopupInput = () => {
+    if (popupInput === 'block') {
+      setPopupInput('none')
+    } else {
       setPopupInput('block')
     }
     console.log(ip);
   }
-  const handlePopupError =()=>{
-    if(popupError === 'block') {
-      setPopupError('none') 
+  const handlePopupError = () => {
+    if (popupError === 'block') {
+      setPopupError('none')
       setMsg('')
-    } else { 
+    } else {
       setPopupError('block')
     }
   }
-  
+
   return (
     <div className='container'>
-      <div className="popup-error" style={{display: popupError}}>
+      <div className="popup-error" style={{ display: popupError }}>
         <div className="card-popup">
           <p>{msg}</p>
           <div className="action">
-            <div onClick={handlePopupError}><BtnBig label="Back"/></div>
+            <div onClick={handlePopupError}><BtnBig label="Back" /></div>
           </div>
         </div>
       </div>
-      <div className="popup" style={{display: popupInput}}>
+      <div className="popup" style={{ display: popupInput }}>
         <div className="card-popup">
           <p>Kode Akses</p>
-          <input type="text" id='kodeAkses' placeholder='Input 6 alphanum'
-          value={codeAkses} onChange={e => setCodeAkses(e.target.value)}/>
+          <input type="text" maxLength={6} id='kodeAkses' placeholder='Input 6 alphanum'
+            value={codeAkses} onChange={e => setCodeAkses(e.target.value)} />
           <div className="action">
-            <div onClick={handlePopupInput}><Btn label="Cancel"/></div>
+            <div onClick={handlePopupInput}><Btn label="Cancel" /></div>
             <div onClick={authKodeAkses}><Btn label="Login" /></div>
           </div>
         </div>

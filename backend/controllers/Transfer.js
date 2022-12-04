@@ -1,5 +1,6 @@
 import Users from '../models/UserModel.js';
 import DaftarTransfer from '../models/DaftarTransferModel.js';
+import { createRequire } from 'node:module';
 
 // TRANSFER SALDO
 export const Transfer = async (req, res) => {
@@ -73,7 +74,7 @@ export const cekNomerRekening = async (req, res) => {
       },
       attributes: ['nama', 'no_rek'],
     });
-    if (!getDataTujuan) return res.status(404).json({ msg: '107 - Nomor rekening bank lain tidak tidak dapat diketahui.' });
+    if (!getDataTujuan) return res.status(404).json({ msg: '107 - Nomor rekening tidak dapat diketahui.' });
     res.json(getDataTujuan);
   } catch (error) {
     res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
@@ -153,4 +154,10 @@ export const getListBankLain = async (req, res) => {
     res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
     console.log(error);
   }
+};
+
+export const listBank = async (req, res) => {
+  const require = createRequire(import.meta.url);
+  const dataBank = require('../assets/bank.json');
+  res.send(JSON.stringify(dataBank));
 };
