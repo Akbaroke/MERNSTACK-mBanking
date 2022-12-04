@@ -84,7 +84,7 @@ Content-Type: application/json
 // tambah norek antar bank
 ###
 POST http://localhost:5000/daftar_antarbank
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiIzMDAwMCIsImlhdCI6MTY2OTk5NjI4NywiZXhwIjoxNjY5OTk2MzAyfQ.XMfWJD6iBljgHNpzejjh5A0UVaceYOggmMB4MlH4R7k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsIm5hbWEiOiJtdWhhbW1hZCBha2JhciIsImlhdCI6MTY3MDE2ODY3NiwiZXhwIjoxNjcwMTY4Njk2fQ.3RiTA1b5IO5sZrfgnJavb2sRHaGFIkVGAPuL3VtcIZg
 Content-Type: application/json
 
 {
