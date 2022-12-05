@@ -20,6 +20,7 @@
   align-items: center;
 }
 
+.topbar .pending, 
 .topbar .offline, 
 .topbar .online {
   width: 13px;
@@ -36,6 +37,10 @@
 
 .topbar .online{
   background-color: #93D72C;
+}
+
+.topbar .pending{
+  background-color: #0A62B0;
 }
 
 .logout-none{

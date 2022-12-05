@@ -12,8 +12,11 @@ import './Info.css'
 
 function Info() {
   const [popupSaldo, setPopupSaldo] = useState("none")
+  const [popup, setPopup] = useState('');
+  const [msg, setMsg] = useState('')
   const [token, setToken] = useState('')
   const [expire, setExpire] = useState('')
+  const [network, setNetwork] = useState('pending');
   const [users, setUsers] = useState([])
   const [saldo, setSaldo] = useState("0")
   const [noRek, setNoRek] = useState("-")
@@ -24,6 +27,17 @@ function Info() {
     getDataUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [100]);
+
+  setInterval(() => {
+    let currRtt = navigator.connection.rtt;
+    if (currRtt === 0 || currRtt === 2000) {
+      setNetwork('offline')
+    } else if (currRtt >= 10 && currRtt <= 300) {
+      setNetwork('online')
+    } else {
+      setNetwork('pending')
+    }
+  }, 500);
 
   const getDataUser = () => {
     refreshToken()
@@ -71,12 +85,18 @@ function Info() {
   }, 500);
 
   const handlePopupSaldo = () => {
+    if (network !== 'online') {
+      setMsg('Transaksi dapat dilakukan setelah lampu indikator berwarna hijau.')
+      setPopup('error')
+      return false
+    }
     getUsers()
     if (popupSaldo === 'block') {
       setPopupSaldo('none')
     } else {
       setPopupSaldo('block')
     }
+    console.log('p');
   }
 
   // Rupiah format
@@ -106,6 +126,14 @@ function Info() {
 
   return (
     <div className='container'>
+      <div className="popup-error" style={popup === 'error' ? { display: 'block' } : { display: 'none' }}>
+        <div className="card-popup">
+          <p>{msg}</p>
+          <div className="action">
+            <div onClick={() => { setPopup('') }}><BtnBig label="Back" /></div>
+          </div>
+        </div>
+      </div>
       <div className="popup" style={{ display: popupSaldo }}>
         <div className="card-popup">
           <p>m-Info</p>
@@ -122,7 +150,7 @@ function Info() {
           <div onClick={handlePopupSaldo}><BtnBig label="OK" /></div>
         </div>
       </div>
-      <Topbar logout='disable' />
+      <Topbar logout='disable' network={network} />
       <div className="m-info">
         <div className="card-info">
           <div className="header-info">

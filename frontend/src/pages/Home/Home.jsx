@@ -12,20 +12,32 @@ import Navbar from '../../components/Navbar';
 function Home() {
   const [nama, setNama] = useState('')
   const [expire, setExpire] = useState('')
+  const [network, setNetwork] = useState('pending');
   const navigate = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
     refreshToken()
   })
 
-  const refreshToken = async() => {
+  setInterval(() => {
+    let currRtt = navigator.connection.rtt;
+    if (currRtt === 0 || currRtt === 2000) {
+      setNetwork('offline')
+    } else if (currRtt >= 10 && currRtt <= 300) {
+      setNetwork('online')
+    } else {
+      setNetwork('pending')
+    }
+  }, 500);
+
+  const refreshToken = async () => {
     try {
       const response = await axios.get('http://localhost:5000/token')
       const decoded = jwt_decode(response.data.accessToken)
       setNama(decoded.nama)
       setExpire(decoded.exp)
     } catch (error) {
-      if(error.response){
+      if (error.response) {
         navigate('/')
       }
     }
@@ -33,9 +45,9 @@ function Home() {
 
   const axiosJWT = axios.create()
 
-  axiosJWT.interceptors.request.use(async(config)=>{
+  axiosJWT.interceptors.request.use(async (config) => {
     const currentDate = new Date();
-    if(expire * 1000 < currentDate.getTime()){
+    if (expire * 1000 < currentDate.getTime()) {
       const response = await axios.get('http://localhost:5000/token')
       config.headers.Authorization = `Bearer ${response.data.accessToken}`
       const decoded = jwt_decode(response.data.accessToken)
@@ -43,13 +55,13 @@ function Home() {
       setExpire(decoded.exp)
     }
     return config;
-  }, (error)=>{
+  }, (error) => {
     return Promise.reject(error)
   })
 
   return (
     <div className='container'>
-      <Topbar/>
+      <Topbar network={network} />
       <div className="home">
         <div className="welcome">
           <p>Selamat datang,</p>
@@ -66,7 +78,7 @@ function Home() {
           </div>
         </div>
       </div>
-      <Navbar active="home"/>
+      <Navbar active="home" />
     </div>
   )
 }

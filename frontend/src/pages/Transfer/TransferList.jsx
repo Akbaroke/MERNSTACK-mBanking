@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from '../../components/Navbar'
 import Topbar from '../../components/Topbar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,9 +8,20 @@ import './TransferList.css'
 import { Link } from 'react-router-dom';
 
 function TransferList() {
+  const [network, setNetwork] = useState('pending');
+  setInterval(() => {
+    let currRtt = navigator.connection.rtt;
+    if (currRtt === 0 || currRtt === 2000) {
+      setNetwork('offline')
+    } else if (currRtt >= 10 && currRtt <= 300) {
+      setNetwork('online')
+    } else {
+      setNetwork('pending')
+    }
+  }, 500);
   return (
     <div className='container'>
-      <Topbar logout='disable' />
+      <Topbar logout='disable' network={network} />
       <div className="m-transfer">
         <div className="card-transfer">
           <div className="header-transfer">

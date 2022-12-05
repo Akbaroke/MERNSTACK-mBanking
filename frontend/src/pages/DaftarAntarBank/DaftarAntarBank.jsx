@@ -10,10 +10,7 @@ import Btn from '../../components/Btn';
 
 function DaftarAntarBank() {
   const [msg, setMsg] = useState('')
-  const [popupError, setPopupError] = useState("none")
-  const [popupInput, setPopupInput] = useState("none");
-  const [popupDataRek, setPopupDataRek] = useState("none");
-  const [popupSukses, setPopupSukses] = useState("none");
+  const [popup, setPopup] = useState('');
   const [token, setToken] = useState('')
   const [expire, setExpire] = useState('')
   const [pinUser, setPinUser] = useState('')
@@ -35,7 +32,7 @@ function DaftarAntarBank() {
     let currRtt = navigator.connection.rtt;
     if (currRtt === 0 || currRtt === 2000) {
       setNetwork('offline')
-    } else if (currRtt >= 100 && currRtt <= 300) {
+    } else if (currRtt >= 10 && currRtt <= 300) {
       setNetwork('online')
     } else {
       setNetwork('pending')
@@ -86,15 +83,17 @@ function DaftarAntarBank() {
 
   const clearInput = () => {
     setMsg('')
+    setBank('')
+    setNoRek('')
+    setPin('')
   }
 
 
   const daftarAntarBank = async () => {
     if (parseInt(pin) !== parseInt(pinUser)) {
+      setPin('')
       setMsg('Gagal - pin anda salah.')
-      handlePopupError()
-      console.log(parseInt(pin));
-      console.log(parseInt(pinUser));
+      setPopup('error')
       return false
     }
     try {
@@ -105,22 +104,27 @@ function DaftarAntarBank() {
         no_rek: noRek,
         bank: bank
       })
-      setMsg('No.Rekening Tujuan Bank Lain berhasil didaftarkan No.Rekening Tujuan otomatis tampil di Daftar Transfer pada Menu Transfer Antar Bank.')
-      handlePopupSukses()
-      console.log(msg);
       clearInput()
+      setMsg('No.Rekening Tujuan Bank Lain berhasil didaftarkan No.Rekening Tujuan otomatis tampil di Daftar Transfer pada Menu Transfer Antar Bank.')
+      setPopup('sukses')
+      console.log(msg);
 
     } catch (error) {
       clearInput()
       setMsg(error.response.data.msg);
-      handlePopupError()
+      setPopup('error')
     }
   }
 
   const showInfoRekTujuan = async () => {
+    if (network !== 'online') {
+      setMsg('Transaksi dapat dilakukan setelah lampu indikator berwarna hijau.')
+      setPopup('error')
+      return false
+    }
     if (noRek === '' || bank === '') {
       setMsg('Gagal - data harus di isi dengan lengkap dan benar.')
-      handlePopupError()
+      setPopup('error')
       return false
     }
 
@@ -130,73 +134,52 @@ function DaftarAntarBank() {
       })
       const result = response.data
       setMsg(`${bank} - ${result.no_rek} - ${result.nama}`)
-      handlePopupDataRek()
+      setPopup('dataRek')
 
     } catch (error) {
       clearInput()
       setMsg(error.response.data.msg);
-      handlePopupError()
+      setPopup('error')
     }
   }
 
-  const handlePopupError = () => {
-    popupError === 'block' ? setPopupError('none') : setPopupError('block')
-    setPopupInput('none')
-  }
-
-  const handlePopupInput = () => {
-    popupInput === 'block' ? setPopupInput('none') : setPopupInput('block')
-    setPopupDataRek('none')
-  }
-
-  const handlePopupDataRek = () => {
-    popupDataRek === 'block' ? setPopupDataRek('none') : setPopupDataRek('block')
-  }
-
-  const handlePopupSukses = () => {
-    popupSukses === 'block' ? setPopupSukses('none') : setPopupSukses('block')
-    setPopupInput('none')
-  }
-
-
-
   return (
     <div className='container'>
-      <div className="popup-error" style={{ display: popupError }}>
+      <div className="popup-error" style={popup === 'error' ? { display: 'block' } : { display: 'none' }}>
         <div className="card-popup">
           <p>{msg}</p>
           <div className="action">
-            <div onClick={handlePopupError}><BtnBig label="Back" /></div>
+            <div onClick={() => { setPopup('') }}><BtnBig label="Back" /></div>
           </div>
         </div>
       </div>
-      <div className="popup" style={{ display: popupInput }}>
+      <div className="popup" style={popup === 'pin' ? { display: 'block' } : { display: 'none' }}>
         <div className="card-popup">
           <p>PIN</p>
           <input type="text" maxLength={6} id='kodeAkses' placeholder='Input PIN anda'
             value={pin} onChange={e => setPin(e.target.value)} />
           <div className="action">
-            <div onClick={handlePopupInput}><Btn label="Cancel" /></div>
+            <div onClick={() => { setPopup('') }}><Btn label="Cancel" /></div>
             <div onClick={daftarAntarBank}><Btn label="OK" /></div>
           </div>
         </div>
       </div>
-      <div className="popup" style={{ display: popupSukses }}>
+      <div className="popup" style={popup === 'sukses' ? { display: 'block' } : { display: 'none' }}>
         <div className="card-popup">
           <p style={{ fontSize: 14, fontWeight: 500 }} >m-Transfer</p>
           <p style={{ display: 'block', height: 154, width: 187, marginTop: 17, textAlign: 'left' }}>{msg}</p>
           <div className="action">
-            <div onClick={handlePopupSukses}><BtnBig label="OK" /></div>
+            <div onClick={() => { setPopup('') }}><BtnBig label="OK" /></div>
           </div>
         </div>
       </div>
-      <div className="popup" style={{ display: popupDataRek }}>
+      <div className="popup" style={popup === 'dataRek' ? { display: 'block' } : { display: 'none' }}>
         <div className="card-popup">
           <p style={{ fontSize: 14, fontWeight: 500 }} >m-Transfer</p>
           <p style={{ display: 'block', height: 154, marginTop: 17, textAlign: 'left', textTransform: 'uppercase' }}>{msg}</p>
           <div className="action">
-            <div onClick={handlePopupDataRek}><Btn label="Cancel" /></div>
-            <div onClick={handlePopupInput}><Btn label="OK" /></div>
+            <div onClick={() => { setPopup('') }}><Btn label="Cancel" /></div>
+            <div onClick={() => { setPopup('pin') }}><Btn label="OK" /></div>
           </div>
         </div>
       </div>
