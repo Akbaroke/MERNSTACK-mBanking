@@ -8,6 +8,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import Logout from '../Logout';
 import axios from 'axios';
 import './GantiKode.css'
+import { DeviceUUID } from 'device-uuid'
+
 
 function GantiKode() {
   const [msg, setMsg] = useState('');
@@ -22,9 +24,31 @@ function GantiKode() {
   const navigate = useNavigate();
 
   const getDataIp = async () => {
-    const response = await fetch('https://ipwho.is/');
-    const ipcode = await response.json();
-    setIp(ipcode.ip)
+    const du = new DeviceUUID().parse();
+    let dua = [
+      du.language,
+      du.platform,
+      du.os,
+      du.cpuCores,
+      du.isAuthoritative,
+      du.silkAccelerated,
+      du.isKindleFire,
+      du.isDesktop,
+      du.isMobile,
+      du.isTablet,
+      du.isWindows,
+      du.isLinux,
+      du.isLinux64,
+      du.isMac,
+      du.isiPad,
+      du.isiPhone,
+      du.isiPod,
+      du.isSmartTV,
+      du.pixelDepth,
+      du.isTouchScreen
+    ];
+    let uuid = du.hashMD5(dua.join(':'));
+    setIp(uuid)
   }
 
   useEffect(() => {

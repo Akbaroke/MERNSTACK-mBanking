@@ -9,6 +9,7 @@ import Btn from '../../components/Btn'
 import axios from 'axios';
 import BtnBig from '../../components/BtnBig'
 import Logout from '../Logout'
+import { DeviceUUID } from 'device-uuid'
 
 
 const Login = () => {
@@ -19,10 +20,33 @@ const Login = () => {
   const [msg, setMsg] = useState('');
   const navigate = useNavigate();
 
+
   const getDataIp = async () => {
-    const response = await fetch('https://ipwho.is/');
-    const ipcode = await response.json();
-    setIp(ipcode.ip)
+    const du = new DeviceUUID().parse();
+    let dua = [
+      du.language,
+      du.platform,
+      du.os,
+      du.cpuCores,
+      du.isAuthoritative,
+      du.silkAccelerated,
+      du.isKindleFire,
+      du.isDesktop,
+      du.isMobile,
+      du.isTablet,
+      du.isWindows,
+      du.isLinux,
+      du.isLinux64,
+      du.isMac,
+      du.isiPad,
+      du.isiPhone,
+      du.isiPod,
+      du.isSmartTV,
+      du.pixelDepth,
+      du.isTouchScreen
+    ];
+    let uuid = du.hashMD5(dua.join(':'));
+    setIp(uuid)
   }
 
   useEffect(() => {

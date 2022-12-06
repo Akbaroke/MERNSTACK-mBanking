@@ -1,12 +1,5 @@
 [
   {
-    "bank_code": "014",
-    "bank_name": "PT. BANK CENTRAL ASIA, TBK.",
-    "swift_code": "CENAIDJA",
-    "name": "Bank Central Asia (BCA)",
-    "code": "BCA"
-  },
-  {
     "bank_code": "008",
     "bank_name": "PT. BANK MANDIRI, TBK.",
     "swift_code": "BMRIIDJA",

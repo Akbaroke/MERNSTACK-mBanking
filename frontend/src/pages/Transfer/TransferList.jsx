@@ -32,14 +32,14 @@ function TransferList() {
             <div className="label-list-transfer">
               <p>Daftar Transfer</p>
             </div>
-            <Link to='/daftar-antarBank' className="list-transfer">
+            <Link to='/daftar-rekening' className="list-transfer">
               <p>Antar Rekening</p>
               <FontAwesomeIcon icon={faChevronRight} />
             </Link>
-            <div className="list-transfer">
+            <Link to='/daftar-antarBank' className="list-transfer">
               <p>Antar Bank</p>
               <FontAwesomeIcon icon={faChevronRight} />
-            </div>
+            </Link>
             <div className="label-list-transfer">
               <p>Transfer</p>
             </div>

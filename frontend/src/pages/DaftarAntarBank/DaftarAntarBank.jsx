@@ -7,6 +7,7 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons"
 import './DaftarAntarBank.css'
 import BtnBig from '../../components/BtnBig';
 import Btn from '../../components/Btn';
+import Navbar from '../../components/Navbar';
 
 function DaftarAntarBank() {
   const [msg, setMsg] = useState('')
@@ -14,6 +15,7 @@ function DaftarAntarBank() {
   const [token, setToken] = useState('')
   const [expire, setExpire] = useState('')
   const [pinUser, setPinUser] = useState('')
+  const [RekUser, setRekUser] = useState('')
   const [network, setNetwork] = useState('pending');
   const [listBank, setListBank] = useState([]);
   const [noRek, setNoRek] = useState('');
@@ -73,6 +75,7 @@ function DaftarAntarBank() {
       }
     })
     setPinUser(response.data.pin)
+    setRekUser(response.data.no_rek)
   }
 
 
@@ -122,7 +125,12 @@ function DaftarAntarBank() {
       setPopup('error')
       return false
     }
-    if (noRek === '' || bank === '') {
+    if (RekUser === noRek) {
+      setMsg('107 - Nomor rekening tidak dapat diketahui.')
+      setPopup('error')
+      return false
+    }
+    if (noRek === '' || bank === '' || noRek === ' ') {
       setMsg('Gagal - data harus di isi dengan lengkap dan benar.')
       setPopup('error')
       return false
@@ -213,6 +221,7 @@ function DaftarAntarBank() {
           </div>
         </div>
       </div>
+      <Navbar active="transaksi" />
     </div>
   )
 }

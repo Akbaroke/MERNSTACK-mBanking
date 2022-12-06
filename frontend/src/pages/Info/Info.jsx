@@ -96,7 +96,6 @@ function Info() {
     } else {
       setPopupSaldo('block')
     }
-    console.log('p');
   }
 
   // Rupiah format
