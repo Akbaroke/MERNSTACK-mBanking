@@ -1,3 +1,4 @@
+.validasiRekening,
 .daftarRekening{
   background-color: #bebebe;
   width: 100%;
@@ -7,6 +8,7 @@
 }
 
 @media only screen and (min-height: 830px){
+  .validasiRekening,
   .daftarRekening{
     min-height: 682px;
   }
@@ -73,4 +75,49 @@
 
 .topbar-send .send:active{
   box-shadow: 1px 1px 2px #00000045;
+}
+
+.daftarRekening > p{
+  color: #015A9E;
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+.card-daftarRekening{
+  max-width: 309px;
+  height: max-content;
+  background-color: #F8F8F8;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #ADADAD;
+  margin-top: 5px;
+}
+
+.card-daftarRekening > div{
+  width: 100%;
+  height: 40px;
+  padding: 0 15px;
+}
+.card-daftarRekening > div:nth-child(2){
+  border-top: 1px solid #ADADAD;
+  border-bottom: 1px solid #ADADAD;
+}
+
+.card-daftarRekening > div > input{
+  width: 95%;
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-weight: 500;
+  color: #ADADAD;
+}
+.card-daftarRekening > div > input:focus{
+  color: #015A9E;
+}
+
+.card-daftarRekening > div > input::placeholder{
+  opacity: 0.7;
+  font-weight: 400;
 }
