@@ -63,9 +63,9 @@ export const Transfer = async (req, res) => {
   }
 };
 
-// Cek nomer rekening
+// Cek nomer rekening BCA
 export const cekNomerRekening = async (req, res) => {
-  const { no_rek } = req.body;
+  const { userId, no_rek } = req.body;
   try {
     // ambil data norek tujuan
     const getDataTujuan = await Users.findOne({
@@ -75,7 +75,44 @@ export const cekNomerRekening = async (req, res) => {
       attributes: ['nama', 'no_rek'],
     });
     if (!getDataTujuan) return res.status(404).json({ msg: '107 - Nomor rekening tidak dapat diketahui.' });
-    res.json(getDataTujuan);
+
+    const cekBank = await DaftarTransfer.findOne({
+      where: {
+        id_user: userId,
+        no_rek: no_rek,
+        bank: 'BCA',
+      },
+    });
+    if (!cekBank) return res.json(getDataTujuan);
+    res.json({ msg: 'ALREADY REGISTERED' });
+  } catch (error) {
+    res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
+    console.log(error);
+  }
+};
+
+// Cek nomer rekening lain
+export const cekNomerRekeningLain = async (req, res) => {
+  const { userId, no_rek, bank } = req.body;
+  try {
+    // ambil data norek tujuan
+    const getDataTujuan = await Users.findOne({
+      where: {
+        no_rek: no_rek,
+      },
+      attributes: ['nama', 'no_rek'],
+    });
+    if (!getDataTujuan) return res.status(404).json({ msg: '107 - Nomor rekening tidak dapat diketahui.' });
+
+    const cekBank = await DaftarTransfer.findOne({
+      where: {
+        id_user: userId,
+        no_rek: no_rek,
+        bank: bank,
+      },
+    });
+    if (!cekBank) return res.json(getDataTujuan);
+    res.json({ msg: 'ALREADY REGISTERED' });
   } catch (error) {
     res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
     console.log(error);

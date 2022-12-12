@@ -28,7 +28,7 @@ Content-Type: application/json
 
 {
   "kode_akses": "akbar1",
-  "ip_address": "101.255.148.225"
+  "ip_address": "b0c9ef1797fa162778319202c57d6e5f"
 }
 
 
@@ -77,7 +77,19 @@ POST http://localhost:5000/ceknomor
 Content-Type: application/json
 
 {
-  "no_rek": "2122853427"
+  "userId": "2",
+  "no_rek": "1122411727"
+}
+
+// cek nomer rekening lain
+###
+POST http://localhost:5000/ceknomorlain
+Content-Type: application/json
+
+{
+  "userId": "1",
+  "no_rek": "1122411727",
+  "bank": "MANDIRI"
 }
 
 
@@ -96,7 +108,7 @@ Content-Type: application/json
 // tambah norek antar rekening
 ###
 POST http://localhost:5000/daftar_antarrekening
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiI3NTAwMCIsImlhdCI6MTY2OTk3NzI1NywiZXhwIjoxNjY5OTc3MjcyfQ.2PCLuPgSz0hph-KkgNmkqT67dwwq4Sful8nmSNFtnPw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsIm5hbWEiOiJtdWhhbW1hZCBha2JhciIsImlhdCI6MTY3MDg0NTQ4OSwiZXhwIjoxNjcwODQ1NTA5fQ.podKMlmSxlwg_7Y3QstmlR97NjCUmhjxM2cUSQMMJqY
 Content-Type: application/json
 
 {

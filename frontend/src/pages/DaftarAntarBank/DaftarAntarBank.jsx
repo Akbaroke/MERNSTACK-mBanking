@@ -21,6 +21,7 @@ function DaftarAntarBank() {
   const [noRek, setNoRek] = useState('');
   const [bank, setBank] = useState('');
   const [pin, setPin] = useState('')
+  const [userId, setUserId] = useState('')
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -74,6 +75,7 @@ function DaftarAntarBank() {
         Authorization: `Bearer ${token}`
       }
     })
+    setUserId(response.data.id)
     setPinUser(response.data.pin)
     setRekUser(response.data.no_rek)
   }
@@ -137,8 +139,10 @@ function DaftarAntarBank() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/ceknomor', {
-        no_rek: noRek
+      const response = await axios.post('http://localhost:5000/ceknomorlain', {
+        userId: userId,
+        no_rek: noRek,
+        bank: bank
       })
       const result = response.data
       setMsg(`${bank} - ${result.no_rek} - ${result.nama}`)
