@@ -22,6 +22,7 @@ function DaftarRekening() {
   const [inputRek1, setInputRek1] = useState('');
   const [inputRek2, setInputRek2] = useState('');
   const [inputRek3, setInputRek3] = useState('');
+  const [btnSendVis, setBtnSendVis] = useState('hidden');
   let arrDataRekening = [];
 
   const [user, setUser] = useState({
@@ -93,7 +94,7 @@ function DaftarRekening() {
     })
   }
 
-  const handleInput = () => {
+  const verifikasiNomor = () => {
     let fail = false;
     if (inputRek1 === '' && inputRek1 === '' && inputRek1 === '') {
       setMsg('110 - Anda belum menginput no rekening tujuan yang akan didaftarkan.')
@@ -143,21 +144,14 @@ function DaftarRekening() {
       return result;
     }
 
-
     let arrSample = []
-    for (let key in resRek) {
-      if (resRek[key] !== null) {
-        console.log(`${key}: ${resRek[key]}`)
-        arrSample.push(resRek[key])
+    for (let i in resRek) {
+      if (resRek[i] !== null) {
+        arrSample.push(resRek[i])
       }
     }
     let obj = findDuplicates(arrSample);
-    for (const prop in obj) {
-      cekDataRekening(prop);
-    }
-
-    setArrRek(arrDataRekening)
-    arrDataRekening = [...[]]
+    cekDataRekening(obj);
 
     if (fail === true) {
       setMsg('Nomor rekening tujuan harus 10 digit')
@@ -165,55 +159,45 @@ function DaftarRekening() {
     };
   }
 
-  const cekDataRekening = async (noRek) => {
-    try {
-      const response = await axios.post('http://localhost:5000/ceknomor', {
-        userId: user.userId,
-        no_rek: noRek
-      })
-      const proses = {
-        nama: response.data.nama,
-        noRek: response.data.no_rek,
-        status: true
+  const cekDataRekening = async (obj) => {
+    for (const dataNorek in obj) {
+      try {
+        const response = await axios.post('http://localhost:5000/ceknomor', {
+          userId: user.userId,
+          no_rek: dataNorek
+        })
+        const proses = {
+          nama: response.data.nama,
+          noRek: response.data.no_rek,
+          status: true
+        }
+        if (user.noRek === dataNorek) {
+          proses.nama = "OWN ACCOUNT NUMBER"
+          proses.noRek = dataNorek
+          proses.status = false
+          arrDataRekening.push(proses)
+          console.log(dataNorek);
+        } else if (response.data.msg) {
+          proses.nama = response.data.msg
+          proses.noRek = dataNorek
+          proses.status = false
+          arrDataRekening.push(proses)
+        } else {
+          setBtnSendVis('visible')
+          arrDataRekening.push(proses)
+        }
+
+      } catch (error) {
+        const prosesInvalid = {
+          nama: "INVALID",
+          noRek: dataNorek,
+          status: false
+        }
+        arrDataRekening.push(prosesInvalid)
       }
-      console.log(response.data.no_rek);
-
-      if (response.data.no_rek === noRek) {
-        proses.nama = "OWN ACCOUNT NUMBER"
-        proses.noRek = noRek
-        proses.status = false
-
-        arrDataRekening.push(proses)
-        console.log(arrDataRekening);
-        return false
-      }
-
-      console.log(proses.noRek + " : " + noRek);
-
-      if (response.data.msg) {
-        proses.nama = response.data.msg
-        proses.noRek = noRek
-        proses.status = false
-
-        arrDataRekening.push(proses)
-        console.log(arrDataRekening);
-        return false
-      }
-
-
-      arrDataRekening.push(proses)
-      console.log(arrDataRekening);
-
-    } catch (error) {
-      const prosesInvalid = {
-        nama: "INVALID",
-        noRek: noRek,
-        status: false
-      }
-      arrDataRekening.push(prosesInvalid)
-      console.log(arrDataRekening);
-      console.log(error);
     }
+    setArrRek(arrDataRekening)
+    setPage(true)
   }
 
   const Popup = (props) => {
@@ -257,13 +241,74 @@ function DaftarRekening() {
     }
   }
 
+  const reqNorek = {
+    0: null,
+    1: null,
+    2: null
+  }
+
+
+  function handelChange(index, norek) {
+    if (reqNorek[index] == null) {
+      reqNorek[index] = norek
+    } else {
+      reqNorek[index] = null
+    }
+    console.log(reqNorek);
+  }
 
   const ValidasiDataTransfer = () => {
     return (
       <div className="validasiRekening">
-
+        <div className="box-validasiRekening">
+          {ArrRek.map((dataRek, key) => (
+            <div key={key} className="card-listRekening">
+              <div>
+                <p>{dataRek.noRek}</p>
+                <p>{dataRek.nama}</p>
+              </div>
+              {dataRek.status ? (
+                <input
+                  className='submitRekening'
+                  type="checkbox"
+                  id="topping"
+                  name="topping"
+                  onChange={() => handelChange(key, dataRek.noRek)}
+                />
+              ) : null}
+            </div>
+          ))}
+        </div>
       </div>
     )
+  }
+
+  const kirimNomorRekening = async () => {
+    if (reqNorek[0] === null && reqNorek[1] === null && reqNorek[2] === null) {
+      setMsg('112 - Anda belum memilih No. Rekening Tujuan yang akan didaftarkan.')
+      setPopup('error')
+      return false
+    }
+    try {
+      for (const noRek in reqNorek) {
+        if (reqNorek[noRek] != null) {
+          await axiosJWT.post('http://localhost:5000/daftar_antarrekening', {
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
+            no_rek: reqNorek[noRek]
+          })
+          console.log(reqNorek[noRek]);
+        }
+      }
+      setMsg('No.Rekening Tujuan Bank Lain berhasil didaftarkan No.Rekening Tujuan otomatis tampil di Daftar Transfer pada Menu Transfer Antar Bank.')
+      setPopup('sukses')
+      navigate('/daftar-rekening')
+    } catch (error) {
+      setMsg('404 - Gagal mendaftar harap periksa kembali jaringan internet anda.')
+      setPopup('error')
+      navigate('/daftar-rekening')
+    }
   }
 
   const FormDaftarRekening = () => {
@@ -295,7 +340,7 @@ function DaftarRekening() {
         <p>m-Transfer</p>
         <div>
           <div className={network}></div>
-          <div className='send' onClick={handleInput}>Send</div>
+          <div className='send' style={{ visibility: page === '' ? 'visible' : btnSendVis }} onClick={page === '' ? verifikasiNomor : kirimNomorRekening}>Send</div>
         </div>
       </div>
       {page === '' ? FormDaftarRekening() : ValidasiDataTransfer()}
