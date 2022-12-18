@@ -9,6 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import BtnBig from '../../components/BtnBig';
 import Btn from '../../components/Btn';
 
+const reqNorek = {
+  0: null,
+  1: null,
+  2: null
+}
+
 function DaftarRekening() {
   const [network, setNetwork] = useState('pending');
   const [msg, setMsg] = useState('')
@@ -73,8 +79,7 @@ function DaftarRekening() {
     if (expire * 1000 < currentDate.getTime()) {
       const response = await axios.get('http://localhost:5000/token')
       config.headers.Authorization = `Bearer ${response.data.accessToken}`
-      const decoded = jwt_decode(response.data.accessToken)
-      setExpire(decoded.exp)
+      setToken(response.data.accessToken)
     }
     return config;
   }, (error) => {
@@ -150,6 +155,7 @@ function DaftarRekening() {
         arrSample.push(resRek[i])
       }
     }
+
     let obj = findDuplicates(arrSample);
     cekDataRekening(obj);
 
@@ -207,7 +213,7 @@ function DaftarRekening() {
           <div className="card-popup">
             <p>{msg}</p>
             <div className="action">
-              <div onClick={() => { setPopup('') }}><BtnBig label="Back" /></div>
+              <div onClick={() => { setPopup(''); clearRefresh() }}><BtnBig label="Back" /></div>
             </div>
           </div>
         </div>
@@ -220,8 +226,8 @@ function DaftarRekening() {
             <input type="text" maxLength={6} id='kodeAkses' placeholder='Input PIN anda'
               value={pin} onChange={e => setPin(e.target.value)} />
             <div className="action">
-              <div onClick={() => { setPopup('') }}><Btn label="Cancel" /></div>
-              <div onClick={''}><Btn label="OK" /></div>
+              <div onClick={() => { setPopup(''); console.log(reqNorek); }}><Btn label="Cancel" /></div>
+              <div onClick={() => { kirimNomorRekening() }}><Btn label="OK" /></div>
             </div>
           </div>
         </div>
@@ -233,20 +239,13 @@ function DaftarRekening() {
             <p style={{ fontSize: 14, fontWeight: 500 }} >m-Transfer</p>
             <p style={{ display: 'block', height: 154, width: 187, marginTop: 17, textAlign: 'left' }}>{msg}</p>
             <div className="action">
-              <div onClick={() => { setPopup('') }}><BtnBig label="OK" /></div>
+              <div onClick={() => { setPopup(''); clearRefresh() }}><BtnBig label="OK" /></div>
             </div>
           </div>
         </div>
       )
     }
   }
-
-  const reqNorek = {
-    0: null,
-    1: null,
-    2: null
-  }
-
 
   function handelChange(index, norek) {
     if (reqNorek[index] == null) {
@@ -284,9 +283,18 @@ function DaftarRekening() {
   }
 
   const kirimNomorRekening = async () => {
+    console.log(reqNorek);
+    setPopup('')
     if (reqNorek[0] === null && reqNorek[1] === null && reqNorek[2] === null) {
       setMsg('112 - Anda belum memilih No. Rekening Tujuan yang akan didaftarkan.')
       setPopup('error')
+      return false
+    }
+    if (parseInt(pin) !== parseInt(user.pin)) {
+      setPin('')
+      setMsg('Gagal - pin anda salah.')
+      setPopup('error')
+      console.log('false');
       return false
     }
     try {
@@ -301,14 +309,25 @@ function DaftarRekening() {
           console.log(reqNorek[noRek]);
         }
       }
-      setMsg('No.Rekening Tujuan Bank Lain berhasil didaftarkan No.Rekening Tujuan otomatis tampil di Daftar Transfer pada Menu Transfer Antar Bank.')
+      setMsg('No.Rekening Tujuan berhasil didaftarkan No.Rekening Tujuan otomatis tampil di Daftar Transfer pada Menu Transfer Antar Rekening.')
       setPopup('sukses')
-      navigate('/daftar-rekening')
     } catch (error) {
       setMsg('404 - Gagal mendaftar harap periksa kembali jaringan internet anda.')
       setPopup('error')
-      navigate('/daftar-rekening')
     }
+  }
+
+  const clearRefresh = () => {
+    setInputRek1('')
+    setInputRek2('')
+    setInputRek3('')
+    setPin('')
+    arrDataRekening.length = [];
+    reqNorek[0] = null
+    reqNorek[1] = null
+    reqNorek[2] = null
+    setBtnSendVis('hidden')
+    setPage('')
   }
 
   const FormDaftarRekening = () => {
@@ -340,7 +359,7 @@ function DaftarRekening() {
         <p>m-Transfer</p>
         <div>
           <div className={network}></div>
-          <div className='send' style={{ visibility: page === '' ? 'visible' : btnSendVis }} onClick={page === '' ? verifikasiNomor : kirimNomorRekening}>Send</div>
+          <div className='send' style={{ visibility: page === '' ? 'visible' : btnSendVis }} onClick={page === '' ? verifikasiNomor : () => { console.log(reqNorek); setPopup('pin') }}>Send</div>
         </div>
       </div>
       {page === '' ? FormDaftarRekening() : ValidasiDataTransfer()}
