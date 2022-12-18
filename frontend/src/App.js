@@ -7,6 +7,7 @@ import Register from './pages/Register/Register';
 import TransferList from './pages/Transfer/TransferList';
 import DaftarAntarBank from './pages/DaftarAntarBank/DaftarAntarBank';
 import DaftarRekening from './pages/DantarRekening/DaftarRekening';
+import TransferRekening from './pages/TransferRekening/TransferRekening';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/buka-rekening" element={<Register />} />
         <Route path="/daftar-antarBank" element={<DaftarAntarBank />} />
         <Route path="/daftar-rekening" element={<DaftarRekening />} />
+        <Route path="/transfer-rekening" element={<TransferRekening />} />
       </Routes>
     </BrowserRouter>
   );

@@ -27,7 +27,7 @@ export const Transfer = async (req, res) => {
         id: req.userId,
       },
     });
-    if (getDataAsal[0].saldo < parseInt(saldoTf)) return res.status(404).json({ msg: 'Saldo tidak cukup...' });
+    if (getDataAsal[0].saldo < parseInt(saldoTf)) return res.status(404).json({ msg: 'Saldo tidak cukup.' });
 
     // transfer
     const saldoTujuan = parseInt(getDataTujuan[0].saldo) + parseInt(saldoTf);
@@ -183,10 +183,27 @@ export const getListBankLain = async (req, res) => {
         id_user: req.userId,
         bank: bank,
       },
-      attributes: ['id', 'bank'],
+      attributes: ['no_rek', 'bank'],
     });
     if (getDataBank == false) return res.status(404).json({ msg: null });
     res.json(getDataBank);
+  } catch (error) {
+    res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
+    console.log(error);
+  }
+};
+
+export const getInfoUserNorek = async (req, res) => {
+  const { norek } = req.body;
+  try {
+    const getDataNorek = await Users.findOne({
+      where: {
+        no_rek: norek,
+      },
+      attributes: ['nama', 'no_rek'],
+    });
+    if (getDataNorek == false) return res.status(404).json({ msg: null });
+    res.json(getDataNorek);
   } catch (error) {
     res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
     console.log(error);

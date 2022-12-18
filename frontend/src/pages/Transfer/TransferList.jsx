@@ -43,10 +43,10 @@ function TransferList() {
             <div className="label-list-transfer">
               <p>Transfer</p>
             </div>
-            <div className="list-transfer">
+            <Link to='/transfer-rekening' className="list-transfer">
               <p>Antar Rekening</p>
               <FontAwesomeIcon icon={faChevronRight} />
-            </div>
+            </Link>
             <div className="list-transfer">
               <p>Antar Bank</p>
               <FontAwesomeIcon icon={faChevronRight} />

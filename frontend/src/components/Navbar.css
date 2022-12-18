@@ -1,5 +1,5 @@
 .navbar{
-  position: relative;
+  position: absolute;
   bottom: 0;
   background-color: #fff;
   width: 100%;
@@ -9,6 +9,7 @@
   justify-content: space-around;
   background-color: #F8F8F8;
   padding: 10px;
+  z-index: 99;
 }
 
 .navbar > div{

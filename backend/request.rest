@@ -119,13 +119,22 @@ Content-Type: application/json
 // ambil list bank lain
 ###
 POST http://localhost:5000/list_banklain
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiIzMDAwMCIsImlhdCI6MTY3MDA5MDE5MSwiZXhwIjoxNjcwMDkwMjA2fQ.MYLkAFBNu6-HyoEJciI-py3JSmDOSphC4aofSDqaUIU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsIm5hbWEiOiJtdWhhbW1hZCBha2JhciIsInNhbGRvIjoiNDAwMDAwMCIsImlhdCI6MTY3MTM2MTM2MywiZXhwIjoxNjcxMzYxMzc4fQ.bbjYEFMYEY8xW1tBXtT0QCyVu2FYO2Sm2CMBpMb6ZoQ
 Content-Type: application/json
 
 {
-  "bank": "BNI"
+  "bank": "BCA"
 }
 
+
+// get info norek
+###
+POST http://localhost:5000/infonorek
+Content-Type: application/json
+
+{
+  "norek": "8122316625"
+}
 
 // ambil list bank
 ###

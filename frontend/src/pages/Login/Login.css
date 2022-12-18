@@ -11,6 +11,7 @@ html,body{
 }
 
 .container{
+  position: relative;
   max-width: 360px;
   max-height: 800px;
   margin: 0 auto;
@@ -104,6 +105,7 @@ html,body{
   display: block;
   height: 180px;
   text-align: left;
+  font-size: 13px;
 }
 
 .card-popup{
@@ -122,7 +124,7 @@ html,body{
 .card-popup > p {
   color: #085192;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 13px;
   text-align: center;
 }
 

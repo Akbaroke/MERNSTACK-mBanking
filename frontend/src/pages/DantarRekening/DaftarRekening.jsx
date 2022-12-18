@@ -24,11 +24,11 @@ function DaftarRekening() {
   const [expire, setExpire] = useState('')
   const [ArrRek, setArrRek] = useState([])
   const [pin, setPin] = useState('')
-  const navigate = useNavigate();
   const [inputRek1, setInputRek1] = useState('');
   const [inputRek2, setInputRek2] = useState('');
   const [inputRek3, setInputRek3] = useState('');
   const [btnSendVis, setBtnSendVis] = useState('hidden');
+  const navigate = useNavigate();
   let arrDataRekening = [];
 
   const [user, setUser] = useState({
@@ -223,7 +223,7 @@ function DaftarRekening() {
         <div className="popup" style={popup === 'pin' ? { display: 'block' } : { display: 'none' }}>
           <div className="card-popup">
             <p>PIN</p>
-            <input type="text" maxLength={6} id='kodeAkses' placeholder='Input PIN anda'
+            <input type="password" maxLength={6} id='kodeAkses' placeholder='Input PIN anda'
               value={pin} onChange={e => setPin(e.target.value)} />
             <div className="action">
               <div onClick={() => { setPopup(''); console.log(reqNorek); }}><Btn label="Cancel" /></div>
@@ -292,7 +292,7 @@ function DaftarRekening() {
     }
     if (parseInt(pin) !== parseInt(user.pin)) {
       setPin('')
-      setMsg('Gagal - pin anda salah.')
+      setMsg('PIN salah.')
       setPopup('error')
       console.log('false');
       return false
