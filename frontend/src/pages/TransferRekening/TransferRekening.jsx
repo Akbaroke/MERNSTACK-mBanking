@@ -147,11 +147,11 @@ function TransferRekening() {
     } else if (props === 'sukses') {
       return (
         <div className="popup" style={popup === 'sukses' ? { display: 'block' } : { display: 'none' }}>
-          <div className="card-popup">
-            <p style={{ fontSize: 14, fontWeight: 500 }} >m-Transfer</p>
-            <p style={{ display: 'block', height: 154, width: 187, marginTop: 17, textAlign: 'left' }}>{msg}</p>
+          <div className="card-popup" >
+            <p style={{ fontSize: 14, fontWeight: 500, }} >m-Transfer</p>
+            <p style={{ display: 'block', height: 204, width: 187, marginTop: 17, textAlign: 'left' }}>{msg}</p>
             <div className="action">
-              <div onClick={() => { setPopup('') }}><BtnBig label="OK" /></div>
+              <div onClick={() => { setPopup(''); navigate('/m-Transfer') }}><Btn label="OK" /></div>
             </div>
           </div>
         </div>
@@ -161,11 +161,11 @@ function TransferRekening() {
         <div className="popup" style={popup === 'nominal' ? { display: 'block' } : { display: 'none' }}>
           <div className="card-popup">
             <p>Jumlah Uang</p>
-            <input type="number" id='kodeAkses' placeholder='Masukan nominal angka'
-              value={beforeNominal} onChange={e => setBeforeNominal(e.target.value)} />
+            <input type="text" id='kodeAkses' placeholder='Masukan nominal angka'
+              value={formatRupiah(beforeNominal)} onChange={e => setBeforeNominal(e.target.value)} />
             <div className="action">
               <div onClick={() => { setPopup(''); setNominal(nominal); setBeforeNominal('') }}><Btn label="Cancel" /></div>
-              <div onClick={() => { setPopup(''); handelInputNominal(beforeNominal); setBeforeNominal('') }}><Btn label="OK" /></div>
+              <div onClick={() => { setPopup(''); handelInputNominal(beforeNominal.replace('.', '')); setBeforeNominal('') }}><Btn label="OK" /></div>
             </div>
           </div>
         </div>
@@ -334,7 +334,20 @@ function TransferRekening() {
         noTujuan: norekTujuan
       })
       let rupiahNominal = formatRupiah(nominal).replace('.', ',')
-      setMsg('m-Transfer :\nBERHASIL\n' + timeNow() + '\nKe ' + norekTujuan + '\n' + response.data.namaPenerima.toUpperCase() + 'Rp. ' + rupiahNominal + '.00')
+      const pesanBerhasil = () => {
+        return (
+          <div style={{ fontSize: 13, display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <p>m-Transfer :</p>
+            <p>BERHASIL</p>
+            <p>{timeNow()}</p>
+            <p>Ke {norekTujuan}</p>
+            <p>{response.data.namaPenerima.toUpperCase()}</p>
+            <p>Rp. {rupiahNominal}.00</p>
+            <p>{berita === '' ? ' ' : berita}</p>
+          </div>
+        )
+      }
+      setMsg(pesanBerhasil)
       setPopup('sukses')
     } catch (error) {
       setMsg(error.response.data.msg);

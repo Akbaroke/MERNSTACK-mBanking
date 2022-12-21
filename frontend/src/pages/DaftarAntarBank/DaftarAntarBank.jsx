@@ -181,7 +181,7 @@ function DaftarAntarBank() {
           <p style={{ fontSize: 14, fontWeight: 500 }} >m-Transfer</p>
           <p style={{ display: 'block', height: 154, width: 187, marginTop: 17, textAlign: 'left' }}>{msg}</p>
           <div className="action">
-            <div onClick={() => { setPopup('') }}><BtnBig label="OK" /></div>
+            <div onClick={() => { setPopup(''); navigate('/m-Transfer') }}><BtnBig label="OK" /></div>
           </div>
         </div>
       </div>

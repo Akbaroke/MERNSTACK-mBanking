@@ -111,10 +111,11 @@ html,body{
 .card-popup{
   width: 250px;
   min-height: 120px;
-  background-color: #F8F8F8;
+  background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(236,236,236,1) 86%, rgba(237,237,237,1) 100%);
   align-items: center;
-  padding: 10px;
+  padding: 15px;
   border-radius: 2px;
+  position: relative;
 }
 
 .popup-error > .card-popup{
@@ -129,10 +130,10 @@ html,body{
 }
 
 #kodeAkses{
-  width: 230px;
+  width: 100%;
   height: 30px;
   padding: 10px;
-  margin: 10px 0;
+  margin: 10px 0 0 0;
   outline: none;
   border: 1px solid #B4B4B4;
   border-radius: 2px;

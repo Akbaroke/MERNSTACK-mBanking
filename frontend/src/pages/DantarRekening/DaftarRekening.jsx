@@ -239,7 +239,7 @@ function DaftarRekening() {
             <p style={{ fontSize: 14, fontWeight: 500 }} >m-Transfer</p>
             <p style={{ display: 'block', height: 154, width: 187, marginTop: 17, textAlign: 'left' }}>{msg}</p>
             <div className="action">
-              <div onClick={() => { setPopup(''); clearRefresh() }}><BtnBig label="OK" /></div>
+              <div onClick={() => { setPopup(''); clearRefresh(); navigate('/m-Transfer') }}><BtnBig label="OK" /></div>
             </div>
           </div>
         </div>
