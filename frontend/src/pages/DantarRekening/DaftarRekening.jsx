@@ -336,7 +336,7 @@ function DaftarRekening() {
         <p>No.Rekening Tujuan</p>
         <div className="card-daftarRekening">
           <div>
-            <input type="number" placeholder='Rekening 1' value={inputRek1} onChange={e => setInputRek1(e.target.value)} />
+            <input type="number" placeholder='Rekening 1' value={inputRek1} onChange={e => setInputRek1(e.target.value)} autoFocus />
             <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
           </div>
           <div>

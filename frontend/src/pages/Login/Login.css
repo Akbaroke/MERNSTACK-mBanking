@@ -94,7 +94,7 @@ html,body{
 
 .popup-error,
 .popup{
-  position: fixed;
+  position: absolute;
   z-index: 999;
   width: 360px;
   height: 800px;

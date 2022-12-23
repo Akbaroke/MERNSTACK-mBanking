@@ -136,7 +136,7 @@ function TransferRekening() {
           <div className="card-popup">
             <p>PIN</p>
             <input type="password" maxLength={6} id='kodeAkses' placeholder='Input PIN anda'
-              value={pin} onChange={e => setPin(e.target.value)} />
+              value={pin} onChange={e => setPin(e.target.value)} autoFocus />
             <div className="action">
               <div onClick={() => { setPopup(''); return false }}><Btn label="Cancel" /></div>
               <div onClick={() => { setPopup(''); cekPin() }}><Btn label="OK" /></div>
@@ -162,10 +162,10 @@ function TransferRekening() {
           <div className="card-popup">
             <p>Jumlah Uang</p>
             <input type="text" id='kodeAkses' placeholder='Masukan nominal angka'
-              value={formatRupiah(beforeNominal)} onChange={e => setBeforeNominal(e.target.value)} />
+              value={formatRupiah(beforeNominal)} onChange={e => setBeforeNominal(e.target.value)} autoFocus />
             <div className="action">
               <div onClick={() => { setPopup(''); setNominal(nominal); setBeforeNominal('') }}><Btn label="Cancel" /></div>
-              <div onClick={() => { setPopup(''); handelInputNominal(beforeNominal.replace('.', '')); setBeforeNominal('') }}><Btn label="OK" /></div>
+              <div onClick={() => { setPopup(''); handelInputNominal(beforeNominal.replace('.', '').replace('.', '')); setBeforeNominal('') }}><Btn label="OK" /></div>
             </div>
           </div>
         </div>
@@ -176,7 +176,7 @@ function TransferRekening() {
           <div className="card-popup">
             <p>Berita</p>
             <input type="text" id='kodeAkses' placeholder='Masukan berita'
-              value={berita} onChange={e => setBerita(e.target.value)} />
+              value={berita} onChange={e => setBerita(e.target.value)} autoFocus />
             <div className="action">
               <div onClick={() => { setPopup(''); setBerita(berita) }}><Btn label="Cancel" /></div>
               <div onClick={() => { setPopup(''); setBerita(berita) }}><Btn label="OK" /></div>
