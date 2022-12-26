@@ -8,6 +8,7 @@ import TransferList from './pages/Transfer/TransferList';
 import DaftarAntarBank from './pages/DaftarAntarBank/DaftarAntarBank';
 import DaftarRekening from './pages/DantarRekening/DaftarRekening';
 import TransferRekening from './pages/TransferRekening/TransferRekening';
+import TransferAntarBank from './pages/TransferAntarBank/TransferAntarBank';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/daftar-antarBank" element={<DaftarAntarBank />} />
         <Route path="/daftar-rekening" element={<DaftarRekening />} />
         <Route path="/transfer-rekening" element={<TransferRekening />} />
+        <Route path="/transfer-antarbank" element={<TransferAntarBank />} />
       </Routes>
     </BrowserRouter>
   );

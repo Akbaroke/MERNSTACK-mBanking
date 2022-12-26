@@ -47,10 +47,10 @@ function TransferList() {
               <p>Antar Rekening</p>
               <FontAwesomeIcon icon={faChevronRight} />
             </Link>
-            <div className="list-transfer">
+            <Link to='/transfer-antarbank' className="list-transfer">
               <p>Antar Bank</p>
               <FontAwesomeIcon icon={faChevronRight} />
-            </div>
+            </Link>
           </div>
         </div>
       </div>

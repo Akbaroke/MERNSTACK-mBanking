@@ -109,7 +109,7 @@ const Login = () => {
       <div className="popup" style={{ display: popupInput }}>
         <div className="card-popup">
           <p>Kode Akses</p>
-          <input type="text" maxLength={6} id='kodeAkses' placeholder='Input 6 alphanum'
+          <input type="password" maxLength={6} id='kodeAkses' placeholder='Input 6 alphanum'
             value={codeAkses} onChange={e => setCodeAkses(e.target.value)} />
           <div className="action">
             <div onClick={handlePopupInput}><Btn label="Cancel" /></div>
