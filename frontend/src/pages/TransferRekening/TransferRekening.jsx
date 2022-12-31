@@ -20,7 +20,6 @@ function TransferRekening() {
   const [listNorekTerdaftar, setListNorekTerdaftar] = useState([])
   const [pin, setPin] = useState('')
   const [searchFilter, setSearchFilter] = useState('')
-  const [btnSendVis, setBtnSendVis] = useState('hidden');
   const [nominal, setNominal] = useState('');
   const [beforeNominal, setBeforeNominal] = useState('');
   const [norekTujuan, setNorekTujuan] = useState('-PILIH-');
@@ -36,11 +35,14 @@ function TransferRekening() {
   useEffect(() => {
     refreshToken()
     getUsers()
+  }, []);
+
+  useEffect(()=> {
     getListnorekTerdaftar()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [100]);
+  }, [])
 
   const refreshToken = async () => {
+    console.log("refresh");
     try {
       const response = await axios.get('http://localhost:5000/token')
       const decoded = jwt_decode(response.data.accessToken)
@@ -165,7 +167,7 @@ function TransferRekening() {
               value={formatRupiah(beforeNominal)} onChange={e => setBeforeNominal(e.target.value)} autoFocus />
             <div className="action">
               <div onClick={() => { setPopup(''); setNominal(nominal); setBeforeNominal('') }}><Btn label="Cancel" /></div>
-              <div onClick={() => { setPopup(''); handelInputNominal(beforeNominal.replace('.', '').replace('.', '')); setBeforeNominal('') }}><Btn label="OK" /></div>
+              <div onClick={() => { setPopup(''); handelInputNominal(beforeNominal.replaceAll('.', '')); setBeforeNominal('') }}><Btn label="OK" /></div>
             </div>
           </div>
         </div>
@@ -333,10 +335,10 @@ function TransferRekening() {
         saldoTf: nominal,
         noTujuan: norekTujuan
       })
-      let rupiahNominal = formatRupiah(nominal).replace('.', ',')
+      let rupiahNominal = formatRupiah(nominal).replaceAll('.', ',')
       const pesanBerhasil = () => {
         return (
-          <div style={{ fontSize: 13, display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <p style={{ fontSize: 13, display: 'flex', flexDirection: 'column', gap: 3 }}>
             <p>m-Transfer :</p>
             <p>BERHASIL</p>
             <p>{timeNow()}</p>
@@ -344,13 +346,13 @@ function TransferRekening() {
             <p>{response.data.namaPenerima.toUpperCase()}</p>
             <p>Rp. {rupiahNominal}.00</p>
             <p>{berita === '' ? ' ' : berita}</p>
-          </div>
+          </p>
         )
       }
       setMsg(pesanBerhasil)
       setPopup('sukses')
     } catch (error) {
-      setMsg(error.response.data.msg);
+      setMsg('Transfer gagal, lakukan beberapa saat lagi.');
       setPopup('error')
     }
   }
@@ -362,7 +364,7 @@ function TransferRekening() {
         <p>m-Transfer</p>
         <div>
           <div className={network}></div>
-          <div className='send' style={{ visibility: page === false ? 'visible' : btnSendVis }} onClick={handelKirim}>Send</div>
+          <div className='send' style={{ visibility: page === false ? 'visible' : 'hidden' }} onClick={handelKirim}>Send</div>
         </div>
       </div>
       {page === false ? FormDataTrasnfer() : PilihNomorRekening()}

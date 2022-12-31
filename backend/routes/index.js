@@ -2,7 +2,7 @@ import express from 'express';
 import { getInfoUser, Register, Login, Logout, ResetKodeAkses } from '../controllers/Users.js';
 import { verifyToken } from '../middleware/VerifyToken.js';
 import { refreshToken } from '../controllers/RefreshToken.js';
-import { cekNomerRekening, cekNomerRekeningLain, getInfoUserNorek, getListBankLain, listBank, TambahNorekAntarBank, TambahNorekAntarRekening, Transfer } from '../controllers/Transfer.js';
+import { cekNomerRekening, cekNomerRekeningLain, getInfoUserNorek, getListBankLain, getListBankTerdaftar, getListRekening, listBank, TambahNorekAntarBank, TambahNorekAntarRekening, Transfer } from '../controllers/Transfer.js';
 
 const router = express.Router(); // router dari express
 
@@ -20,5 +20,7 @@ router.post('/daftar_antarrekening', verifyToken, TambahNorekAntarRekening);
 router.post('/list_banklain', verifyToken, getListBankLain);
 router.post('/infonorek', getInfoUserNorek);
 router.get('/listbank', listBank);
+router.post('/listBankTerdaftar', verifyToken, getListBankTerdaftar);
+router.post('/listRekening', getListRekening);
 
 export default router;

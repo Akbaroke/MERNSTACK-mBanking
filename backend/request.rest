@@ -28,7 +28,7 @@ Content-Type: application/json
 
 {
   "kode_akses": "akbar1",
-  "ip_address": "b0c9ef1797fa162778319202c57d6e5f"
+  "ip_address": "cdcfee3198addb0ca20e30b83efc064f"
 }
 
 
@@ -62,12 +62,12 @@ Content-Type: application/json
 // Trasnfer Saldo
 ###
 POST http://localhost:5000/transfer
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJqb25pIiwic2FsZG8iOiIzNTAwMCIsImlhdCI6MTY2OTk5MjQyNiwiZXhwIjoxNjY5OTkyNDQxfQ.IFr6fXiy9_vyj2V6yLICVP_4qCZe0dipJ8kcTvENdhM
+Authorization: Bearer eyJh
 Content-Type: application/json
 
 {
-  "saldoTf": "5000",
-  "noTujuan": "8122316625"
+  "saldoTf": "100000",
+  "noTujuan": "8730647647"
 }
 
 
@@ -78,7 +78,7 @@ Content-Type: application/json
 
 {
   "userId": "2",
-  "no_rek": "1122411727"
+  "no_rek": "112273622"
 }
 
 // cek nomer rekening lain
@@ -87,8 +87,8 @@ POST http://localhost:5000/ceknomorlain
 Content-Type: application/json
 
 {
-  "userId": "1",
-  "no_rek": "1122411727",
+  "userId": "6",
+  "no_rek": "112273622",
   "bank": "MANDIRI"
 }
 
@@ -126,6 +126,16 @@ Content-Type: application/json
   "bank": "BCA"
 }
 
+// ambil list rekening
+###
+POST http://localhost:5000/listRekening
+Content-Type: application/json
+
+{
+  "userId": 6,
+  "bank": "BNI"
+}
+
 
 // get info norek
 ###
@@ -133,9 +143,16 @@ POST http://localhost:5000/infonorek
 Content-Type: application/json
 
 {
-  "norek": "8122316625"
+  "norek": "112273622"
 }
 
 // ambil list bank
 ###
 GET http://localhost:5000/listbank
+
+
+
+// ambil list bank lain
+###
+POST http://localhost:5000/listBankTerdaftar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJNdWhhbW1hZCBBa2JhciIsImlhdCI6MTY3MjIyMDE0NiwiZXhwIjoxNjcyMjIwMTY2fQ.zhhHYhP220KPGd1B-OJyfzuRPLAemruXyiCiVRVzeuM

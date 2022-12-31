@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
+import jwt_decode from 'jwt-decode'
 import Navbar from '../../components/Navbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
@@ -10,12 +12,21 @@ import { useNavigate } from 'react-router-dom';
 function TransferAntarBank() {
   const [network, setNetwork] = useState('pending');
   const [page, setPage] = useState(false);
+  const [token, setToken] = useState('')
+  const [expire, setExpire] = useState('')
   const [bank, setBank] = useState('');
+  const [objBank, setObjBank] = useState({})
+  const [listBank, setListBank] = useState([])
+  const [listNorekTerdaftar, setListNorekTerdaftar] = useState([])
+  const [searchFilter, setSearchFilter] = useState('')
   const [msg, setMsg] = useState('')
   const [pin, setPin] = useState('')
   const [popup, setPopup] = useState('');
-  const [noRek_tujuan, setNoRek_tujuan] = useState('-');
+  const [layanan, setLayanan] = useState('-PILIH-');
+  const [berita, setBerita] = useState('');
+  const [noRek_tujuan, setNoRek_tujuan] = useState('0');
   const [nominal, setNominal] = useState('0');
+  const [beforeNominal, setBeforeNominal] = useState('');
   const [user, setUser] = useState({
     userId: '',
     pin: '',
@@ -23,6 +34,56 @@ function TransferAntarBank() {
     saldo: ''
   })
   const navigate = useNavigate();
+
+  useEffect(() => {
+    refreshToken()
+    getUsers()
+    getListBankTerdaftar()
+  }, []);
+
+  useEffect(() => {
+    setNoRek_tujuan('0')
+  },[noRek_tujuan])
+
+  const refreshToken = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/token')
+      const decoded = jwt_decode(response.data.accessToken)
+      setExpire(decoded.exp)
+    } catch (error) {
+      if (error.response) {
+        navigate('/')
+      }
+    }
+  }
+
+  const axiosJWT = axios.create()
+
+  axiosJWT.interceptors.request.use(async (config) => {
+    const currentDate = new Date();
+    if (expire * 1000 < currentDate.getTime()) {
+      const response = await axios.get('http://localhost:5000/token')
+      config.headers.Authorization = `Bearer ${response.data.accessToken}`
+      setToken(response.data.accessToken)
+    }
+    return config;
+  }, (error) => {
+    return Promise.reject(error)
+  })
+
+  const getUsers = async () => {
+    const response = await axiosJWT.get('http://localhost:5000/users', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    setUser({
+      userId: response.data.id,
+      pin: response.data.pin,
+      noRek: response.data.no_rek,
+      saldo: response.data.saldo,
+    })
+  }
 
   setInterval(() => {
     let currRtt = navigator.connection.rtt;
@@ -34,6 +95,20 @@ function TransferAntarBank() {
       setNetwork('pending')
     }
   }, 500);
+
+  const getListBankTerdaftar = async()=>{
+    const response = await axiosJWT.post('http://localhost:5000/listBankTerdaftar', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    if (response.data.msg) {
+      setObjBank('')
+      return false
+    }
+    setObjBank(response.data)
+    console.log(response.data);
+  }
 
   function formatRupiah(angka, prefix) {
     var numberString = angka.toString().replace(/[^,\d]/g, ''),
@@ -95,20 +170,185 @@ function TransferAntarBank() {
           <div className="card-popup">
             <p>Jumlah Uang</p>
             <input type="text" id='kodeAkses' placeholder='Masukan nominal angka'
-              value={formatRupiah('')} onChange={''} autoFocus />
+              value={formatRupiah(beforeNominal)} onChange={e => setBeforeNominal(e.target.value)} autoFocus />
             <div className="action">
-              <div onClick={() => { setPopup(''); setNominal(nominal); }}><Btn label="Cancel" /></div>
-              <div onClick={() => { setPopup(''); }}><Btn label="OK" /></div>
+              <div onClick={() => { setPopup(''); setNominal(nominal); setBeforeNominal('') }}><Btn label="Cancel" /></div>
+              <div onClick={() => { setPopup(''); handelInputNominal(beforeNominal.replaceAll('.', '')); setBeforeNominal('') }}><Btn label="OK" /></div>
             </div>
           </div>
         </div>
       )
     } else if (props === 'pilihbank') {
       return (
-        <div className="popup" style={popup === 'pilihbank' ? { display: 'block' } : { display: 'none' }}>
-
+        <div className="popup" onClick={() => setPopup('')} style={popup === 'pilihbank' ? { display: 'block' } : { display: 'none' }}>
+          {listBank.length === 0 ? (
+            <div className="card-popup">
+              <p>Harap daftarkan bank tujuan terlebih dahulu.</p>
+              <div className="action">
+                <div onClick={() => { setPopup('') }}><BtnBig label="Back" /></div>
+              </div>
+            </div>
+          ) : (
+            <div className="card-listOption">
+              {listBank.map(e => (
+                <div key={e} onClick={() => { setBank(e) }} >{e}</div>
+              ))}
+            </div>
+          )}
         </div>
       )
+    } else if (props === 'berita') {
+      return (
+        <div className="popup" style={popup === 'berita' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup">
+            <p>Berita</p>
+            <input type="text" id='kodeAkses' placeholder='Masukan berita'
+              value={berita} onChange={e => setBerita(e.target.value)} autoFocus />
+            <div className="action">
+              <div onClick={() => { setPopup(''); setBerita(berita) }}><Btn label="Cancel" /></div>
+              <div onClick={() => { setPopup(''); setBerita(berita) }}><Btn label="OK" /></div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+  }
+
+  const handelInputNominal = (nominalInput) => {
+    if (parseInt(nominalInput) < 10000 || nominalInput === '') {
+      setMsg('151 - Nilai transfer minimal Rp 10000.')
+      setPopup('error')
+      return false
+    }
+    setNominal(nominalInput);
+  }
+
+  function findDuplicates(arr) {
+    var result = {};
+    for (var i = 0; i < arr.length; i++) {
+      if (result[arr[i].bank]) {
+        result[arr[i].bank] = 'duplicate';
+      } else {
+        result[arr[i].bank] = true;
+      }
+    }
+    return result;
+  }
+
+  const pilihBank = () => {
+    let arrSample = []
+    for (let i in objBank) {
+      if (objBank[i] !== null) {
+        arrSample.push(objBank[i])
+      }
+    }
+    let obj = findDuplicates(arrSample);
+    setListBank(Object.keys(obj))
+    // setListNorekTerdaftar(Object.values(obj))
+  }
+
+  let sampleListNorek = [];
+  let objRek = [];
+  const getInfoNorek = async () => {
+    console.log(objRek);
+    for (let i in objRek) {
+      const response = await axios.post('http://localhost:5000/infonorek', {
+        norek: objRek[i].no_rek
+      })
+      sampleListNorek.push(response.data)
+    }
+    setListNorekTerdaftar(sampleListNorek);
+    console.log(sampleListNorek);
+  }
+
+  const getListnorekTerdaftar = async () => {
+    const response = await axiosJWT.post('http://localhost:5000/listRekening', {
+      userId: user.userId,
+      bank: bank
+    })
+    console.log(bank);
+    if (response.data.msg) {
+      objRek = '';
+      return false
+    }
+    objRek = response.data
+    console.log(response.data);
+    console.log(listNorekTerdaftar);
+    getInfoNorek()
+  }
+
+  const PilihNomorRekening = () => {
+    return (
+      <div className="pilihNomorRekening">
+        <div className="headTransfer">
+          <div style={{width: "100%", backgroundColor: "#015EAB"}}>Daftar Trasnfer</div>
+        </div>
+        <div className="searchRekening">
+          <input type="text" placeholder='Seacrh' value={searchFilter} onChange={e => setSearchFilter(e.target.value)} />
+          <FontAwesomeIcon style={{ color: '#8D8D8D', width: 14 }} icon={faMagnifyingGlass} />
+        </div>
+        <div className="optionNomorRekening">
+          {listNorekTerdaftar.filter((item) => {
+            if (searchFilter === '') {
+              return item
+            } else if (item.nama.toLowerCase().includes(searchFilter.toLowerCase()) || item.no_rek.toLowerCase().includes(searchFilter.toLowerCase())) {
+              return item
+            }
+          }).map((item, index) => (
+            <div className="listNomor" key={index} onClick={() => { setNoRek_tujuan(item.no_rek); setPage(false) }}>
+              <p>{item.nama}</p>
+              <p>{item.no_rek}</p>
+            </div>
+          ))
+          }
+        </div>
+      </div>
+    )
+  }
+
+  const pilihLayanan = () =>{
+    return (
+      <div className="pilihLayanan">
+        <p>Layanan Transfer</p>
+        <div className="card-layanan" onClick={() => {setLayanan('BI FAST'); setPage(false)}}>
+          <p>BI FAST</p>
+          <div className='info-layanan'>
+            <div>
+              <p>Minimal Transaksi</p>
+              <p>Biaya</p>
+              <p>Waktu Layanan</p>
+            </div>
+            <div>
+              <p>Rp 10,000.00</p>
+              <p>Rp 2,500.00</p>
+              <p>24 Jam</p>
+            </div>
+          </div>
+        </div>
+        <div className="card-layanan" onClick={() => {setLayanan('Realtime Online'); setPage(false)}}>
+          <p>Realtime Online</p>
+          <div className='info-layanan'>
+            <div>
+              <p>Minimal Transaksi</p>
+              <p>Biaya</p>
+              <p>Waktu Layanan</p>
+            </div>
+            <div>
+              <p>Rp 10,000.00</p>
+              <p>Rp 6,500.00</p>
+              <p>24 Jam</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const handelClickRekTujuan = () => {
+    if(bank !== ''){
+      setPage('pilihNomerRekening')
+      refreshToken()
+      getListnorekTerdaftar()
     }
   }
 
@@ -116,44 +356,51 @@ function TransferAntarBank() {
     return (
       <div className='formTransferBank'>
         <div className="card-form">
-          <div className="list-form input">
+          <div className="list-form input" onClick={()=> {setPopup('pilihbank'); console.log(listBank); pilihBank()}}>
             <div>
               <p>Bank</p>
               <p>{bank === '' ? '- PILIH -' : bank}</p>
             </div>
             <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
           </div>
-          <div className={bank === '' ? "list-form" : "list-form input"} >
+          <div className={bank === '' ? "list-form" : "list-form input"} onClick={handelClickRekTujuan}>
             <div>
               <p>Ke Rekening Tujuan</p>
-              <p style={{ visibility: bank === '' ? "hidden" : "visible" }}>{noRek_tujuan}</p>
+              <p style={{ visibility: bank === '' ? "hidden" : "visible", color: noRek_tujuan === '0' ? "#F8F8F8" : "#9A9A9A"}}>{noRek_tujuan}</p>
             </div>
             <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} style={{ display: bank === '' ? "none" : "block" }} />
           </div>
-          <div className="list-form input">
+          <div className="list-form input" onClick={()=> setPopup('nominal')}>
             <div>
               <p>Jumlah Uang</p>
-              <p style={{ visibility: nominal === '0' ? "hidden" : "visible" }}>{nominal}</p>
+              <p style={{ visibility: nominal === '0' ? "hidden" : "visible" }}>{formatRupiah(nominal)}</p>
             </div>
             <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
           </div>
-          <div className="list-form" style={{ display: noRek_tujuan === '-' ? "none" : "flex" }}>
+          <div className="list-form input" onClick={() => setPage(true)} style={{ display: noRek_tujuan === '0' ? "none" : "flex" }}>
             <div>
               <p>Layanan Transfer</p>
-              <p style={{ textTransform: 'capitalize' }}>Realtime Online</p>
+              <p style={{ textTransform: 'capitalize' }}>{layanan}</p>
             </div>
             <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
           </div>
-          <div className="list-form" style={{ display: nominal === '0' ? "none" : "flex" }}>
+          <div className="list-form" style={{ display: layanan === '-PILIH-' ? "none" : "flex" }}>
             <div>
               <p>Biaya</p>
-              <p>6.500</p>
+              <p>{layanan === "BI FAST" ? "2.500" : "6.500"}</p>
             </div>
+          </div>
+          <div className="list-form" style={{ display: nominal === '0' ? "none" : "flex" }}  onClick={() => setPopup('berita')}>
+            <div>
+              <p>Berita</p>
+              <p style={{ textTransform: 'none' }}>{berita}</p>
+            </div>
+            <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
           </div>
           <div className="list-form">
             <div>
               <p>Dari Rekening</p>
-              <p>8730647647</p>
+              <p>{user.noRek}</p>
             </div>
           </div>
         </div>
@@ -163,14 +410,15 @@ function TransferAntarBank() {
 
   return (
     <div className='container'>
+      {Popup(popup)}
       <div className='topbar-send'>
         <p>m-Transfer</p>
         <div>
           <div className={network}></div>
-          <div className='send'>Send</div>
+          <div className='send' style={{ visibility: page === false ? 'visible' : 'hidden' }} onClick={''}>Send</div>
         </div>
       </div>
-      {page === false ? formTransferBank() : ''}
+      {page === false ? formTransferBank() : page === 'pilihNomerRekening' ? PilihNomorRekening() : pilihLayanan()}
       <Navbar active="transaksi" />
     </div>
   )

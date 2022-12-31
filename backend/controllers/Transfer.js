@@ -1,5 +1,6 @@
 import Users from '../models/UserModel.js';
 import DaftarTransfer from '../models/DaftarTransferModel.js';
+import { Sequelize } from 'sequelize';
 import { createRequire } from 'node:module';
 
 // TRANSFER SALDO
@@ -193,6 +194,25 @@ export const getListBankLain = async (req, res) => {
   }
 };
 
+// ambil list Rekening
+export const getListRekening = async (req, res) => {
+  const { userId, bank } = req.body;
+  try {
+    const getDataBank = await DaftarTransfer.findAll({
+      where: {
+        id_user: userId,
+        bank: bank,
+      },
+      attributes: ['no_rek', 'bank'],
+    });
+    if (getDataBank == false) return res.status(404).json({ msg: null });
+    res.json(getDataBank);
+  } catch (error) {
+    res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
+    console.log(error);
+  }
+};
+
 export const getInfoUserNorek = async (req, res) => {
   const { norek } = req.body;
   try {
@@ -204,6 +224,23 @@ export const getInfoUserNorek = async (req, res) => {
     });
     if (getDataNorek == false) return res.status(404).json({ msg: null });
     res.json(getDataNorek);
+  } catch (error) {
+    res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
+    console.log(error);
+  }
+};
+
+export const getListBankTerdaftar = async (req, res) => {
+  try {
+    const getListBank = await DaftarTransfer.findAll({
+      where: {
+        id_user: req.userId,
+        bank: { [Sequelize.Op.ne]: 'BCA' },
+      },
+      attributes: ['no_rek', 'bank'],
+    });
+    if (getListBank == false) return res.status(404).json({ msg: null });
+    res.json(getListBank);
   } catch (error) {
     res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
     console.log(error);
