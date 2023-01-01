@@ -37,7 +37,7 @@ function TransferRekening() {
     getUsers()
   }, []);
 
-  useEffect(()=> {
+  useEffect(() => {
     getListnorekTerdaftar()
   }, [])
 
@@ -113,12 +113,20 @@ function TransferRekening() {
     let currRtt = navigator.connection.rtt;
     if (currRtt === 0 || currRtt === 2000) {
       setNetwork('offline')
-    } else if (currRtt >= 10 && currRtt <= 300) {
+    } else if (currRtt >= 10 && currRtt <= 600) {
       setNetwork('online')
     } else {
       setNetwork('pending')
     }
   }, 500);
+
+  const numberOnly = (e) => {
+    const key = e.key
+    if (key === "Backspace" || key === "Delete") return true;
+    if (!(parseInt(key) > -1)) e.preventDefault()
+    if (key === " ") e.preventDefault();
+    return true;
+  }
 
   const Popup = (props) => {
     if (props === 'error') {
@@ -138,7 +146,7 @@ function TransferRekening() {
           <div className="card-popup">
             <p>PIN</p>
             <input type="password" maxLength={6} id='kodeAkses' placeholder='Input PIN anda'
-              value={pin} onChange={e => setPin(e.target.value)} autoFocus />
+              value={pin} onChange={e => setPin(e.target.value)} onKeyDown={e => numberOnly(e)} autoFocus />
             <div className="action">
               <div onClick={() => { setPopup(''); return false }}><Btn label="Cancel" /></div>
               <div onClick={() => { setPopup(''); cekPin() }}><Btn label="OK" /></div>
@@ -283,7 +291,7 @@ function TransferRekening() {
 
   const handelKirim = () => {
     // cek rekening
-    if (norekTujuan === '') {
+    if (norekTujuan === '-PILIH-') {
       setMsg('Silahkan pilih rekening tujuan')
       setPopup('error')
       return false
@@ -318,7 +326,7 @@ function TransferRekening() {
   // Date time
   const timeNow = () => {
     const date = new Date();
-    let mon = date.getMonth();
+    let mon = date.getMonth() + 1;
     let dt = date.getDate();
     let h = date.getHours();
     let m = date.getMinutes();
@@ -345,7 +353,7 @@ function TransferRekening() {
             <p>Ke {norekTujuan}</p>
             <p>{response.data.namaPenerima.toUpperCase()}</p>
             <p>Rp. {rupiahNominal}.00</p>
-            <p>{berita === '' ? ' ' : berita}</p>
+            {berita.trim() === '' ? ('') : (<p>{berita}</p>)}
           </p>
         )
       }

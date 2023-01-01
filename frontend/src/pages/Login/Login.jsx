@@ -14,9 +14,8 @@ import { DeviceUUID } from 'device-uuid'
 
 const Login = () => {
   const [ip, setIp] = useState("");
+  const [popup, setPopup] = useState('');
   const [codeAkses, setCodeAkses] = useState('');
-  const [popupInput, setPopupInput] = useState("none");
-  const [popupError, setPopupError] = useState("none");
   const [msg, setMsg] = useState('');
   const navigate = useNavigate();
 
@@ -58,8 +57,7 @@ const Login = () => {
     if (codeAkses.length !== 6) {
       setMsg("107 - Kode Akses harus 6 karakter dengan kombinasi huruf dan angka.");
       setCodeAkses('')
-      handlePopupInput()
-      handlePopupError()
+      setPopup('error')
       return false
     }
     try {
@@ -68,57 +66,50 @@ const Login = () => {
         ip_address: ip
       })
       setCodeAkses('')
-      handlePopupInput()
+      setPopup('')
       navigate("/home")
     } catch (error) {
       console.log(error.response.data.msg);
       setMsg(error.response.data.msg);
       setCodeAkses('')
-      handlePopupInput()
-      handlePopupError()
+      setPopup('error')
     }
   }
 
-  const handlePopupInput = () => {
-    if (popupInput === 'block') {
-      setPopupInput('none')
-    } else {
-      setPopupInput('block')
-    }
-    console.log(ip);
-  }
-  const handlePopupError = () => {
-    if (popupError === 'block') {
-      setPopupError('none')
-      setMsg('')
-    } else {
-      setPopupError('block')
+  const Popup = (props) => {
+    if (props === 'error') {
+      return (
+        <div className="popup-error" style={props === 'error' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup">
+            <p>{msg}</p>
+            <div className="action">
+              <div onClick={() => { setPopup('') }}><BtnBig label="Back" /></div>
+            </div>
+          </div>
+        </div>
+      )
+    } else if (props === 'kodeakses') {
+      return (
+        <div className="popup" style={popup === 'kodeakses' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup">
+            <p>Kode Akses</p>
+            <input type="password" maxLength={6} id='kodeAkses' placeholder='Input 6 alphanum'
+              value={codeAkses} onChange={e => setCodeAkses(e.target.value)} autoFocus />
+            <div className="action">
+              <div onClick={() => { setPopup(''); setCodeAkses('') }}><Btn label="Cancel" /></div>
+              <div onClick={() => { setPopup(''); authKodeAkses() }}><Btn label="OK" /></div>
+            </div>
+          </div>
+        </div>
+      )
     }
   }
 
   return (
     <div className='container'>
-      <div className="popup-error" style={{ display: popupError }}>
-        <div className="card-popup">
-          <p>{msg}</p>
-          <div className="action">
-            <div onClick={handlePopupError}><BtnBig label="Back" /></div>
-          </div>
-        </div>
-      </div>
-      <div className="popup" style={{ display: popupInput }}>
-        <div className="card-popup">
-          <p>Kode Akses</p>
-          <input type="password" maxLength={6} id='kodeAkses' placeholder='Input 6 alphanum'
-            value={codeAkses} onChange={e => setCodeAkses(e.target.value)} />
-          <div className="action">
-            <div onClick={handlePopupInput}><Btn label="Cancel" /></div>
-            <div onClick={authKodeAkses}><Btn label="Login" /></div>
-          </div>
-        </div>
-      </div>
+      {Popup(popup)}
       <div className="card">
-        <div onClick={handlePopupInput} className="button"><img src={mbca} alt="bg-bottom" /><p>m-BCA</p></div>
+        <div onClick={() => setPopup('kodeakses')} className="button"><img src={mbca} alt="bg-bottom" /><p>m-BCA</p></div>
         <div className="button"><img src={klikbca} alt="bg-bottom" /><p>KlikBCA</p></div>
         <div className="button"><img src={infobca} alt="bg-bottom" /><p>Info BCA</p></div>
       </div>

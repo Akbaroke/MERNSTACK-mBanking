@@ -55,21 +55,23 @@
   display: flex;
   justify-content: space-between;
   cursor: pointer;
-  transition: .3s;
+  color: #015A9E;
 }
 
 .list-info:hover{
   border-bottom: 1px solid #c0c0c0;
-  transition: .3s;
+}
+
+.list-info:active{
+  background: linear-gradient(180deg, rgba(22,152,232,1) 0%, rgba(10,98,176,1) 32%, rgba(1,54,130,1) 90%);
+  color: #fff;
 }
 
 .list-info > p{
-  color: #015A9E;
   font-size: 13px;
   font-weight: 400;
 }
 .list-info > svg{
-  color: #0284C1;
   font-size: 10px;
 }
 

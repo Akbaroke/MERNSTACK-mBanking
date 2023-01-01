@@ -7,9 +7,11 @@ import Topbar from '../../components/Topbar';
 import mInfo from '../../assets/Svg/m-info.svg'
 import mTransfer from '../../assets/Svg/m-transfer.svg'
 import Navbar from '../../components/Navbar';
-
+import Btn from '../../components/Btn';
+import { useGlobalState } from '../../store/state';
 
 function Home() {
+  const { isLogout, logoutUnset } = useGlobalState(state => state)
   const [nama, setNama] = useState('')
   const [expire, setExpire] = useState('')
   const [network, setNetwork] = useState('pending');
@@ -23,7 +25,7 @@ function Home() {
     let currRtt = navigator.connection.rtt;
     if (currRtt === 0 || currRtt === 2000) {
       setNetwork('offline')
-    } else if (currRtt >= 10 && currRtt <= 300) {
+    } else if (currRtt >= 10 && currRtt <= 600) {
       setNetwork('online')
     } else {
       setNetwork('pending')
@@ -59,8 +61,25 @@ function Home() {
     return Promise.reject(error)
   })
 
+  const Popup = () => {
+    return (
+      <div className="popup" style={{ display: 'block' }}>
+        <div className="card-popup">
+          <p style={{ fontSize: 14, fontWeight: 500 }} >Logout</p>
+          <p style={{ display: 'block', height: 154, marginTop: 17, textAlign: 'left', textTransform: 'none' }}>Anda akan logout dari BCA mobile</p>
+          <div className="action">
+            <div onClick={logoutUnset}><Btn label="Cancel" /></div>
+            <div onClick={() => { navigate('/'); logoutUnset() }}><Btn label="OK" /></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+
   return (
     <div className='container'>
+      {isLogout ? Popup() : ''}
       <Topbar network={network} />
       <div className="home">
         <div className="welcome">

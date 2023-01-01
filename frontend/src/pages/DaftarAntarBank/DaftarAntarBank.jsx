@@ -28,14 +28,13 @@ function DaftarAntarBank() {
     refreshToken()
     getListBank()
     getUsers()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [100]);
+  }, []);
 
   setInterval(() => {
     let currRtt = navigator.connection.rtt;
     if (currRtt === 0 || currRtt === 2000) {
       setNetwork('offline')
-    } else if (currRtt >= 10 && currRtt <= 300) {
+    } else if (currRtt >= 10 && currRtt <= 600) {
       setNetwork('online')
     } else {
       setNetwork('pending')
@@ -155,46 +154,73 @@ function DaftarAntarBank() {
     }
   }
 
+  const Popup = (props) => {
+    if (props === 'error') {
+      return (
+        <div className="popup-error" style={props === 'error' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup">
+            <p>{msg}</p>
+            <div className="action">
+              <div onClick={() => { setPopup('') }}><BtnBig label="Back" /></div>
+            </div>
+          </div>
+        </div>
+      )
+    } else if (props === 'pin') {
+      return (
+        <div className="popup" style={popup === 'pin' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup">
+            <p>PIN</p>
+            <input type="password" maxLength={6} id='kodeAkses' placeholder='Input PIN anda'
+              value={pin} onChange={e => setPin(e.target.value)} autoFocus />
+            <div className="action">
+              <div onClick={() => { setPopup(''); return false }}><Btn label="Cancel" /></div>
+              <div onClick={() => { setPopup(''); daftarAntarBank() }}><Btn label="OK" /></div>
+            </div>
+          </div>
+        </div>
+      )
+    } else if (props === 'sukses') {
+      return (
+        <div className="popup" style={popup === 'sukses' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup" >
+            <p style={{ fontSize: 14, fontWeight: 500, }} >m-Transfer</p>
+            <p style={{ display: 'block', height: 204, width: 187, marginTop: 17, textAlign: 'left' }}>{msg}</p>
+            <div className="action">
+              <div onClick={() => { setPopup(''); navigate('/m-Transfer') }}><Btn label="OK" /></div>
+            </div>
+          </div>
+        </div>
+      )
+    } else if (props === 'dataRek') {
+      return (
+        <div className="popup" style={popup === 'dataRek' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup">
+            <p style={{ fontSize: 14, fontWeight: 500 }} >m-Transfer</p>
+            <p style={{ display: 'block', height: 154, marginTop: 17, textAlign: 'left', textTransform: 'uppercase' }}>{msg}</p>
+            <div className="action">
+              <div onClick={() => { setPopup('') }}><Btn label="Cancel" /></div>
+              <div onClick={() => { setPopup('pin') }}><Btn label="OK" /></div>
+            </div>
+          </div>
+        </div>
+      )
+    } else if (props === 'pilihbank') {
+      return (
+        <div className="popup" onClick={() => setPopup('')} style={popup === 'pilihbank' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-listOption">
+            {listBank.map(bank => (
+              <div key={bank.bank_code.replaceAll('_', ' ')} onClick={() => { setBank(bank.code) }} >{bank.code.replaceAll('_', ' ')}</div>
+            ))}
+          </div>
+        </div>
+      )
+    }
+  }
+
   return (
     <div className='container'>
-      <div className="popup-error" style={popup === 'error' ? { display: 'block' } : { display: 'none' }}>
-        <div className="card-popup">
-          <p>{msg}</p>
-          <div className="action">
-            <div onClick={() => { setPopup('') }}><BtnBig label="Back" /></div>
-          </div>
-        </div>
-      </div>
-      <div className="popup" style={popup === 'pin' ? { display: 'block' } : { display: 'none' }}>
-        <div className="card-popup">
-          <p>PIN</p>
-          <input type="text" maxLength={6} id='kodeAkses' placeholder='Input PIN anda'
-            value={pin} onChange={e => setPin(e.target.value)} />
-          <div className="action">
-            <div onClick={() => { setPopup('') }}><Btn label="Cancel" /></div>
-            <div onClick={daftarAntarBank}><Btn label="OK" /></div>
-          </div>
-        </div>
-      </div>
-      <div className="popup" style={popup === 'sukses' ? { display: 'block' } : { display: 'none' }}>
-        <div className="card-popup">
-          <p style={{ fontSize: 14, fontWeight: 500 }} >m-Transfer</p>
-          <p style={{ display: 'block', height: 154, width: 187, marginTop: 17, textAlign: 'left' }}>{msg}</p>
-          <div className="action">
-            <div onClick={() => { setPopup(''); navigate('/m-Transfer') }}><BtnBig label="OK" /></div>
-          </div>
-        </div>
-      </div>
-      <div className="popup" style={popup === 'dataRek' ? { display: 'block' } : { display: 'none' }}>
-        <div className="card-popup">
-          <p style={{ fontSize: 14, fontWeight: 500 }} >m-Transfer</p>
-          <p style={{ display: 'block', height: 154, marginTop: 17, textAlign: 'left', textTransform: 'uppercase' }}>{msg}</p>
-          <div className="action">
-            <div onClick={() => { setPopup('') }}><Btn label="Cancel" /></div>
-            <div onClick={() => { setPopup('pin') }}><Btn label="OK" /></div>
-          </div>
-        </div>
-      </div>
+      {Popup(popup)}
       <div className='topbar-send'>
         <p>m-Transfer</p>
         <div>
@@ -211,15 +237,10 @@ function DaftarAntarBank() {
             </div>
             <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
           </div>
-          <div className="input-daftarAntarBank">
+          <div className="input-daftarAntarBank" onClick={() => setPopup('pilihbank')} style={{ cursor: 'pointer' }}>
             <div>
               <p>Bank</p>
-              <select style={{ color: bank === "" ? "#ADADAD" : "#000" }} value={bank} onChange={e => setBank(e.target.value)}>
-                <option disabled={true} value="">-PILIH-</option>
-                {listBank.map((bank) => (
-                  <option style={{ color: "#000" }} value={bank.code} key={bank.bank_code}>{bank.code}</option>
-                ))}
-              </select>
+              <input style={{ cursor: 'pointer' }} type="text" disabled value={bank} placeholder='-PILIH-' />
             </div>
             <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
           </div>

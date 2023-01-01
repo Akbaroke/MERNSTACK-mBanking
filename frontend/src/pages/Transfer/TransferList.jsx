@@ -13,7 +13,7 @@ function TransferList() {
     let currRtt = navigator.connection.rtt;
     if (currRtt === 0 || currRtt === 2000) {
       setNetwork('offline')
-    } else if (currRtt >= 10 && currRtt <= 300) {
+    } else if (currRtt >= 10 && currRtt <= 600) {
       setNetwork('online')
     } else {
       setNetwork('pending')

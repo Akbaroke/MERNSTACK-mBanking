@@ -112,8 +112,8 @@ export const cekNomerRekeningLain = async (req, res) => {
         bank: bank,
       },
     });
-    if (!cekBank) return res.json(getDataTujuan);
-    res.json({ msg: 'ALREADY REGISTERED' });
+    if (cekBank) return res.status(401).json({ msg: 'ALREADY REGISTERED' });
+    res.json(getDataTujuan);
   } catch (error) {
     res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
     console.log(error);

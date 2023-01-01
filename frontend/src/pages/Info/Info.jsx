@@ -10,8 +10,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import './Info.css'
 
+
 function Info() {
-  const [popupSaldo, setPopupSaldo] = useState("none")
   const [popup, setPopup] = useState('');
   const [msg, setMsg] = useState('')
   const [token, setToken] = useState('')
@@ -25,14 +25,13 @@ function Info() {
   useEffect(() => {
     refreshToken()
     getDataUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [100]);
+  }, []);
 
   setInterval(() => {
     let currRtt = navigator.connection.rtt;
     if (currRtt === 0 || currRtt === 2000) {
       setNetwork('offline')
-    } else if (currRtt >= 10 && currRtt <= 300) {
+    } else if (currRtt >= 10 && currRtt <= 600) {
       setNetwork('online')
     } else {
       setNetwork('pending')
@@ -91,11 +90,8 @@ function Info() {
       return false
     }
     getUsers()
-    if (popupSaldo === 'block') {
-      setPopupSaldo('none')
-    } else {
-      setPopupSaldo('block')
-    }
+    setPopup('saldo')
+    console.log(timeNow());
   }
 
   // Rupiah format
@@ -114,7 +110,7 @@ function Info() {
   // Date time
   const timeNow = () => {
     const date = new Date();
-    let mon = date.getMonth();
+    let mon = date.getMonth() + 1;
     let dt = date.getDate();
     let h = date.getHours();
     let m = date.getMinutes();
@@ -122,33 +118,44 @@ function Info() {
     return `${mon}/${dt} ${h}:${m}:${s}`
   }
 
+  const Popup = (props) => {
+    if (props === 'error') {
+      return (
+        <div className="popup-error" style={props === 'error' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup">
+            <p>{msg}</p>
+            <div className="action">
+              <div onClick={() => { setPopup('') }}><BtnBig label="Back" /></div>
+            </div>
+          </div>
+        </div>
+      )
+    } else if (props === 'saldo') {
+      return (
+        <div className="popup" style={popup === 'saldo' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup" >
+            <p>m-Info</p>
+            <div>
+              <div className='time-saldo'>
+                <p>m-Info:</p>
+                <p>{timeNow()}</p>
+              </div>
+              <div className='info-saldo'>
+                <p>{noRek}</p>
+                <p>Rp. {rupiahFormat(saldo)}. 00</p>
+              </div>
+            </div>
+            <div onClick={() => { setPopup('') }}><BtnBig label="OK" /></div>
+          </div>
+        </div>
+      )
+    }
+  }
+
 
   return (
     <div className='container'>
-      <div className="popup-error" style={popup === 'error' ? { display: 'block' } : { display: 'none' }}>
-        <div className="card-popup">
-          <p>{msg}</p>
-          <div className="action">
-            <div onClick={() => { setPopup('') }}><BtnBig label="Back" /></div>
-          </div>
-        </div>
-      </div>
-      <div className="popup" style={{ display: popupSaldo }}>
-        <div className="card-popup">
-          <p>m-Info</p>
-          <div>
-            <div className='time-saldo'>
-              <p>m-Info:</p>
-              <p>{timeNow()}</p>
-            </div>
-            <div className='info-saldo'>
-              <p>{noRek}</p>
-              <p>Rp. {rupiahFormat(saldo)}. 00</p>
-            </div>
-          </div>
-          <div onClick={handlePopupSaldo}><BtnBig label="OK" /></div>
-        </div>
-      </div>
+      {Popup(popup)}
       <Topbar logout='disable' network={network} />
       <div className="m-info">
         <div className="card-info">
@@ -161,7 +168,7 @@ function Info() {
               <p>Info Saldo</p>
               <FontAwesomeIcon icon={faChevronRight} />
             </div>
-            <div className="list-info">
+            <div onClick={() => { setMsg('Mohon maaf fitur ini sedang dalam tahap pengembangan.'); setPopup('error') }} className="list-info">
               <p>Mutasi Rekening</p>
               <FontAwesomeIcon icon={faChevronRight} />
             </div>

@@ -26,6 +26,7 @@
 }
 
 .welcome > h4{
+  width: max-content;
   font-weight: 700;
   font-size: 18px;
   text-transform: uppercase;

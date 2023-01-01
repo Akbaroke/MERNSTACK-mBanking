@@ -6,7 +6,6 @@ import './Navbar.css'
 import { Link } from 'react-router-dom';
 
 function Navbar(props) {
-
   const active = props.active
 
   return (
@@ -21,16 +20,16 @@ function Navbar(props) {
           <p>Transaksi</p>
         </Link>
       </div>
-      <img className='qris' src={qris} alt="" />
+      <Link to='/error'><img className='qris' src={qris} alt="" /></Link>
       <div>
         <div className="btn-navbar" id={(active === "notifikasi") ? "active" : ""}>
           <FontAwesomeIcon icon={faBell} />
           <p>Notifikasi</p>
         </div>
-        <div className="btn-navbar" id={(active === "akun") ? "active" : ""}>
+        <Link to='/profil' className="btn-navbar" id={(active === "akun") ? "active" : ""}>
           <FontAwesomeIcon icon={faUser} />
           <p>Akun Saya</p>
-        </div>
+        </Link>
       </div>
     </div>
   )

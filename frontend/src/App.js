@@ -9,12 +9,15 @@ import DaftarAntarBank from './pages/DaftarAntarBank/DaftarAntarBank';
 import DaftarRekening from './pages/DantarRekening/DaftarRekening';
 import TransferRekening from './pages/TransferRekening/TransferRekening';
 import TransferAntarBank from './pages/TransferAntarBank/TransferAntarBank';
+import Profile from './pages/Profile/Profile';
+import ErrorPage from './pages/ErrorPage/ErrorPage';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/profil" element={<Profile />} />
         <Route path="/home" element={<Home />} />
         <Route path="/m-Info" element={<Info />} />
         <Route path="/m-Transfer" element={<TransferList />} />
@@ -24,6 +27,7 @@ function App() {
         <Route path="/daftar-rekening" element={<DaftarRekening />} />
         <Route path="/transfer-rekening" element={<TransferRekening />} />
         <Route path="/transfer-antarbank" element={<TransferAntarBank />} />
+        <Route path="/error" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
   );

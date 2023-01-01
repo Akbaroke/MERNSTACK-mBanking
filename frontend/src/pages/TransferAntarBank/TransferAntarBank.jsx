@@ -43,7 +43,9 @@ function TransferAntarBank() {
 
   useEffect(() => {
     setNoRek_tujuan('0')
-  },[noRek_tujuan])
+    setLayanan('-PILIH-')
+    setBerita('')
+  }, [bank])
 
   const refreshToken = async () => {
     try {
@@ -89,14 +91,14 @@ function TransferAntarBank() {
     let currRtt = navigator.connection.rtt;
     if (currRtt === 0 || currRtt === 2000) {
       setNetwork('offline')
-    } else if (currRtt >= 10 && currRtt <= 300) {
+    } else if (currRtt >= 10 && currRtt <= 600) {
       setNetwork('online')
     } else {
       setNetwork('pending')
     }
   }, 500);
 
-  const getListBankTerdaftar = async()=>{
+  const getListBankTerdaftar = async () => {
     const response = await axiosJWT.post('http://localhost:5000/listBankTerdaftar', {
       headers: {
         Authorization: `Bearer ${token}`
@@ -126,6 +128,14 @@ function TransferAntarBank() {
     return prefix === undefined ? rupiah : rupiah ? 'Rp. ' + rupiah : '';
   }
 
+  const numberOnly = (e) => {
+    const key = e.key
+    if (key === "Backspace" || key === "Delete") return true;
+    if (!(parseInt(key) > -1)) e.preventDefault()
+    if (key === " ") e.preventDefault();
+    return true;
+  }
+
   const Popup = (props) => {
     if (props === 'error') {
       return (
@@ -144,10 +154,10 @@ function TransferAntarBank() {
           <div className="card-popup">
             <p>PIN</p>
             <input type="password" maxLength={6} id='kodeAkses' placeholder='Input PIN anda'
-              value={pin} onChange={e => setPin(e.target.value)} autoFocus />
+              value={pin} onChange={e => setPin(e.target.value)} onKeyDown={e => numberOnly(e)} autoFocus />
             <div className="action">
               <div onClick={() => { setPopup(''); return false }}><Btn label="Cancel" /></div>
-              <div onClick={() => { setPopup(''); }}><Btn label="OK" /></div>
+              <div onClick={() => { setPopup(''); cekPin() }}><Btn label="OK" /></div>
             </div>
           </div>
         </div>
@@ -244,7 +254,6 @@ function TransferAntarBank() {
     }
     let obj = findDuplicates(arrSample);
     setListBank(Object.keys(obj))
-    // setListNorekTerdaftar(Object.values(obj))
   }
 
   let sampleListNorek = [];
@@ -277,11 +286,87 @@ function TransferAntarBank() {
     getInfoNorek()
   }
 
+  const handelKirim = () => {
+    // cek rekening
+    if (noRek_tujuan === '') {
+      setMsg('Silahkan pilih rekening tujuan')
+      setPopup('error')
+      return false
+    }
+
+    // cek jumlah
+    if (nominal === '') {
+      setMsg('140 - Anda belum menginputkan Jumlah Uang.')
+      setPopup('error')
+      return false
+    }
+
+    // cek saldo cukup atau tidak
+    if (parseInt(nominal) > parseInt(user.saldo)) {
+      setMsg('Saldo anda tidak cukup.')
+      setPopup('error')
+      return false
+    }
+    setPopup('pin')
+  }
+
+  const cekPin = () => {
+    if (pin !== user.pin.toString()) {
+      setMsg('PIN salah.')
+      setPopup('error')
+      return false
+    }
+    kirimTransfer()
+    console.log('kirim');
+  }
+
+  // Date time
+  const timeNow = () => {
+    const date = new Date();
+    let mon = date.getMonth() + 1;
+    let dt = date.getDate();
+    let h = date.getHours();
+    let m = date.getMinutes();
+    let s = date.getSeconds();
+    return `${mon}/${dt} ${h}:${m}:${s}`
+  }
+
+  const kirimTransfer = async () => {
+    try {
+      const response = await axiosJWT.post('http://localhost:5000/transfer', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        saldoTf: nominal,
+        noTujuan: noRek_tujuan
+      })
+      let rupiahNominal = formatRupiah(nominal).replaceAll('.', ',')
+      const pesanBerhasil = () => {
+        return (
+          <p style={{ fontSize: 13, display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <p>m-Transfer :</p>
+            <p>BERHASIL</p>
+            <p>{timeNow()}</p>
+            <p>Ke {noRek_tujuan}</p>
+            <p>{response.data.namaPenerima.toUpperCase()}</p>
+            <p>Rp. {rupiahNominal}.00</p>
+            {berita.trim() === '' ? ('') : (<p>{berita}</p>)}
+          </p>
+        )
+      }
+      setMsg(pesanBerhasil)
+      setPopup('sukses')
+    } catch (error) {
+      setMsg('Transfer gagal, lakukan beberapa saat lagi.');
+      setPopup('error')
+    }
+  }
+
   const PilihNomorRekening = () => {
     return (
       <div className="pilihNomorRekening">
         <div className="headTransfer">
-          <div style={{width: "100%", backgroundColor: "#015EAB"}}>Daftar Trasnfer</div>
+          <div style={{ width: "100%", backgroundColor: "#015EAB" }}>Daftar Trasnfer</div>
         </div>
         <div className="searchRekening">
           <input type="text" placeholder='Seacrh' value={searchFilter} onChange={e => setSearchFilter(e.target.value)} />
@@ -306,11 +391,11 @@ function TransferAntarBank() {
     )
   }
 
-  const pilihLayanan = () =>{
+  const pilihLayanan = () => {
     return (
       <div className="pilihLayanan">
         <p>Layanan Transfer</p>
-        <div className="card-layanan" onClick={() => {setLayanan('BI FAST'); setPage(false)}}>
+        <div className="card-layanan" onClick={() => { setLayanan('BI FAST'); setPage(false) }}>
           <p>BI FAST</p>
           <div className='info-layanan'>
             <div>
@@ -325,7 +410,7 @@ function TransferAntarBank() {
             </div>
           </div>
         </div>
-        <div className="card-layanan" onClick={() => {setLayanan('Realtime Online'); setPage(false)}}>
+        <div className="card-layanan" onClick={() => { setLayanan('Realtime Online'); setPage(false) }}>
           <p>Realtime Online</p>
           <div className='info-layanan'>
             <div>
@@ -345,7 +430,7 @@ function TransferAntarBank() {
   }
 
   const handelClickRekTujuan = () => {
-    if(bank !== ''){
+    if (bank !== '') {
       setPage('pilihNomerRekening')
       refreshToken()
       getListnorekTerdaftar()
@@ -356,7 +441,7 @@ function TransferAntarBank() {
     return (
       <div className='formTransferBank'>
         <div className="card-form">
-          <div className="list-form input" onClick={()=> {setPopup('pilihbank'); console.log(listBank); pilihBank()}}>
+          <div className="list-form input" onClick={() => { setPopup('pilihbank'); console.log(listBank); pilihBank() }}>
             <div>
               <p>Bank</p>
               <p>{bank === '' ? '- PILIH -' : bank}</p>
@@ -366,11 +451,11 @@ function TransferAntarBank() {
           <div className={bank === '' ? "list-form" : "list-form input"} onClick={handelClickRekTujuan}>
             <div>
               <p>Ke Rekening Tujuan</p>
-              <p style={{ visibility: bank === '' ? "hidden" : "visible", color: noRek_tujuan === '0' ? "#F8F8F8" : "#9A9A9A"}}>{noRek_tujuan}</p>
+              <p style={{ visibility: bank === '' ? "hidden" : "visible", color: noRek_tujuan === '0' ? "#F8F8F8" : "#9A9A9A" }}>{noRek_tujuan}</p>
             </div>
             <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} style={{ display: bank === '' ? "none" : "block" }} />
           </div>
-          <div className="list-form input" onClick={()=> setPopup('nominal')}>
+          <div className="list-form input" onClick={() => setPopup('nominal')}>
             <div>
               <p>Jumlah Uang</p>
               <p style={{ visibility: nominal === '0' ? "hidden" : "visible" }}>{formatRupiah(nominal)}</p>
@@ -390,7 +475,7 @@ function TransferAntarBank() {
               <p>{layanan === "BI FAST" ? "2.500" : "6.500"}</p>
             </div>
           </div>
-          <div className="list-form" style={{ display: nominal === '0' ? "none" : "flex" }}  onClick={() => setPopup('berita')}>
+          <div className="list-form" style={{ display: nominal === '0' ? "none" : "flex" }} onClick={() => setPopup('berita')}>
             <div>
               <p>Berita</p>
               <p style={{ textTransform: 'none' }}>{berita}</p>
@@ -415,7 +500,7 @@ function TransferAntarBank() {
         <p>m-Transfer</p>
         <div>
           <div className={network}></div>
-          <div className='send' style={{ visibility: page === false ? 'visible' : 'hidden' }} onClick={''}>Send</div>
+          <div className='send' style={{ visibility: page === false ? 'visible' : 'hidden' }} onClick={handelKirim}>Send</div>
         </div>
       </div>
       {page === false ? formTransferBank() : page === 'pilihNomerRekening' ? PilihNomorRekening() : pilihLayanan()}

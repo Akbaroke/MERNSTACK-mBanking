@@ -13,8 +13,7 @@ import { DeviceUUID } from 'device-uuid'
 
 function GantiKode() {
   const [msg, setMsg] = useState('');
-  const [popupInput, setPopupInput] = useState("none");
-  const [popupError, setPopupError] = useState("none");
+  const [popup, setPopup] = useState('');
   const [ip, setIp] = useState('0')
   const [kodeAksesLama, setKodeAksesLama] = useState('')
   const [kodeAksesBaru, setKodeAksesBaru] = useState('')
@@ -54,14 +53,22 @@ function GantiKode() {
   useEffect(() => {
     getDataIp()
     Logout()
-  })
+  }, [])
+
+  const handleKlik = () => {
+    if (kodeAksesLama.trim() === '' && kodeAksesBaru.trim() === '' && konfKodeAksesBaru.trim() === '' && email.trim() === '') {
+      setMsg("Lengkapi data dengan benar.");
+      setPopup('error')
+      return false
+    }
+    setPopup('pin')
+  }
 
   const gantiKodeAkses = async () => {
     if (pin.length !== 6) {
       setMsg("107 - PIN harus 6 berisi huruf.");
       setPin('')
-      handlePopupInput()
-      handlePopupError()
+      setPopup('error')
       return false
     }
 
@@ -75,15 +82,14 @@ function GantiKode() {
         ip_address: ip
       })
       clearInput()
-      handlePopupInput()
-      navigate("/home")
+      setMsg('Selamat, kode akses dan perangkat berhasil di perbarui.')
+      setPopup('sukses')
 
     } catch (error) {
       clearInput()
       console.log(error.response.data.msg);
       setMsg(error.response.data.msg);
-      handlePopupInput()
-      handlePopupError()
+      setPopup('error')
     }
   }
 
@@ -95,68 +101,83 @@ function GantiKode() {
     setEmail('')
   }
 
-  const handlePopupInput = () => {
-    if (popupInput === 'block') {
-      setPopupInput('none')
-    } else {
-      setPopupInput('block')
-    }
+  const numberOnly = (e) => {
+    const key = e.key
+    if (key === "Backspace" || key === "Delete") return true;
+    if (!(parseInt(key) > -1)) e.preventDefault()
+    if (key === " ") e.preventDefault();
+    return true;
   }
-  const handlePopupError = () => {
-    if (popupError === 'block') {
-      setPopupError('none')
-      setMsg('')
-    } else {
-      setPopupError('block')
+
+  const Popup = (props) => {
+    if (props === 'error') {
+      return (
+        <div className="popup-error" style={props === 'error' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup">
+            <p>{msg}</p>
+            <div className="action">
+              <div onClick={() => { setPopup('') }}><BtnBig label="Back" /></div>
+            </div>
+          </div>
+        </div>
+      )
+    } else if (props === 'pin') {
+      return (
+        <div className="popup" style={popup === 'pin' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup">
+            <p>PIN</p>
+            <input type="password" maxLength={6} id='kodeAkses' placeholder='Input PIN anda'
+              value={pin} onChange={e => setPin(e.target.value)} onKeyDown={e => numberOnly(e)} autoFocus />
+            <div className="action">
+              <div onClick={() => { setPopup(''); return false }}><Btn label="Cancel" /></div>
+              <div onClick={() => { setPopup(''); gantiKodeAkses() }}><Btn label="OK" /></div>
+            </div>
+          </div>
+        </div>
+      )
+    } else if (props === 'sukses') {
+      return (
+        <div className="popup" style={popup === 'sukses' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup" >
+            <p style={{ fontSize: 14, fontWeight: 500, }} >m-BCA</p>
+            <p style={{ display: 'block', height: 204, width: 187, marginTop: 17, textAlign: 'left' }}>{msg}</p>
+            <div className="action">
+              <div onClick={() => { setPopup(''); navigate('/') }}><Btn label="OK" /></div>
+            </div>
+          </div>
+        </div>
+      )
     }
   }
 
   return (
     <div className='container'>
-      <div className="popup-error" style={{ display: popupError }}>
-        <div className="card-popup">
-          <p>{msg}</p>
-          <div className="action">
-            <div onClick={handlePopupError}><BtnBig label="Back" /></div>
-          </div>
-        </div>
-      </div>
-      <div className="popup" style={{ display: popupInput }}>
-        <div className="card-popup">
-          <p>PIN</p>
-          <input type="text" maxLength={6} id='kodeAkses' placeholder='Input PIN anda'
-            value={pin} onChange={e => setPin(e.target.value)} />
-          <div className="action">
-            <div onClick={handlePopupInput}><Btn label="Cancel" /></div>
-            <div onClick={gantiKodeAkses}><Btn label="OK" /></div>
-          </div>
-        </div>
-      </div>
+      {Popup(popup)}
       <TopbarPolos />
       <div className='topbar-btn'>
         <Link to='/' >Cancel</Link>
-        <div type='submit' onClick={handlePopupInput} >OK</div>
+        <div type='submit' onClick={handleKlik} >OK</div>
       </div>
       <div className="ganti-kode">
         <div className="card-formKode">
           <div className="input-formKode">
             <p>Kode Akses Saat ini</p>
             <div>
-              <input type="text" maxLength={6} placeholder='Input 6 alphanum' value={kodeAksesLama} onChange={e => setKodeAksesLama(e.target.value)} />
+              <input type="password" maxLength={6} placeholder='Input 6 alphanum' value={kodeAksesLama} onChange={e => setKodeAksesLama(e.target.value)} />
               <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
             </div>
           </div>
           <div className="input-formKode">
-            <p>Kode Akses yang Baru</p>
+            <p>Kode Akses Baru</p>
             <div>
-              <input type="text" maxLength={6} placeholder='Input 6 alphanum' value={kodeAksesBaru} onChange={e => setKodeAksesBaru(e.target.value)} />
+              <input type="password" maxLength={6} placeholder='Input 6 alphanum' value={kodeAksesBaru} onChange={e => setKodeAksesBaru(e.target.value)} />
               <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
             </div>
           </div>
           <div className="input-formKode">
-            <p>Konfirmasi Kode Akses yang Baru</p>
+            <p>Konfirmasi Kode Akses Baru</p>
             <div>
-              <input type="text" maxLength={6} placeholder='Input 6 alphanum' value={konfKodeAksesBaru} onChange={e => setKonfKodeAksesBaru(e.target.value)} />
+              <input type="password" maxLength={6} placeholder='Input 6 alphanum' value={konfKodeAksesBaru} onChange={e => setKonfKodeAksesBaru(e.target.value)} />
               <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
             </div>
           </div>

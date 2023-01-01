@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import TopbarPolos from '../../components/TopbarPolos'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons"
@@ -7,10 +7,12 @@ import './Register.css'
 import Logout from '../Logout'
 import BtnBig from '../../components/BtnBig'
 import axios from 'axios'
+import { DeviceUUID } from 'device-uuid'
+import Btn from '../../components/Btn'
 
 function Register() {
   const [msg, setMsg] = useState('')
-  const [popupError, setPopupError] = useState("none")
+  const [popup, setPopup] = useState('');
   const [nama, setNama] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -19,6 +21,7 @@ function Register() {
   const [jenisCard, setJenisCard] = useState('')
   const [kodeAkses, setKodeAkses] = useState('')
   const [ip, setIp] = useState('0')
+  const navigate = useNavigate();
 
   useEffect(() => {
     getDataIp()
@@ -26,45 +29,67 @@ function Register() {
   })
 
   const getDataIp = async () => {
-    const response = await fetch('https://ipwho.is/');
-    const ipcode = await response.json();
-    setIp(ipcode.ip)
+    const du = new DeviceUUID().parse();
+    let dua = [
+      du.language,
+      du.platform,
+      du.os,
+      du.cpuCores,
+      du.isAuthoritative,
+      du.silkAccelerated,
+      du.isKindleFire,
+      du.isDesktop,
+      du.isMobile,
+      du.isTablet,
+      du.isWindows,
+      du.isLinux,
+      du.isLinux64,
+      du.isMac,
+      du.isiPad,
+      du.isiPhone,
+      du.isiPod,
+      du.isSmartTV,
+      du.pixelDepth,
+      du.isTouchScreen
+    ];
+    let uuid = du.hashMD5(dua.join(':'));
+    setIp(uuid)
   }
 
   const register = async () => {
     if (nama === '' || email === '' || password === '' || konfPassword === '' || pin === '' || jenisCard === '' || kodeAkses === '') {
       setMsg('Gagal - data harus di isi dengan lengkap dan benar.')
-      handlePopupError()
+      setPopup('error')
       return false
     }
     if (nama.length < 3) {
       setMsg('Gagal - nama harus lengkap min.3 huruf')
-      handlePopupError()
+      setPopup('error')
       return false
     }
     if (email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) === null) {
       setMsg('Gagal - email salah.')
-      handlePopupError()
+      setPopup('error')
       return false
     }
     if (password.length < 6) {
       setMsg('Gagal - password min.6 karakter')
-      handlePopupError()
+      setPopup('error')
       return false
     }
     if (konfPassword !== password) {
       setMsg('Gagal - konfirmasi password tidak sama.')
-      handlePopupError()
+      setPopup('error')
       return false
     }
     if (pin.length !== 6) {
       setMsg('Gagal - pin harus 6 angka.')
-      handlePopupError()
+      setPopup('error')
       return false
     }
     if (kodeAkses.length !== 6) {
       setMsg('Gagal - kode akses harus 6 karakter.')
-      handlePopupError()
+      setPopup('error')
       return false
     }
 
@@ -80,11 +105,13 @@ function Register() {
         ip_address: ip
       })
       clearInput()
+      setMsg('Selamat, pendaftaran akun anda telah berhasil. Sekarang anda dapat menggunakan BCA mobile bangking dengan masuk ke menu m-BCA dan memasukan kode akses yang telah di daftarkan dengan perangkat ini.')
+      setPopup('sukses')
 
     } catch (error) {
       clearInput()
       setMsg(error.response.data.msg);
-      handlePopupError()
+      setPopup('error')
     }
   }
 
@@ -97,15 +124,6 @@ function Register() {
     setPin('')
     setJenisCard('')
     setKodeAkses('')
-  }
-
-  const handlePopupError = () => {
-    if (popupError === 'block') {
-      setPopupError('none')
-      setMsg('')
-    } else {
-      setPopupError('block')
-    }
   }
 
   const numberOnly = (e) => {
@@ -123,16 +141,36 @@ function Register() {
     return true;
   }
 
-  return (
-    <div className='container'>
-      <div className="popup-error" style={{ display: popupError }}>
-        <div className="card-popup">
-          <p>{msg}</p>
-          <div className="action">
-            <div onClick={handlePopupError}><BtnBig label="Back" /></div>
+  const Popup = (props) => {
+    if (props === 'error') {
+      return (
+        <div className="popup-error" style={props === 'error' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup">
+            <p>{msg}</p>
+            <div className="action">
+              <div onClick={() => { setPopup('') }}><BtnBig label="Back" /></div>
+            </div>
           </div>
         </div>
-      </div>
+      )
+    } else if (props === 'sukses') {
+      return (
+        <div className="popup" style={popup === 'sukses' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup" >
+            <p style={{ fontSize: 14, fontWeight: 500, }} >m-BCA</p>
+            <p style={{ display: 'block', height: 204, width: 187, marginTop: 17, textAlign: 'left' }}>{msg}</p>
+            <div className="action">
+              <div onClick={() => { setPopup(''); navigate('/') }}><Btn label="OK" /></div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+  }
+
+  return (
+    <div className='container'>
+      {Popup(popup)}
       <TopbarPolos />
       <div className='topbar-btn'>
         <Link to='/' >Cancel</Link>
@@ -171,7 +209,7 @@ function Register() {
           <div className="input-register">
             <p>PIN</p>
             <div>
-              <input type="text" maxLength={6} onKeyDown={e => numberOnly(e)} placeholder='Input 6 angka' value={pin} onChange={e => setPin(e.target.value)} />
+              <input type="password" maxLength={6} onKeyDown={e => numberOnly(e)} placeholder='Input 6 angka' value={pin} onChange={e => setPin(e.target.value)} />
               <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
             </div>
           </div>
@@ -192,7 +230,7 @@ function Register() {
           <div className="input-register">
             <p>Kode Akses</p>
             <div>
-              <input type="text" maxLength={6} onKeyDown={e => textOnly(e)} placeholder='Input 6 alphanum' value={kodeAkses} onChange={e => setKodeAkses(e.target.value)} />
+              <input type="password" maxLength={6} onKeyDown={e => textOnly(e)} placeholder='Input 6 alphanum' value={kodeAkses} onChange={e => setKodeAkses(e.target.value)} />
               <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
             </div>
           </div>

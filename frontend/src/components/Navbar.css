@@ -31,7 +31,7 @@
   font-size: 10px;
 }
 
-.navbar > img{
+.navbar img{
   position: relative;
   top: -45px;
   width: 61px;
@@ -41,4 +41,8 @@
 
 #active{
   color: #0A62B0;
+}
+
+#active > svg {
+  transform: translateY(-2px);
 }

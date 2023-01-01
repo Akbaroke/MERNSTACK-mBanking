@@ -47,7 +47,7 @@ function DaftarRekening() {
     let currRtt = navigator.connection.rtt;
     if (currRtt === 0 || currRtt === 2000) {
       setNetwork('offline')
-    } else if (currRtt >= 10 && currRtt <= 300) {
+    } else if (currRtt >= 10 && currRtt <= 600) {
       setNetwork('online')
     } else {
       setNetwork('pending')
@@ -57,8 +57,7 @@ function DaftarRekening() {
   useEffect(() => {
     refreshToken()
     getUsers()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [100]);
+  }, []);
 
   const refreshToken = async () => {
     try {
@@ -100,8 +99,8 @@ function DaftarRekening() {
   }
 
   const verifikasiNomor = () => {
-    let fail = false;
-    if (inputRek1 === '' && inputRek1 === '' && inputRek1 === '') {
+    let isVerified = false;
+    if (inputRek1 === '' && inputRek2 === '' && inputRek3 === '') {
       setMsg('110 - Anda belum menginput no rekening tujuan yang akan didaftarkan.')
       setPopup('error')
       return false
@@ -109,9 +108,9 @@ function DaftarRekening() {
     if (inputRek1 !== '') {
       if (inputRek1.length >= 8) {
         resRek.norek1 = inputRek1
-        fail = false;
+        isVerified = false;
       } else {
-        fail = true;
+        isVerified = true;
       }
     } else {
       resRek.norek1 = null
@@ -119,9 +118,9 @@ function DaftarRekening() {
     if (inputRek2 !== '') {
       if (inputRek2.length >= 8) {
         resRek.norek2 = inputRek2
-        fail = false;
+        isVerified = false;
       } else {
-        fail = true;
+        isVerified = true;
       }
     } else {
       resRek.norek2 = null
@@ -129,9 +128,9 @@ function DaftarRekening() {
     if (inputRek3 !== '') {
       if (inputRek3.length >= 8) {
         resRek.norek3 = inputRek3
-        fail = false;
+        isVerified = false;
       } else {
-        fail = true;
+        isVerified = true;
       }
     } else {
       resRek.norek3 = null
@@ -159,7 +158,7 @@ function DaftarRekening() {
     let obj = findDuplicates(arrSample);
     cekDataRekening(obj);
 
-    if (fail === true) {
+    if (isVerified === true) {
       setMsg('Nomor rekening tujuan harus 10 digit')
       setPopup('error')
     };
