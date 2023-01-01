@@ -53,6 +53,7 @@
 }
 
 .btn-LihatKartu{
+  display: block;
   background-color: #fff;
   border: 1px solid #015A9E;
   border-radius: 8px;

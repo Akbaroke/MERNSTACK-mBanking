@@ -8,7 +8,7 @@ import btnCopy from '../../assets/Svg/btn-copy.svg'
 import btnCopyCheck from '../../assets/Svg/btn-copyCheck.svg'
 import './Profile.css'
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Profile() {
   const navigate = useNavigate();
@@ -107,9 +107,9 @@ function Profile() {
           <img src={user.jenisCard === 'gold' ? goldCard : user.jenisCard === 'platinum' ? platCard : user.jenisCard === 'blue' ? blueCard : ''} alt="" />
           <p>{user.nama}</p>
         </div>
-        <div className="btn-LihatKartu">
+        <Link to='/error' className="btn-LihatKartu">
           <p>Lihat Detail Kartu</p>
-        </div>
+        </Link>
         <div className="nomorKartu">
           <div>
             <p>Nomor Kartu</p>

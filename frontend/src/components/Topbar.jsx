@@ -12,7 +12,7 @@ function Topbar(props) {
       <img src={bcaBlue} alt="bca blue" />
       <div>
         <div className={props.network} ></div>
-        <div onClick={logoutSet} className={(props.logout === 'disable') ? "logout-none" : "logout"}><img src={logoutIcon} alt="logout icon" /></div>
+        <div onClick={logoutSet} style={{ cursor: 'pointer' }} className={(props.logout === 'disable') ? "logout-none" : "logout"}><img src={logoutIcon} alt="logout icon" /></div>
       </div>
     </div>
   )

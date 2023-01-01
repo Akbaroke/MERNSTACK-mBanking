@@ -13,7 +13,7 @@ function ErrorPage() {
       width: '100%',
       minHeight: '90vh'
     },
-    '@media only screen and (min-height: 830px)': {
+    '@media (min-height: 830px)': {
       errorPage: {
         minHeight: '682px'
       },
