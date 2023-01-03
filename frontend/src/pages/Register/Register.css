@@ -1,3 +1,4 @@
+.verifikasi-otp,
 .register{
   background-color: #bebebe;
   width: 100%;
@@ -6,7 +7,14 @@
   padding: 40px 30px;
 }
 
+.verifikasi-otp{
+  background-color: #fff;
+  color: #000;
+  text-align: center;
+}
+
 @media only screen and (min-height: 830px){
+  .verifikasi-otp,
   .register{
     min-height: 682px;
   }
@@ -64,4 +72,57 @@
 .icon-formKode{
   color: #0284C1;
   font-size: 10px;
+}
+
+.verifikasi-otp > p:nth-child(1){
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.verifikasi-otp > p:nth-child(2){
+  max-width: 301px;
+  height: max-content;
+  font-size: 15px;
+  font-weight: 400;
+  margin: 13px 0;
+}
+
+.verifikasi-otp > p:nth-child(3){
+  font-size: 14px;
+  font-weight: 400;
+  color: #9B9B9B;
+  letter-spacing: 0.2mm;
+}
+
+.verifikasi-otp > div {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 29px 0;
+}
+
+.verifikasi-otp > div > input {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  border: 2px solid #B0B0B0;
+  background-color: #fff;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #013682;
+  outline: none;
+}
+
+.verifikasi-otp > :nth-last-child(2){
+  font-size: 14px;
+  font-weight: 400;
+  color: #9B9B9B;
+  margin-bottom: 13px;
+}
+
+.verifikasi-otp > :nth-last-child(1){
+  font-size: 15px;
+  font-weight: 600;
+  color: #015EAB;
 }

@@ -156,3 +156,48 @@ GET http://localhost:5000/listbank
 ###
 POST http://localhost:5000/listBankTerdaftar
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsIm5hbWEiOiJNdWhhbW1hZCBBa2JhciIsImlhdCI6MTY3MjIyMDE0NiwiZXhwIjoxNjcyMjIwMTY2fQ.zhhHYhP220KPGd1B-OJyfzuRPLAemruXyiCiVRVzeuM
+
+
+
+// otp
+###
+POST http://localhost:5000/otp
+Content-Type: application/json
+
+{
+  "nama": "Muhammad Akbar",
+  "emailTo": "akbaroke833@gmail.com",
+  "ip_address": "cdcfee3198addb0ca20e30b83efc064f"
+}
+
+
+// otp cek
+###
+POST http://localhost:5000/otp/ceklimit
+Content-Type: application/json
+
+{
+  "ip_address": "cdcfee3198addb0ca20e30b83efc064f"
+}
+
+// otp auth
+###
+POST http://localhost:5000/otp/auth
+Content-Type: application/json
+
+{
+  "emailTo": "akbaroke833@gmail.com",
+  "otpKode": "7782",
+  "ip_address": "cdcfee3198addb0ca20e30b83efc064f"
+}
+
+
+// cek email
+###
+POST http://localhost:5000/cekemail
+Content-Type: application/json
+
+{
+  "email": "akbaroke833@gmail.com"
+}
+

@@ -16,6 +16,23 @@ export const getInfoUser = async (req, res) => {
   }
 };
 
+// cek email
+export const cekEmailAllReady = async (req, res) => {
+  const { email } = req.body;
+  // cek email
+  try {
+    const response = await Users.findOne({
+      where: {
+        email: email,
+      },
+    });
+    if (response) return res.status(404).json({ msg: 'Email sudah terbakai.' });
+    res.json({ msg: 'Email belum terbakai.' });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // REGISTER
 export const Register = async (req, res) => {
   const { nama, email, password, confPassword, pin, jenis_card, kode_akses, ip_address } = req.body;
