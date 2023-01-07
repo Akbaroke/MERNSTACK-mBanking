@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import loader from '../../assets/Gif/loader.gif'
 import { Link, useNavigate } from 'react-router-dom'
 import TopbarPolos from '../../components/TopbarPolos'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,14 +15,11 @@ function Register() {
   const [msg, setMsg] = useState('')
   const [network, setNetwork] = useState('pending');
   const [page, setPage] = useState(false)
-  const [reqOtp, setReqOtp] = useState(false)
   const [otp, setOtp] = useState('');
   const [limitResendCode, setLimitResendCode] = useState(10)
   const [popup, setPopup] = useState('');
   const [nama, setNama] = useState('')
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [konfPassword, setKonfPassword] = useState('')
   const [pin, setPin] = useState('')
   const [jenisCard, setJenisCard] = useState('')
   const [kodeAkses, setKodeAkses] = useState('')
@@ -99,15 +97,13 @@ function Register() {
       await axios.post('http://localhost:5000/users', {
         nama: nama,
         email: email,
-        password: password,
-        confPassword: password,
         pin: pin,
         jenis_card: jenisCard,
         kode_akses: kodeAkses,
         ip_address: ip
       })
       clearInput()
-      setMsg('Selamat, pendaftaran akun anda telah berhasil. Sekarang anda dapat menggunakan BCA mobile bangking dengan masuk ke menu m-BCA dan memasukan kode akses yang telah di daftarkan dengan perangkat ini.')
+      setMsg('Selamat, pendaftaran akun anda telah berhasil. Sekarang anda dapat menggunakan BAC mobile bangking dengan masuk ke menu m-BAC dan memasukan kode akses yang telah di daftarkan dengan perangkat ini.')
       setPopup('sukses')
 
     } catch (error) {
@@ -118,7 +114,7 @@ function Register() {
   }
 
   const formHandle = () => {
-    if (nama === '' || email === '' || password === '' || konfPassword === '' || pin === '' || jenisCard === '' || kodeAkses === '') {
+    if (nama === '' || email === '' || pin === '' || jenisCard === '' || kodeAkses === '') {
       setMsg('data harus di isi dengan lengkap dan benar.')
       setPopup('error')
       return false
@@ -130,16 +126,6 @@ function Register() {
     }
     if (email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) === null) {
       setMsg('email salah.')
-      setPopup('error')
-      return false
-    }
-    if (password.length < 6) {
-      setMsg('password min.6 karakter')
-      setPopup('error')
-      return false
-    }
-    if (konfPassword !== password) {
-      setMsg('konfirmasi password tidak sama.')
       setPopup('error')
       return false
     }
@@ -162,6 +148,7 @@ function Register() {
         email: email
       })
       setPage(true)
+      setPopup('loading')
       sendReqOtp()
 
     } catch (error) {
@@ -177,8 +164,10 @@ function Register() {
         emailTo: email,
         ip_address: ip
       })
+      setPopup('')
     } catch (error) {
       setLimitResendCode(error.response.data.time);
+      setPopup('')
     }
   }
 
@@ -212,8 +201,6 @@ function Register() {
     setMsg('')
     setNama('')
     setEmail('')
-    setPassword('')
-    setKonfPassword('')
     setPin('')
     setJenisCard('')
     setKodeAkses('')
@@ -274,6 +261,15 @@ function Register() {
           </div>
         </div>
       )
+    } else if (props === 'loading') {
+      return (
+        <div className="popup" style={popup === 'loading' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup" style={{ borderRadius: 10, width: '90%', minHeight: 98, textAlign: 'center', top: 250, backgroundColor: '#fff' }}>
+            <img src={loader} alt="loading" style={{ width: 34, height: 34 }} />
+            <p style={{ height: 12, width: 54, margin: '10px auto', textAlign: 'center', color: '#000' }}>Sending</p>
+          </div>
+        </div>
+      )
     }
   }
 
@@ -293,10 +289,10 @@ function Register() {
       <>
         <div className='topbar-send'>
           <div className='send' onClick={() => { setPage(false); clearInput() }} style={{ position: 'absolute', left: 20, background: 'linear-gradient(to bottom, #B2B2B2, #5E5E5E)' }}>Close</div>
-          <p>BCA mobile</p>
+          <p>BAC mobile</p>
           <div>
             <div className={network}></div>
-            <div className='send' style={{ visibility: otp.length === 4 ? 'visible' : 'hidden' }} onClick={OtpAuth}>Send</div>
+            <div className='send' style={{ visibility: otp.length === 4 ? 'visible' : 'hidden' }} onClick={() => { setPopup('loading'); OtpAuth() }}>Send</div>
           </div>
         </div>
         <div className="verifikasi-otp">
@@ -343,7 +339,7 @@ function Register() {
         <TopbarPolos />
         <div className='topbar-btn'>
           <Link to='/' >Cancel</Link>
-          <div type='submit' onClick={formHandle} >OK</div>
+          <div type='submit' onClick={() => { setPopup('loading'); formHandle() }} >OK</div>
         </div>
         <div className="register">
           <div className="card-register">
@@ -358,20 +354,6 @@ function Register() {
               <p>Email</p>
               <div>
                 <input type="text" onKeyDown={e => textOnly(e)} placeholder='Input email aktif' value={email} onChange={e => setEmail(e.target.value)} />
-                <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
-              </div>
-            </div>
-            <div className="input-register">
-              <p>Password</p>
-              <div>
-                <input type="password" onKeyDown={e => textOnly(e)} placeholder='Input password' value={password} onChange={e => setPassword(e.target.value)} />
-                <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
-              </div>
-            </div>
-            <div className="input-register">
-              <p>Konfirm Password</p>
-              <div>
-                <input type="password" onKeyDown={e => textOnly(e)} placeholder='Input ulang password' value={konfPassword} onChange={e => setKonfPassword(e.target.value)} />
                 <FontAwesomeIcon className='icon-formKode' icon={faChevronRight} />
               </div>
             </div>

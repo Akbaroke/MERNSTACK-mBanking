@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import loader from '../../assets/Gif/loader.gif'
 import Navbar from '../../components/Navbar'
 import axios from 'axios';
 import jwt_decode from 'jwt-decode'
@@ -99,6 +100,7 @@ function DaftarRekening() {
   }
 
   const verifikasiNomor = () => {
+    setPopup('loading')
     let isVerified = false;
     if (inputRek1 === '' && inputRek2 === '' && inputRek3 === '') {
       setMsg('110 - Anda belum menginput no rekening tujuan yang akan didaftarkan.')
@@ -203,6 +205,7 @@ function DaftarRekening() {
     }
     setArrRek(arrDataRekening)
     setPage(true)
+    setPopup('')
   }
 
   const Popup = (props) => {
@@ -240,6 +243,15 @@ function DaftarRekening() {
             <div className="action">
               <div onClick={() => { setPopup(''); clearRefresh(); navigate('/m-Transfer') }}><BtnBig label="OK" /></div>
             </div>
+          </div>
+        </div>
+      )
+    } else if (props === 'loading') {
+      return (
+        <div className="popup" style={popup === 'loading' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup" style={{ borderRadius: 10, width: '90%', minHeight: 98, textAlign: 'center', top: 250, backgroundColor: '#fff' }}>
+            <img src={loader} alt="loading" style={{ width: 34, height: 34 }} />
+            <p style={{ height: 12, width: 54, margin: '10px auto', textAlign: 'center', color: '#000' }}>Sending</p>
           </div>
         </div>
       )
@@ -282,8 +294,7 @@ function DaftarRekening() {
   }
 
   const kirimNomorRekening = async () => {
-    console.log(reqNorek);
-    setPopup('')
+    setPopup('loading')
     if (reqNorek[0] === null && reqNorek[1] === null && reqNorek[2] === null) {
       setMsg('112 - Anda belum memilih No. Rekening Tujuan yang akan didaftarkan.')
       setPopup('error')
@@ -358,7 +369,7 @@ function DaftarRekening() {
         <p>m-Transfer</p>
         <div>
           <div className={network}></div>
-          <div className='send' style={{ visibility: page === '' ? 'visible' : btnSendVis }} onClick={page === '' ? verifikasiNomor : () => { console.log(reqNorek); setPopup('pin') }}>Send</div>
+          <div className='send' style={{ visibility: page === '' ? 'visible' : btnSendVis }} onClick={page === '' ? verifikasiNomor : () => { setPopup('pin') }}>Send</div>
         </div>
       </div>
       {page === '' ? FormDaftarRekening() : ValidasiDataTransfer()}

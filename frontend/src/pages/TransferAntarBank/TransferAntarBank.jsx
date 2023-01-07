@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import loader from '../../assets/Gif/loader.gif'
 import axios from 'axios';
 import jwt_decode from 'jwt-decode'
 import Navbar from '../../components/Navbar';
@@ -21,7 +22,7 @@ function TransferAntarBank() {
   const [searchFilter, setSearchFilter] = useState('')
   const [msg, setMsg] = useState('')
   const [pin, setPin] = useState('')
-  const [popup, setPopup] = useState('');
+  const [popup, setPopup] = useState('loading');
   const [layanan, setLayanan] = useState('-PILIH-');
   const [berita, setBerita] = useState('');
   const [noRek_tujuan, setNoRek_tujuan] = useState('0');
@@ -46,6 +47,12 @@ function TransferAntarBank() {
     setLayanan('-PILIH-')
     setBerita('')
   }, [bank])
+
+  useEffect(() => {
+    if (user.noRek !== '' && expire !== '' && network !== '' && listBank !== []) {
+      setPopup('')
+    }
+  }, [user.noRek, expire, network])
 
   const refreshToken = async () => {
     try {
@@ -167,7 +174,7 @@ function TransferAntarBank() {
         <div className="popup" style={popup === 'sukses' ? { display: 'block' } : { display: 'none' }}>
           <div className="card-popup" >
             <p style={{ fontSize: 14, fontWeight: 500, }} >m-Transfer</p>
-            <p style={{ display: 'block', height: 204, width: 187, marginTop: 17, textAlign: 'left' }}>{msg}</p>
+            <div style={{ display: 'block', height: 204, width: 187, marginTop: 17, textAlign: 'left', color: '#085192' }}>{msg}</div>
             <div className="action">
               <div onClick={() => { setPopup(''); navigate('/m-Transfer') }}><Btn label="OK" /></div>
             </div>
@@ -221,6 +228,15 @@ function TransferAntarBank() {
           </div>
         </div>
       )
+    } else if (props === 'loading') {
+      return (
+        <div className="popup" style={popup === 'loading' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup" style={{ borderRadius: 10, width: '90%', minHeight: 98, textAlign: 'center', top: 250, backgroundColor: '#fff' }}>
+            <img src={loader} alt="loading" style={{ width: 34, height: 34 }} />
+            <p style={{ height: 12, width: 54, margin: '10px auto', textAlign: 'center', color: '#000' }}>Sending</p>
+          </div>
+        </div>
+      )
     }
   }
 
@@ -259,7 +275,6 @@ function TransferAntarBank() {
   let sampleListNorek = [];
   let objRek = [];
   const getInfoNorek = async () => {
-    console.log(objRek);
     for (let i in objRek) {
       const response = await axios.post('http://localhost:5000/infonorek', {
         norek: objRek[i].no_rek
@@ -267,7 +282,7 @@ function TransferAntarBank() {
       sampleListNorek.push(response.data)
     }
     setListNorekTerdaftar(sampleListNorek);
-    console.log(sampleListNorek);
+    setPopup('')
   }
 
   const getListnorekTerdaftar = async () => {
@@ -281,12 +296,11 @@ function TransferAntarBank() {
       return false
     }
     objRek = response.data
-    console.log(response.data);
-    console.log(listNorekTerdaftar);
     getInfoNorek()
   }
 
   const handelKirim = () => {
+    setPopup('loading')
     // cek rekening
     if (noRek_tujuan === '') {
       setMsg('Silahkan pilih rekening tujuan')
@@ -311,13 +325,13 @@ function TransferAntarBank() {
   }
 
   const cekPin = () => {
+    setPopup('loading')
     if (pin !== user.pin.toString()) {
       setMsg('PIN salah.')
       setPopup('error')
       return false
     }
     kirimTransfer()
-    console.log('kirim');
   }
 
   // Date time
@@ -430,6 +444,7 @@ function TransferAntarBank() {
   }
 
   const handelClickRekTujuan = () => {
+    setPopup('loading')
     if (bank !== '') {
       setPage('pilihNomerRekening')
       refreshToken()

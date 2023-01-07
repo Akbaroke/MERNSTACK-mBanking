@@ -18,25 +18,93 @@ html,body{
   overflow: hidden;
 }
 
-.bg > img{
-  max-width: 360px;
-  max-height: 800px;
-  object-fit: cover;
-  position: fixed;
-  z-index: -1;
-  top: 0;
+.bg{
+  position: relative;
+  background: radial-gradient(118.44% 61.93% at 50% 38.07%, #FFFFFF 0%, #387FBF 8.85%, #194981 42.19%, #032356 66.67%);
+  width: 100%;
+  min-height: 100vh;
 }
+
+#logo-bacWhite{
+  display: block;
+  width: 220px;
+  margin: auto;
+  margin-bottom: 40px;
+}
+
+.bg-bottom{
+  position: absolute;
+  width: 100%;
+  height: 487px;
+  left: -1px;
+  bottom: -100px;
+}
+
+.bg-bottom > img{
+  width: 100%;
+  height: 100%;
+}
+
+.btn-login{
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 85vh;
+  padding-top: 70px;
+}
+.footer{
+  position: absolute;
+  z-index: 1;
+  background: linear-gradient(180deg, #FFFFFF 0%, #9EACC0 45.65%, #7085A2 76.89%);
+  width: 100%;
+  height: 58.88px;
+  bottom: 0;
+  text-align: center;
+  padding: 20px;
+  color: #fff;
+  font-weight: 400;
+  font-size: 16px;
+  font-family: 'Arial';
+}
+.footer > span{
+  font-style: italic;
+}
+
+.btn-about{
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  z-index: 2;
+  cursor: pointer;
+}
+
+@media only screen and (min-height: 830px){
+  .bg{
+    min-height: 741px;
+  }
+  .btn-login{
+    padding-top: 100px;
+  }
+  .bg-bottom{
+    bottom: 0;
+  }
+  #logo-abcWhite{
+    margin-bottom: 50px;
+  }
+}
+
 
 .card{
   max-width: 289px;
   max-height: 209px;
-  margin: 200px auto;
+  margin: 0 auto;
   background-color: #fff;
   border-radius: 10px;
   padding: 4px;
   display: flex;
   flex-direction: column;
   gap: 3px;
+  margin-bottom: 10%;
 }
 
 .button{
@@ -72,9 +140,8 @@ html,body{
 .op{
   max-width: 277px;
   height: 145px;
-  margin: 0 auto;
   position: relative;
-  top: -150px;
+  margin: 0 auto;
 }
 
 .button-op{

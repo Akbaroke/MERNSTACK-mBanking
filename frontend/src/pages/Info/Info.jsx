@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import loader from '../../assets/Gif/loader.gif'
 import axios from 'axios';
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom';
@@ -12,11 +13,12 @@ import './Info.css'
 
 
 function Info() {
-  const [popup, setPopup] = useState('');
+  const [popup, setPopup] = useState('loading');
+  const [isImageLoad, setIsImageLoad] = useState(false)
   const [msg, setMsg] = useState('')
   const [token, setToken] = useState('')
   const [expire, setExpire] = useState('')
-  const [network, setNetwork] = useState('pending');
+  const [network, setNetwork] = useState('');
   const [users, setUsers] = useState([])
   const [saldo, setSaldo] = useState("0")
   const [noRek, setNoRek] = useState("-")
@@ -26,6 +28,12 @@ function Info() {
     refreshToken()
     getDataUser();
   }, []);
+
+  useEffect(() => {
+    if (network !== '' && isImageLoad) {
+      setPopup('')
+    }
+  }, [network, isImageLoad])
 
   setInterval(() => {
     let currRtt = navigator.connection.rtt;
@@ -91,7 +99,6 @@ function Info() {
     }
     getUsers()
     setPopup('saldo')
-    console.log(timeNow());
   }
 
   // Rupiah format
@@ -149,6 +156,15 @@ function Info() {
           </div>
         </div>
       )
+    } else if (props === 'loading') {
+      return (
+        <div className="popup" style={popup === 'loading' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup" style={{ borderRadius: 10, width: '90%', minHeight: 98, textAlign: 'center', top: 250, backgroundColor: '#fff' }}>
+            <img src={loader} alt="loading" style={{ width: 34, height: 34 }} />
+            <p style={{ height: 12, width: 54, margin: '10px auto', textAlign: 'center', color: '#000' }}>Sending</p>
+          </div>
+        </div>
+      )
     }
   }
 
@@ -160,11 +176,11 @@ function Info() {
       <div className="m-info">
         <div className="card-info">
           <div className="header-info">
-            <img src={mInfo} alt="icon" />
+            <img src={mInfo} alt="icon" onLoad={() => setIsImageLoad(true)} />
             <p>m-Info</p>
           </div>
           <div className="menu-info">
-            <div onClick={handlePopupSaldo} className="list-info">
+            <div onClick={() => { setPopup('loading'); handlePopupSaldo() }} className="list-info">
               <p>Info Saldo</p>
               <FontAwesomeIcon icon={faChevronRight} />
             </div>

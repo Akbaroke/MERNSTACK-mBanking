@@ -12,12 +12,10 @@ Content-Type: application/json
 {
   "nama": "joko",
   "email": "joko01@gmail.com",
-  "password": "123",
-  "confPassword": "123",
   "pin": "123456",
   "jenis_card": "blue",
   "kode_akses": "joko01",
-  "ip_address": "182.2.133.21"
+  "ip_address": "cdcfee3198addb0ca20e30b83efc064f"
 }
 
 
@@ -166,7 +164,7 @@ Content-Type: application/json
 
 {
   "nama": "Muhammad Akbar",
-  "emailTo": "akbaroke833@gmail.com",
+  "emailTo": "akbar833oke@gmail.com",
   "ip_address": "cdcfee3198addb0ca20e30b83efc064f"
 }
 

@@ -17,3 +17,21 @@ export const useGlobalState = create((set) => {
       }),
   };
 });
+
+export const useGlobalStateLoader = create((set) => {
+  return {
+    isLoading: false,
+    loadingSet: () =>
+      set(() => {
+        return {
+          isLoading: true,
+        };
+      }),
+    loadingUnset: () =>
+      set(() => {
+        return {
+          isLoading: false,
+        };
+      }),
+  };
+});

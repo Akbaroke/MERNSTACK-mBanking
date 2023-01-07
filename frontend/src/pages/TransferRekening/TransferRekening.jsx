@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import loader from '../../assets/Gif/loader.gif'
 import Navbar from '../../components/Navbar'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +13,7 @@ import './TransferRekening.css'
 function TransferRekening() {
   const [network, setNetwork] = useState('pending');
   const [msg, setMsg] = useState('')
-  const [popup, setPopup] = useState('');
+  const [popup, setPopup] = useState('loading');
   const [page, setPage] = useState(false);
   const [token, setToken] = useState('')
   const [expire, setExpire] = useState('')
@@ -40,6 +41,12 @@ function TransferRekening() {
   useEffect(() => {
     getListnorekTerdaftar()
   }, [])
+
+  useEffect(() => {
+    if (user.noRek !== '' && expire !== '' && network !== '') {
+      setPopup('')
+    }
+  }, [user.noRek, expire, network])
 
   const refreshToken = async () => {
     console.log("refresh");
@@ -106,7 +113,9 @@ function TransferRekening() {
       sampleListNorek.push(response.data)
     }
     setListNorekTerdaftar(sampleListNorek);
-    console.log(sampleListNorek);
+    if (sampleListNorek !== []) {
+      setPopup('')
+    }
   }
 
   setInterval(() => {
@@ -159,7 +168,7 @@ function TransferRekening() {
         <div className="popup" style={popup === 'sukses' ? { display: 'block' } : { display: 'none' }}>
           <div className="card-popup" >
             <p style={{ fontSize: 14, fontWeight: 500, }} >m-Transfer</p>
-            <p style={{ display: 'block', height: 204, width: 187, marginTop: 17, textAlign: 'left' }}>{msg}</p>
+            <div style={{ display: 'block', height: 204, width: 187, marginTop: 17, textAlign: 'left', color: '#085192' }}>{msg}</div>
             <div className="action">
               <div onClick={() => { setPopup(''); navigate('/m-Transfer') }}><Btn label="OK" /></div>
             </div>
@@ -191,6 +200,15 @@ function TransferRekening() {
               <div onClick={() => { setPopup(''); setBerita(berita) }}><Btn label="Cancel" /></div>
               <div onClick={() => { setPopup(''); setBerita(berita) }}><Btn label="OK" /></div>
             </div>
+          </div>
+        </div>
+      )
+    } else if (props === 'loading') {
+      return (
+        <div className="popup" style={popup === 'loading' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup" style={{ borderRadius: 10, width: '90%', minHeight: 98, textAlign: 'center', top: 250, backgroundColor: '#fff' }}>
+            <img src={loader} alt="loading" style={{ width: 34, height: 34 }} />
+            <p style={{ height: 12, width: 54, margin: '10px auto', textAlign: 'center', color: '#000' }}>Sending</p>
           </div>
         </div>
       )
@@ -230,7 +248,7 @@ function TransferRekening() {
             <p>Dari Rekening:</p>
             <p>{user.noRek}</p>
           </div>
-          <div onClick={() => { setPage(true); getInfoNorek() }} className="list-formTransfer">
+          <div onClick={() => { setPage(true); setPopup('loading'); getInfoNorek() }} className="list-formTransfer">
             <div>
               <p>Ke Rekening:</p>
               <p>{norekTujuan}</p>
@@ -310,6 +328,13 @@ function TransferRekening() {
       setPopup('error')
       return false
     }
+
+    //cek network
+    if (network !== 'online') {
+      setMsg('Transaksi dapat dilakukan setelah lampu indikator berwarna hijau.')
+      setPopup('error')
+      return false
+    }
     setPopup('pin')
   }
 
@@ -319,8 +344,8 @@ function TransferRekening() {
       setPopup('error')
       return false
     }
+    setPopup('loading')
     kirimTransfer()
-    console.log('kirim');
   }
 
   // Date time
@@ -372,7 +397,7 @@ function TransferRekening() {
         <p>m-Transfer</p>
         <div>
           <div className={network}></div>
-          <div className='send' style={{ visibility: page === false ? 'visible' : 'hidden' }} onClick={handelKirim}>Send</div>
+          <div className='send' style={{ visibility: page === false ? 'visible' : 'hidden' }} onClick={() => { setPopup('loading'); handelKirim() }}>Send</div>
         </div>
       </div>
       {page === false ? FormDataTrasnfer() : PilihNomorRekening()}

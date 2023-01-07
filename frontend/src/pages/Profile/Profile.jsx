@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import loader from '../../assets/Gif/loader.gif'
 import jwt_decode from 'jwt-decode'
 import Navbar from '../../components/Navbar';
 import blueCard from '../../assets/Svg/card-blue.svg'
@@ -8,10 +9,13 @@ import btnCopy from '../../assets/Svg/btn-copy.svg'
 import btnCopyCheck from '../../assets/Svg/btn-copyCheck.svg'
 import './Profile.css'
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import BtnBig from '../../components/BtnBig';
 
 function Profile() {
   const navigate = useNavigate();
+  const [isImageLoad, setIsImageLoad] = useState(false)
+  const [popup, setPopup] = useState('loading');
   const [iconCopy, setInconCopy] = useState(btnCopy);
   const [network, setNetwork] = useState('pending');
   const [token, setToken] = useState('')
@@ -35,6 +39,12 @@ function Profile() {
     refreshToken()
     getUsers()
   }, []);
+
+  useEffect(() => {
+    if (user !== '' && expire !== '' && network !== '' && isImageLoad) {
+      setPopup('')
+    }
+  }, [user, expire, network, isImageLoad])
 
   const refreshToken = async () => {
     try {
@@ -91,8 +101,33 @@ function Profile() {
     }, 3000);
   }
 
+  const Popup = (props) => {
+    if (props === 'loading') {
+      return (
+        <div className="popup" style={popup === 'loading' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup" style={{ borderRadius: 10, width: '90%', minHeight: 98, textAlign: 'center', top: 250, backgroundColor: '#fff' }}>
+            <img src={loader} alt="loading" style={{ width: 34, height: 34 }} />
+            <p style={{ height: 12, width: 54, margin: '10px auto', textAlign: 'center', color: '#000' }}>Sending</p>
+          </div>
+        </div>
+      )
+    } else if (props === 'error') {
+      return (
+        <div className="popup-error" style={props === 'error' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup">
+            <p>Mohon maaf fitur ini sedang dalam tahap pengembangan.</p>
+            <div className="action">
+              <div onClick={() => { setPopup('') }}><BtnBig label="Back" /></div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+  }
+
   return (
     <div className='container'>
+      {Popup(popup)}
       <div className='topbar-send'>
         <p>Akun Saya</p>
         <div>
@@ -102,20 +137,20 @@ function Profile() {
       </div>
       <div className="profile">
         <p>Jenis Kartu</p>
-        <p>Paspor BCA {user.jenisCard}</p>
+        <p>Paspor BAC {user.jenisCard}</p>
         <div className='pasporCard'>
-          <img src={user.jenisCard === 'gold' ? goldCard : user.jenisCard === 'platinum' ? platCard : user.jenisCard === 'blue' ? blueCard : ''} alt="" />
+          <img src={user.jenisCard === 'gold' ? goldCard : user.jenisCard === 'platinum' ? platCard : user.jenisCard === 'blue' ? blueCard : ''} alt={user.jenisCard} onLoad={() => setIsImageLoad(true)} />
           <p>{user.nama}</p>
         </div>
-        <Link to='/error' className="btn-LihatKartu">
+        <div onClick={() => { setPopup('error') }} className="btn-LihatKartu">
           <p>Lihat Detail Kartu</p>
-        </Link>
+        </div>
         <div className="nomorKartu">
           <div>
             <p>Nomor Kartu</p>
             <p>{formatNoCardSpasi(user.noCard)}</p>
           </div>
-          <img src={iconCopy} alt="" onClick={handleBtnCopy} />
+          <img src={iconCopy} alt="copy" onClick={handleBtnCopy} onLoad={() => setIsImageLoad(true)} />
         </div>
       </div>
       <Navbar active="akun" />

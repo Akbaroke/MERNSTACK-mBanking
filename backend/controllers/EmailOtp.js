@@ -26,21 +26,23 @@ export const sendOtpEmail = async (req, res) => {
     },
   });
 
+  let arraOtp = otp.toString().split('');
+
   // define the email options
   const mailOptions = {
     from: '"Verifikasi OTP" <botprogram123@gmail.com>',
     to: emailTo,
-    subject: 'OTP Email',
+    subject: 'Verifikasi OTP',
     text: `Your OTP is: ${otp}`,
-    html: `<div style="display: blok; box-sizing: border-box; position: relative; max-width: 585px; height: max-content; border: 1px solid #015a9e; border-radius: 10px; margin: auto; text-align: center; padding: 30px">
-    <img src="https://cdn.discordapp.com/attachments/1015028360759492710/1059627735078682734/logobca.png" alt="" style="width: 110px; margin-bottom: 4px" />
+    html: `<div style="display: blok; box-sizing: border-box; position: relative; max-width: 585px; height: max-content; border: 1px solid #015a9e; border-radius: 10px; margin: auto; text-align: center; padding: 30px; box-shadow: 4px 4px 4px #00000040;background-color: #f8f8f8;">
+    <img src="https://cdn.discordapp.com/attachments/1015028360759492710/1060162936921927690/bacBlue.png" alt="" style="width: 110px; margin-bottom: 4px" />
     <p style="font-family: Roboto, Arial, Helvetica, sans-serif; font-weight: 600; font-style: italic; font-size: 14px; color: #000; text-transform: capitalize">Hai ${nama},</p>
     <p style="font-family: Roboto, Arial, Helvetica, sans-serif; font-weight: 600; font-style: italic; font-size: 14px; color: #000">Kode Verifikasi (OTP) BCA mobile kamu:</p>
-    <div style="width: 212px; height: 65px; text-align: center; background-color: #f4f4f4; border: 2px solid #013682; border-radius: 10px; box-sizing: border-box; padding: 6px 25px; margin: auto; margin-top: 30px">
-      <p style="color: #013682; font-size: 36px; font-weight: 700; letter-spacing: 7mm; height: max-content; display: contents">${otp}</p>
+    <div style="width: 176px; height: 65px; text-align: center; background-color: #f4f4f4; border: 2px solid #013682; border-radius: 10px; box-sizing: border-box; padding: 6px 10px; margin: auto; margin-top: 30px">
+      <p style="color: #013682; font-size: 36px; font-weight: 700; width: 212px; height: max-content; display: contents; text-align: center"><span style="padding: 0 10px;">${arraOtp[0]}</span><span style="padding: 0 10px;">${arraOtp[1]}</span><span style="padding: 0 10px;">${arraOtp[2]}</span><span style="padding: 0 10px;">${arraOtp[3]}</span></p>
     </div>
-    <p style="font-family: Roboto, Arial, Helvetica, sans-serif; font-weight: 600; font-style: italic; font-size: 14px; max-width: 420px; line-height: 7mm; margin: auto; margin-top: 25px; color: #000">
-      Berlaku selama 15 menit. JANGAN BERI kode ini ke siapa pun, TERMASUK ADMIN BCA.
+    <p style="font-family: Roboto, Arial, Helvetica, sans-serif; font-weight: 600; font-size: 14px; max-width: 420px; line-height: 7mm; margin: auto; margin-top: 25px; color: #000">
+      Berlaku selama 5 menit. JANGAN BERI kode ini ke siapa pun, TERMASUK ADMIN BAC.
     </p>
   </div>`,
   };
@@ -48,7 +50,7 @@ export const sendOtpEmail = async (req, res) => {
   const date = new Date();
   const timestamp = date.getTime();
   const fifteenSecondsInMilliseconds = 1 * 60 * 1000;
-  const fifteenMinutesInMilliseconds = 15 * 60 * 1000;
+  const fifteenMinutesInMilliseconds = 5 * 60 * 1000;
   const expiredTime = timestamp + fifteenMinutesInMilliseconds;
   const limitRequestTime = timestamp + fifteenSecondsInMilliseconds;
 
@@ -205,5 +207,5 @@ export const authOtpEmail = async (req, res) => {
     },
   });
 
-  res.json({ msg: 'sukses' });
+  res.json({ msg: 'success' });
 };

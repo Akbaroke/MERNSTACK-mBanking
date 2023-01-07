@@ -3,22 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import BtnBig from '../../components/BtnBig'
 import TopbarPolos from '../../components/TopbarPolos'
 import Navbar from '../../components/Navbar';
+import './ErrorPage.css'
 
 function ErrorPage() {
   const navigate = useNavigate();
-
-  const styles = {
-    errorPage: {
-      backgroundColor: '#B4B4B4',
-      width: '100%',
-      minHeight: '90vh'
-    },
-    '@media (min-height: 830px)': {
-      errorPage: {
-        minHeight: '682px'
-      },
-    },
-  };
 
   return (
     <div className="container">
@@ -31,7 +19,7 @@ function ErrorPage() {
         </div>
       </div>
       <TopbarPolos />
-      <div style={styles.errorPage}></div>
+      <div className='error-page'></div>
       <Navbar />
     </div>
   )

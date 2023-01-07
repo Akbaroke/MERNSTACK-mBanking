@@ -1,0 +1,13 @@
+.error-page{
+  background-color: #B4B4B4;
+  width: 100%;
+  min-height: 90vh;
+  color: #fff;
+  padding: 40px 30px;
+}
+
+@media only screen and (min-height: 830px){
+  .error-page{
+    min-height: 682px;
+  }
+}

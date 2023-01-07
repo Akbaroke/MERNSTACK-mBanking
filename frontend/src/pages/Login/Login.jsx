@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import bg from '../../assets/Svg/bg.svg'
-import mbca from '../../assets/Svg/mbca.svg'
-import klikbca from '../../assets/Svg/klikbca.svg'
-import infobca from '../../assets/Svg/infobca.svg'
-import './Login.css'
 import { Link, useNavigate } from 'react-router-dom';
 import Btn from '../../components/Btn'
 import axios from 'axios';
 import BtnBig from '../../components/BtnBig'
 import Logout from '../Logout'
 import { DeviceUUID } from 'device-uuid'
+import bgBottom from '../../assets/Svg/bg-bottom.svg'
+import mBac from '../../assets/Svg/m-bac.svg'
+import klikBac from '../../assets/Svg/klik-bac.svg'
+import infoBac from '../../assets/Svg/info-bac.svg'
+import bacWhite from '../../assets/Svg/bac-white.svg'
+import btnAbout from '../../assets/Svg/btn-info.svg'
+import './Login.css'
 
 
 const Login = () => {
@@ -108,17 +110,24 @@ const Login = () => {
   return (
     <div className='container'>
       {Popup(popup)}
-      <div className="card">
-        <div onClick={() => setPopup('kodeakses')} className="button"><img src={mbca} alt="bg-bottom" /><p>m-BCA</p></div>
-        <div className="button"><img src={klikbca} alt="bg-bottom" /><p>KlikBCA</p></div>
-        <div className="button"><img src={infobca} alt="bg-bottom" /><p>Info BCA</p></div>
+      <div className="bg">
+        <div className="btn-about" onClick={() => navigate('/error')} ><img src={btnAbout} alt="btnAbout" /></div>
+        <div className='btn-login'>
+          <img id='logo-bacWhite' src={bacWhite} alt="abc-logo" />
+          <div className="card">
+            <div onClick={() => setPopup('kodeakses')} className="button"><img src={mBac} alt="bg-bottom" /><p>m-BAC</p></div>
+            <div onClick={() => navigate('/error')} className="button"><img src={klikBac} alt="bg-bottom" /><p>KlikBAC</p></div>
+            <div onClick={() => navigate('/error')} className="button"><img src={infoBac} alt="bg-bottom" /><p>Info BAC</p></div>
+          </div>
+          <div className="op">
+            <Link to="/buka-rekening" className="button-op">Buka Rekening Baru</Link>
+            <Link to="/ganti-kode" className="button-op">Ganti Kode Akses</Link>
+            <Link to="/error" className="button-op">Info Bac</Link>
+          </div>
+        </div>
+        <div className="footer">Selamat datang di <span>BAC mobile</span></div>
+        <div className="bg-bottom"><img src={bgBottom} alt="bg-bottom" /></div>
       </div>
-      <div className="op">
-        <Link to="/buka-rekening" className="button-op">Buka Rekening Baru</Link>
-        <Link to="/ganti-kode" className="button-op">Ganti Kode Akses</Link>
-        <Link to="/" className="button-op">Info Bca</Link>
-      </div>
-      <div className="bg"><img src={bg} alt="bg-bottom" /></div>
     </div>
   )
 }

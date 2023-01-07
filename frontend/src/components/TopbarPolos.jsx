@@ -17,7 +17,7 @@ const style2 = {
 function TopbarPolos() {
   return (
     <div style={style1}>
-      <p style={style2}>BCA mobile</p>
+      <p style={style2}>BAC mobile</p>
     </div>
   )
 }

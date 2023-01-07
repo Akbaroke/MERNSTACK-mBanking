@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 
 function TransferList() {
   const [network, setNetwork] = useState('pending');
+
   setInterval(() => {
     let currRtt = navigator.connection.rtt;
     if (currRtt === 0 || currRtt === 2000) {
@@ -19,6 +20,7 @@ function TransferList() {
       setNetwork('pending')
     }
   }, 500);
+
   return (
     <div className='container'>
       <Topbar logout='disable' network={network} />

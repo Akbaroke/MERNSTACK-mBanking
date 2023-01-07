@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import loader from '../../assets/Gif/loader.gif'
 import axios from 'axios';
 import jwt_decode from 'jwt-decode'
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +12,7 @@ import Navbar from '../../components/Navbar';
 
 function DaftarAntarBank() {
   const [msg, setMsg] = useState('')
-  const [popup, setPopup] = useState('');
+  const [popup, setPopup] = useState('loading');
   const [token, setToken] = useState('')
   const [expire, setExpire] = useState('')
   const [pinUser, setPinUser] = useState('')
@@ -29,6 +30,12 @@ function DaftarAntarBank() {
     getListBank()
     getUsers()
   }, []);
+
+  useEffect(() => {
+    if (userId !== '' && expire !== '' && network !== '' && listBank !== []) {
+      setPopup('')
+    }
+  }, [userId, expire, network, listBank])
 
   setInterval(() => {
     let currRtt = navigator.connection.rtt;
@@ -92,8 +99,8 @@ function DaftarAntarBank() {
     setPin('')
   }
 
-
   const daftarAntarBank = async () => {
+    setPopup('loading')
     if (parseInt(pin) !== parseInt(pinUser)) {
       setPin('')
       setMsg('Gagal - pin anda salah.')
@@ -111,8 +118,6 @@ function DaftarAntarBank() {
       clearInput()
       setMsg('No.Rekening Tujuan Bank Lain berhasil didaftarkan No.Rekening Tujuan otomatis tampil di Daftar Transfer pada Menu Transfer Antar Bank.')
       setPopup('sukses')
-      console.log(msg);
-
     } catch (error) {
       clearInput()
       setMsg(error.response.data.msg);
@@ -121,6 +126,7 @@ function DaftarAntarBank() {
   }
 
   const showInfoRekTujuan = async () => {
+    setPopup('loading')
     if (network !== 'online') {
       setMsg('Transaksi dapat dilakukan setelah lampu indikator berwarna hijau.')
       setPopup('error')
@@ -212,6 +218,15 @@ function DaftarAntarBank() {
             {listBank.map(bank => (
               <div key={bank.bank_code.replaceAll('_', ' ')} onClick={() => { setBank(bank.code) }} >{bank.code.replaceAll('_', ' ')}</div>
             ))}
+          </div>
+        </div>
+      )
+    } else if (props === 'loading') {
+      return (
+        <div className="popup" style={popup === 'loading' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup" style={{ borderRadius: 10, width: '90%', minHeight: 98, textAlign: 'center', top: 250, backgroundColor: '#fff' }}>
+            <img src={loader} alt="loading" style={{ width: 34, height: 34 }} />
+            <p style={{ height: 12, width: 54, margin: '10px auto', textAlign: 'center', color: '#000' }}>Sending</p>
           </div>
         </div>
       )
