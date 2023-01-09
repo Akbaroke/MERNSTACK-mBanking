@@ -172,7 +172,13 @@ function Info() {
   return (
     <div className='container'>
       {Popup(popup)}
-      <Topbar logout='disable' network={network} />
+      <div className='topbar-send'>
+        <p>m-Info</p>
+        <div>
+          <div className={network}></div>
+          <div className='send' style={{ visibility: 'hidden' }}></div>
+        </div>
+      </div>
       <div className="m-info">
         <div className="card-info">
           <div className="header-info">

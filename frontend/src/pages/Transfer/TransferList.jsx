@@ -23,7 +23,13 @@ function TransferList() {
 
   return (
     <div className='container'>
-      <Topbar logout='disable' network={network} />
+      <div className='topbar-send'>
+        <p>m-Transfer</p>
+        <div>
+          <div className={network}></div>
+          <div className='send' style={{ visibility: 'hidden' }}></div>
+        </div>
+      </div>
       <div className="m-transfer">
         <div className="card-transfer">
           <div className="header-transfer">

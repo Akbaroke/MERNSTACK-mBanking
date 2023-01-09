@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import loader from '../../assets/Gif/loader.gif'
 import { Link, useNavigate } from 'react-router-dom';
 import Btn from '../../components/Btn'
 import axios from 'axios';
@@ -16,9 +17,10 @@ import './Login.css'
 
 const Login = () => {
   const [ip, setIp] = useState("");
-  const [popup, setPopup] = useState('');
+  const [popup, setPopup] = useState('loading');
   const [codeAkses, setCodeAkses] = useState('');
   const [msg, setMsg] = useState('');
+  const [isImageLoad, setIsImageLoad] = useState(false)
   const navigate = useNavigate();
 
 
@@ -54,6 +56,12 @@ const Login = () => {
     getDataIp()
     Logout()
   })
+
+  useEffect(() => {
+    if (isImageLoad) {
+      setPopup('')
+    }
+  }, [isImageLoad])
 
   const authKodeAkses = async () => {
     if (codeAkses.length !== 6) {
@@ -104,6 +112,15 @@ const Login = () => {
           </div>
         </div>
       )
+    } else if (props === 'loading') {
+      return (
+        <div className="popup" style={popup === 'loading' ? { display: 'block' } : { display: 'none' }}>
+          <div className="card-popup" style={{ borderRadius: 10, width: '90%', minHeight: 98, textAlign: 'center', top: 250, backgroundColor: '#fff' }}>
+            <img src={loader} alt="loading" style={{ width: 34, height: 34 }} />
+            <p style={{ height: 12, width: 54, margin: '10px auto', textAlign: 'center', color: '#000' }}>Sending</p>
+          </div>
+        </div>
+      )
     }
   }
 
@@ -111,18 +128,18 @@ const Login = () => {
     <div className='container'>
       {Popup(popup)}
       <div className="bg">
-        <div className="btn-about" onClick={() => navigate('/error')} ><img src={btnAbout} alt="btnAbout" /></div>
+        <Link to='/about' className="btn-about" ><img src={btnAbout} alt="btnAbout" onLoad={() => setIsImageLoad(true)} /></Link>
         <div className='btn-login'>
-          <img id='logo-bacWhite' src={bacWhite} alt="abc-logo" />
+          <img id='logo-bacWhite' src={bacWhite} alt="abc-logo" onLoad={() => setIsImageLoad(true)} />
           <div className="card">
-            <div onClick={() => setPopup('kodeakses')} className="button"><img src={mBac} alt="bg-bottom" /><p>m-BAC</p></div>
-            <div onClick={() => navigate('/error')} className="button"><img src={klikBac} alt="bg-bottom" /><p>KlikBAC</p></div>
-            <div onClick={() => navigate('/error')} className="button"><img src={infoBac} alt="bg-bottom" /><p>Info BAC</p></div>
+            <div onClick={() => setPopup('kodeakses')} className="button"><img src={mBac} alt="bg-bottom" onLoad={() => setIsImageLoad(true)} /><p>m-BAC</p></div>
+            <div onClick={() => { setMsg('Mohon maaf fitur ini sedang dalam tahap pengembangan.'); setPopup('error') }} className="button"><img src={klikBac} alt="bg-bottom" onLoad={() => setIsImageLoad(true)} /><p>KlikBAC</p></div>
+            <div onClick={() => { setMsg('Mohon maaf fitur ini sedang dalam tahap pengembangan.'); setPopup('error') }} className="button"><img src={infoBac} alt="bg-bottom" onLoad={() => setIsImageLoad(true)} /><p>Info BAC</p></div>
           </div>
           <div className="op">
             <Link to="/buka-rekening" className="button-op">Buka Rekening Baru</Link>
             <Link to="/ganti-kode" className="button-op">Ganti Kode Akses</Link>
-            <Link to="/error" className="button-op">Info Bac</Link>
+            <div onClick={() => { setMsg('Mohon maaf fitur ini sedang dalam tahap pengembangan.'); setPopup('error') }} className="button-op">Info Bac</div>
           </div>
         </div>
         <div className="footer">Selamat datang di <span>BAC mobile</span></div>

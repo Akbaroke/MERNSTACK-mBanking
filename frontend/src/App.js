@@ -11,6 +11,7 @@ import TransferRekening from './pages/TransferRekening/TransferRekening';
 import TransferAntarBank from './pages/TransferAntarBank/TransferAntarBank';
 import Profile from './pages/Profile/Profile';
 import ErrorPage from './pages/ErrorPage/ErrorPage';
+import About from './pages/About/About';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/transfer-rekening" element={<TransferRekening />} />
         <Route path="/transfer-antarbank" element={<TransferAntarBank />} />
         <Route path="/error" element={<ErrorPage />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </BrowserRouter>
   );
