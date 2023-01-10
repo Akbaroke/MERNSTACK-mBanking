@@ -300,6 +300,7 @@ function TransferAntarBank() {
   }
 
   const handelKirim = () => {
+    cekNetwork()
     setPopup('loading')
     // cek rekening
     if (noRek_tujuan === '') {
@@ -506,6 +507,14 @@ function TransferAntarBank() {
         </div>
       </div >
     )
+  }
+
+  const cekNetwork = () => {
+    if (network !== 'online') {
+      setMsg('Transaksi dapat dilakukan setelah lampu indikator berwarna hijau.')
+      setPopup('error')
+      return false
+    }
   }
 
   return (

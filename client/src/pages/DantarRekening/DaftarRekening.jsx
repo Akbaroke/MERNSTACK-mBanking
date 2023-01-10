@@ -100,6 +100,7 @@ function DaftarRekening() {
   }
 
   const verifikasiNomor = () => {
+    cekNetwork()
     setPopup('loading')
     let isVerified = false;
     if (inputRek1 === '' && inputRek2 === '' && inputRek3 === '') {
@@ -362,6 +363,14 @@ function DaftarRekening() {
     );
   }
 
+  const cekNetwork = () => {
+    if (network !== 'online') {
+      setMsg('Transaksi dapat dilakukan setelah lampu indikator berwarna hijau.')
+      setPopup('error')
+      return false
+    }
+  }
+
   return (
     <div className='container'>
       {Popup(popup)}
@@ -369,7 +378,7 @@ function DaftarRekening() {
         <p>m-Transfer</p>
         <div>
           <div className={network}></div>
-          <div className='send' style={{ visibility: page === '' ? 'visible' : btnSendVis }} onClick={page === '' ? verifikasiNomor : () => { setPopup('pin') }}>Send</div>
+          <div className='send' style={{ visibility: page === '' ? 'visible' : btnSendVis }} onClick={page === '' ? verifikasiNomor : () => { cekNetwork(); setPopup('pin') }}>Send</div>
         </div>
       </div>
       {page === '' ? FormDaftarRekening() : ValidasiDataTransfer()}

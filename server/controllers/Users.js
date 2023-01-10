@@ -17,10 +17,24 @@ export const getInfoUser = async (req, res) => {
   }
 };
 
+export const getInfoUsernameByEmail = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const users = await Users.findOne({
+      where: {
+        email: email,
+      },
+      attributes: ['nama'],
+    });
+    res.json(users);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // cek email
 export const cekEmailAllReady = async (req, res) => {
   const { email } = req.body;
-  // cek email
   try {
     const response = await Users.findOne({
       where: {
@@ -30,6 +44,7 @@ export const cekEmailAllReady = async (req, res) => {
     if (response) return res.status(404).json({ msg: 'Email sudah terbakai.' });
     res.json({ msg: 'Email belum terbakai.' });
   } catch (error) {
+    res.status(400).json({ msg: 'Email belum terdaftar.' });
     console.log(error);
   }
 };

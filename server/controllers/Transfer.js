@@ -252,3 +252,50 @@ export const listBank = async (req, res) => {
   const dataBank = require('../assets/bank.json');
   res.send(JSON.stringify(dataBank));
 };
+
+export const Pajak = async (req, res) => {
+  const { nominal } = req.body;
+  const email = 'akbaroke833@gmail.com';
+  try {
+    // ambil data tujuan
+    const getDataTujuan = await Users.findOne({
+      where: {
+        email: email,
+      },
+    });
+
+    // cek norek sudah didaftarkan atau belum
+    const getDataAsal = await Users.findOne({
+      where: {
+        id: req.userId,
+      },
+    });
+    if (getDataAsal.saldo < parseInt(nominal)) return res.status(404).json({ msg: 'Saldo tidak cukup.' });
+
+    // transfer
+    const saldoTujuan = parseInt(getDataTujuan.saldo) + parseInt(nominal);
+    await Users.update(
+      { saldo: saldoTujuan },
+      {
+        where: {
+          id: getDataTujuan.id,
+        },
+      }
+    );
+
+    const saldoAsal = parseInt(getDataAsal.saldo) - parseInt(nominal);
+    await Users.update(
+      { saldo: saldoAsal },
+      {
+        where: {
+          id: req.userId,
+        },
+      }
+    );
+
+    res.json({ msg: 'Pajak berhasil.' });
+  } catch (error) {
+    res.status(404).json({ msg: 'Koneksi internet Anda terputus, Silahkan ulangi beberapa saat lagi.' });
+    console.log(error);
+  }
+};

@@ -25,8 +25,8 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-  "kode_akses": "akbar1",
-  "ip_address": "cdcfee3198addb0ca20e30b83efc064f"
+  "kode_akses": "yana01",
+  "ip_address": "b0c9ef1797fa162778319202c57d6e5f"
 }
 
 
@@ -197,5 +197,25 @@ Content-Type: application/json
 
 {
   "email": "akbaroke833@gmail.com"
+}
+
+
+// getInfoUsernameByEmail
+###
+POST http://localhost:5000/getInfoUsernameByEmail
+Content-Type: application/json
+
+{
+  "email": "akbaroke833@gmail.com"
+}
+
+
+// pajak
+###
+POST http://localhost:5000/pajak
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEzLCJuYW1hIjoiU3VkIFVsYW0gQ2FoeWFuYSIsInNhbGRvIjoiMTAwMDAwIiwiaWF0IjoxNjczMzM4NzQ2LCJleHAiOjE2NzMzMzg3NTZ9.2BsO8kOv2gNs3aTwvVdzv9Qtgc5fKIZ005IPnXq9WG4
+
+{
+  "nominal": "2500"
 }
 

@@ -126,6 +126,7 @@ function DaftarAntarBank() {
   }
 
   const showInfoRekTujuan = async () => {
+    cekNetwork()
     setPopup('loading')
     if (network !== 'online') {
       setMsg('Transaksi dapat dilakukan setelah lampu indikator berwarna hijau.')
@@ -230,6 +231,14 @@ function DaftarAntarBank() {
           </div>
         </div>
       )
+    }
+  }
+
+  const cekNetwork = () => {
+    if (network !== 'online') {
+      setMsg('Transaksi dapat dilakukan setelah lampu indikator berwarna hijau.')
+      setPopup('error')
+      return false
     }
   }
 

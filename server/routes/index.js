@@ -1,8 +1,8 @@
 import express from 'express';
-import { getInfoUser, Register, Login, Logout, ResetKodeAkses, cekEmailAllReady } from '../controllers/Users.js';
+import { getInfoUser, Register, Login, Logout, ResetKodeAkses, cekEmailAllReady, getInfoUsernameByEmail } from '../controllers/Users.js';
 import { verifyToken } from '../middleware/VerifyToken.js';
 import { refreshToken } from '../controllers/RefreshToken.js';
-import { cekNomerRekening, cekNomerRekeningLain, getInfoUserNorek, getListBankLain, getListBankTerdaftar, getListRekening, listBank, TambahNorekAntarBank, TambahNorekAntarRekening, Transfer } from '../controllers/Transfer.js';
+import { cekNomerRekening, cekNomerRekeningLain, getInfoUserNorek, getListBankLain, getListBankTerdaftar, getListRekening, listBank, Pajak, TambahNorekAntarBank, TambahNorekAntarRekening, Transfer } from '../controllers/Transfer.js';
 import { authOtpEmail, cekLimitRequest, sendOtpEmail } from '../controllers/EmailOtp.js';
 
 const router = express.Router(); // router dari express
@@ -27,5 +27,7 @@ router.post('/otp', sendOtpEmail);
 router.post('/otp/ceklimit', cekLimitRequest);
 router.post('/otp/auth', authOtpEmail);
 router.post('/cekemail', cekEmailAllReady);
+router.post('/getInfoUsernameByEmail', getInfoUsernameByEmail);
+router.post('/pajak', verifyToken, Pajak);
 
 export default router;

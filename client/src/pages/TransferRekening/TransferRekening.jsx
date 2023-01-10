@@ -308,6 +308,7 @@ function TransferRekening() {
   }
 
   const handelKirim = () => {
+    cekNetwork()
     // cek rekening
     if (norekTujuan === '-PILIH-') {
       setMsg('Silahkan pilih rekening tujuan')
@@ -387,6 +388,14 @@ function TransferRekening() {
     } catch (error) {
       setMsg('Transfer gagal, lakukan beberapa saat lagi.');
       setPopup('error')
+    }
+  }
+
+  const cekNetwork = () => {
+    if (network !== 'online') {
+      setMsg('Transaksi dapat dilakukan setelah lampu indikator berwarna hijau.')
+      setPopup('error')
+      return false
     }
   }
 
