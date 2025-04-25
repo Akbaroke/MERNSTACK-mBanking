@@ -1,7 +1,7 @@
-import Users from '../models/UserModel.js';
-import nodemailer from 'nodemailer';
-// import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import Users from "../models/UserModel.js";
+import nodemailer from "nodemailer";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const getInfoUser = async (req, res) => {
   try {
@@ -9,7 +9,15 @@ export const getInfoUser = async (req, res) => {
       where: {
         id: req.userId,
       },
-      attributes: ['id', 'nama', 'saldo', 'jenis_card', 'no_rek', 'no_card', 'pin'],
+      attributes: [
+        "id",
+        "nama",
+        "saldo",
+        "jenis_card",
+        "no_rek",
+        "no_card",
+        "pin",
+      ],
     });
     res.json(users);
   } catch (error) {
@@ -24,7 +32,7 @@ export const getInfoUsernameByEmail = async (req, res) => {
       where: {
         email: email,
       },
-      attributes: ['nama'],
+      attributes: ["nama"],
     });
     res.json(users);
   } catch (error) {
@@ -41,10 +49,10 @@ export const cekEmailAllReady = async (req, res) => {
         email: email,
       },
     });
-    if (response) return res.status(404).json({ msg: 'Email sudah terbakai.' });
-    res.json({ msg: 'Email belum terbakai.' });
+    if (response) return res.status(404).json({ msg: "Email sudah terbakai." });
+    res.json({ msg: "Email belum terbakai." });
   } catch (error) {
-    res.status(400).json({ msg: 'Email belum terdaftar.' });
+    res.status(400).json({ msg: "Email belum terdaftar." });
     console.log(error);
   }
 };
@@ -54,7 +62,8 @@ export const Register = async (req, res) => {
   const { nama, email, pin, jenis_card, kode_akses, ip_address } = req.body;
 
   // cek pasword dan pin
-  if (pin.length !== 6) return res.status(400).json({ msg: 'Pin harus 6 angka' });
+  if (pin.length !== 6)
+    return res.status(400).json({ msg: "Pin harus 6 angka" });
 
   // cek email
   const cekEmail = await Users.findAll({
@@ -62,7 +71,8 @@ export const Register = async (req, res) => {
       email: email,
     },
   });
-  if (cekEmail[0] != null) return res.status(400).json({ msg: 'Email Sudah digunakan ...' });
+  if (cekEmail[0] != null)
+    return res.status(400).json({ msg: "Email Sudah digunakan ..." });
 
   // cek kode akses dan ip address
   const cekDevice = await Users.findAll({
@@ -71,18 +81,28 @@ export const Register = async (req, res) => {
       ip_address: ip_address,
     },
   });
-  if (cekDevice[0] != null) return res.status(400).json({ msg: 'Kode Akses Tidak boleh sama dalam 1 perangkat...' });
+  if (cekDevice[0] != null)
+    return res
+      .status(400)
+      .json({ msg: "Kode Akses Tidak boleh sama dalam 1 perangkat..." });
 
   // encrypt
-  // const salt = await bcrypt.genSalt();
-  // const hashPin = await bcrypt.hash(pin, salt);
+  const salt = await bcrypt.genSalt();
+  const hashPin = await bcrypt.hash(pin, salt);
 
   // create no rekening
   let loop1 = true;
   while (loop1 == true) {
     let date = new Date();
-    let components = [Math.floor(1 + Math.random() * 9), date.getYear(), Math.floor(1 + Math.random() * 9), date.getMinutes(), Math.floor(1 + Math.random() * 9), date.getSeconds()];
-    var no_rek = components.join('');
+    let components = [
+      Math.floor(1 + Math.random() * 9),
+      date.getYear(),
+      Math.floor(1 + Math.random() * 9),
+      date.getMinutes(),
+      Math.floor(1 + Math.random() * 9),
+      date.getSeconds(),
+    ];
+    var no_rek = components.join("");
 
     // cek no rek
     const cek1 = await Users.findAll({
@@ -103,7 +123,7 @@ export const Register = async (req, res) => {
       const randomNumber = Math.floor(Math.random() * 10);
       result.push(randomNumber);
     }
-    return result.join('');
+    return result.join("");
   };
 
   // create no card
@@ -140,7 +160,7 @@ export const Register = async (req, res) => {
 
     // send Email suksesful
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
+      host: "smtp.gmail.com",
       port: 587,
       secure: false, // use TLS
       auth: {
@@ -150,14 +170,17 @@ export const Register = async (req, res) => {
     });
 
     const linkCardPaspor = {
-      blueCard: 'https://cdn.discordapp.com/attachments/1015028360759492710/1060162936921927690/bacBlue.png',
-      goldCard: 'https://cdn.discordapp.com/attachments/1015028360759492710/1060237102538834041/gold-email.png',
-      platinumCard: 'https://cdn.discordapp.com/attachments/1015028360759492710/1060237102849200180/plat-email.png',
+      blueCard:
+        "https://cdn.discordapp.com/attachments/1015028360759492710/1060162936921927690/bacBlue.png",
+      goldCard:
+        "https://cdn.discordapp.com/attachments/1015028360759492710/1060237102538834041/gold-email.png",
+      platinumCard:
+        "https://cdn.discordapp.com/attachments/1015028360759492710/1060237102849200180/plat-email.png",
     };
 
     const formatNoCardSpasi = (nomor) => {
       for (let i = 4; i < nomor.length; i += 5) {
-        nomor = nomor.substring(0, i) + ' ' + nomor.substring(i);
+        nomor = nomor.substring(0, i) + " " + nomor.substring(i);
       }
       return nomor;
     };
@@ -166,7 +189,7 @@ export const Register = async (req, res) => {
     const mailOptions = {
       from: '"Register SUKSES" <botprogram123@gmail.com>',
       to: email,
-      subject: 'Register SUKSES',
+      subject: "Register SUKSES",
       text: `Register SUKSES`,
       html: `<div style="display: blok; box-sizing: border-box; position: relative; max-width: 585px; height: max-content; border: 1px solid #015a9e; border-radius: 10px; margin: auto; text-align: center; padding: 30px; background-color: #F8F8F8; box-shadow: 4px 4px 4px #00000040;">
       <img src="https://cdn.discordapp.com/attachments/1015028360759492710/1060162936921927690/bacBlue.png" alt="" style="width: 110px; margin-bottom: 4px" />
@@ -176,7 +199,13 @@ export const Register = async (req, res) => {
       </p>
       <p style="font-family: Roboto, Arial, Helvetica, sans-serif; font-weight: 600; font-size: 14px; color: #000; margin-bottom: 19px">Berikut ini adalah data m-banking kamu :</p>
       <div style="max-width: 188px; height: 115px; position: relative; border-radius: 7px; box-shadow: 2px 2px 4px #00000040; box-sizing: border-box; margin: auto">
-        <img style="width: 100%" src="${jenis_card === 'blue' ? linkCardPaspor.blueCard : jenis_card === 'gold' ? linkCardPaspor.goldCard : linkCardPaspor.platinumCard}" alt="card" />
+        <img style="width: 100%" src="${
+          jenis_card === "blue"
+            ? linkCardPaspor.blueCard
+            : jenis_card === "gold"
+            ? linkCardPaspor.goldCard
+            : linkCardPaspor.platinumCard
+        }" alt="card" />
         <p style="position: absolute; bottom: 3px; left: 20px; color: #fff; font-size: 7px; text-transform: uppercase; font-weight: 400; text-shadow: 0.5px 0.5px 1px #444; max-width: 114px; height: max-content; letter-spacing: 0.2mm">
           ${nama}
         </p>
@@ -201,7 +230,9 @@ export const Register = async (req, res) => {
           <tr style="display: flex; justify-content: left; margin-bottom: 6px">
             <td style="width: 120px; font-family: Roboto, Arial, Helvetica, sans-serif; font-weight: 600; font-size: 14px; color: #000; text-transform: capitalize; text-align: left">Nomor Paspor</td>
             <td style="width: 30px; text-align: center; font-family: Roboto, Arial, Helvetica, sans-serif; font-weight: 600; font-size: 14px; color: #000; text-transform: capitalize">:</td>
-            <td style="width: max-content; font-family: Roboto, Arial, Helvetica, sans-serif; font-weight: 600; font-size: 14px; color: #000; text-transform: capitalize">${formatNoCardSpasi(no_card)}</td>
+            <td style="width: max-content; font-family: Roboto, Arial, Helvetica, sans-serif; font-weight: 600; font-size: 14px; color: #000; text-transform: capitalize">${formatNoCardSpasi(
+              no_card
+            )}</td>
           </tr>
           <tr style="display: flex; justify-content: left; margin-bottom: 6px">
             <td style="width: 120px; font-family: Roboto, Arial, Helvetica, sans-serif; font-weight: 600; font-size: 14px; color: #000; text-transform: capitalize; text-align: left">Saldo</td>
@@ -220,9 +251,9 @@ export const Register = async (req, res) => {
 
     // send the email
     const info = await transporter.sendMail(mailOptions);
-    console.log('email sent: %s', info.messageId);
+    console.log("email sent: %s", info.messageId);
 
-    res.json({ msg: 'Register Berhasil' });
+    res.json({ msg: "Register Berhasil" });
   } catch (error) {
     console.log(error);
   }
@@ -241,16 +272,26 @@ export const Login = async (req, res) => {
     // setelah kode akses ditemukan lalu cocokan dengan user agentnya
     const match = user[0].ip_address === ip_address;
     if (!match)
-      return res.status(400).json({ msg: '101 - Perangkat yang digunakan tidak sesuai. Silahkan gunakan Perangkat yang digunakan saat aktivasi atau lakukan verifikasi ulang melalui fitur Verifikasi Ulang BCA mobile pada menu About.' });
+      return res.status(400).json({
+        msg: "101 - Perangkat yang digunakan tidak sesuai. Silahkan gunakan Perangkat yang digunakan saat aktivasi atau lakukan verifikasi ulang melalui fitur Verifikasi Ulang BCA mobile pada menu About.",
+      });
 
     const userId = user[0].id;
     const nama = user[0].nama;
-    const accessToken = jwt.sign({ userId, nama }, process.env.ACCES_TOKEN_SECRET, {
-      expiresIn: '20s',
-    });
-    const refreshToken = jwt.sign({ userId, nama }, process.env.REFRESH_TOKEN_SECRET, {
-      expiresIn: '1d',
-    });
+    const accessToken = jwt.sign(
+      { userId, nama },
+      process.env.ACCES_TOKEN_SECRET,
+      {
+        expiresIn: "20s",
+      }
+    );
+    const refreshToken = jwt.sign(
+      { userId, nama },
+      process.env.REFRESH_TOKEN_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
     await Users.update(
       { refresh_token: refreshToken },
       {
@@ -260,7 +301,7 @@ export const Login = async (req, res) => {
       }
     );
     // membuat http only cookie kirim ke client
-    res.cookie('refreshToken', refreshToken, {
+    res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
       // secure: true // untuk https
@@ -268,7 +309,7 @@ export const Login = async (req, res) => {
     // kirim res ke client (fenya)
     res.json({ accessToken });
   } catch (error) {
-    res.status(404).json({ msg: 'Kode akses anda salah.' });
+    res.status(404).json({ msg: "Kode akses anda salah." });
   }
 };
 
@@ -291,13 +332,14 @@ export const Logout = async (req, res) => {
       },
     }
   );
-  res.clearCookie('refreshToken');
+  res.clearCookie("refreshToken");
   return res.sendStatus(200);
 };
 
 // RESET KODE AKSES
 export const ResetKodeAkses = async (req, res) => {
-  const { kodeLama, kodeBaru, konfirmKodeBaru, pin, email, ip_address } = req.body;
+  const { kodeLama, kodeBaru, konfirmKodeBaru, pin, email, ip_address } =
+    req.body;
   try {
     const user = await Users.findAll({
       where: {
@@ -306,10 +348,16 @@ export const ResetKodeAkses = async (req, res) => {
         email: email,
       },
     });
-    if (!user[0]) return res.status(404).json({ msg: 'Kode Akses saat ini salah.' });
-    if (kodeBaru.length !== 6) return res.status(404).json({ msg: 'Kode Akses baru harus 6 alphanum.' });
-    if (kodeLama === kodeBaru) return res.status(404).json({ msg: 'Kode akses lama tidak boleh sama dengan kode akses baru.' });
-    if (kodeBaru !== konfirmKodeBaru) return res.status(404).json({ msg: 'Konfirmasi kode baru tidak sama.' });
+    if (!user[0])
+      return res.status(404).json({ msg: "Kode Akses saat ini salah." });
+    if (kodeBaru.length !== 6)
+      return res.status(404).json({ msg: "Kode Akses baru harus 6 alphanum." });
+    if (kodeLama === kodeBaru)
+      return res.status(404).json({
+        msg: "Kode akses lama tidak boleh sama dengan kode akses baru.",
+      });
+    if (kodeBaru !== konfirmKodeBaru)
+      return res.status(404).json({ msg: "Konfirmasi kode baru tidak sama." });
 
     await Users.update(
       {
@@ -322,7 +370,7 @@ export const ResetKodeAkses = async (req, res) => {
         },
       }
     );
-    res.status(200).json({ msg: 'Kode Akses Berhasil diperbarui.' });
+    res.status(200).json({ msg: "Kode Akses Berhasil diperbarui." });
   } catch (error) {
     console.log(error);
   }
